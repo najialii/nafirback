@@ -25,6 +25,10 @@ class UserResource extends JsonResource
             'role'=>$this->role,
             'skills'=>$this->skills,
             'country'=> $this->country,
+            'expertise' => $this->expertise,
+            'education' => $this->education,
+            'certificates' => $this->certificates,
+
 
         ];
     }

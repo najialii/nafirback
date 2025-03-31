@@ -27,7 +27,7 @@ Route::get('/activites', [ActivityController::class, 'index']);
 Route::post('/activites', [ActivityController::class, 'store']);
 Route::get('/activites/{id}', [ActivityController::class, 'show']);
 
-
+// ->middleware('role:admin');
 
 //users
 Route::post('/test',[TestController::class,'index']);

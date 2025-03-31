@@ -33,6 +33,10 @@ class User extends Authenticatable
         'skills',
         'exp_years',
         'country',
+        'expertise',
+        'education',
+        'certificates',
+
     ];
 
 

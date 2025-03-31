@@ -35,6 +35,44 @@ class UserFactory extends Factory
             'country' => $this->faker->country(),
             'skills' => $this->faker->words(3, true),
             'exp_years' => $this->faker->numberBetween(1, 10),
+            'expertise' => json_encode([
+                [
+                    'name' => $this->faker->jobTitle(),
+                    'description' => $this->faker->sentence(),
+                    'start_date' => $this->faker->date(),
+                    'end_date' => $this->faker->optional()->date(),
+                ],
+                [
+                    'name' => $this->faker->jobTitle(),
+                    'description' => $this->faker->sentence(),
+                    'start_date' => $this->faker->date(),
+                    'end_date' => $this->faker->optional()->date(),
+                ]
+            ]),
+
+              'education' => json_encode([
+                [
+                    'name' => $this->faker->word() . ' Degree',
+                    'institution' => $this->faker->company(),
+                    'start_date' => $this->faker->date(),
+                    'end_date' => $this->faker->date(),
+                ]
+            ]),
+
+            'certificates' => json_encode([
+                [
+                    'name' => $this->faker->word() . ' Certification',
+                    'issued_by' => $this->faker->company(),
+                    'issue_date' => $this->faker->date(),
+                ],
+                [
+                    'name' => $this->faker->word() . ' Professional Certificate',
+                    'issued_by' => $this->faker->company(),
+                    'issue_date' => $this->faker->date(),
+                ]
+            ]),
+
+
         ];
     }
 

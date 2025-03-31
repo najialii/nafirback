@@ -25,6 +25,9 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
             $table->rememberToken();
+            $table->json('expertise')->nullable();
+            $table->json('education')->nullable();
+            $table->json('certificates')->nullable();
             // $table->foreignId('activity_id')->nullable()->constrained('activities')->onDelete('set null');
             $table->timestamps();
         });
