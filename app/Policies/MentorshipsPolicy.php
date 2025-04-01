@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Mentorships;
+use App\Models\Mentorship;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class MentorshipsPolicy
+class MentorshipPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class MentorshipsPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Mentorships $mentorships): bool
+    public function view(User $user, Mentorship $Mentorship): bool
     {
         return false;
     }
@@ -35,7 +35,7 @@ class MentorshipsPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Mentorships $mentorships): bool
+    public function update(User $user, Mentorship $Mentorship): bool
     {
         return false;
     }
@@ -43,7 +43,7 @@ class MentorshipsPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Mentorships $mentorships): bool
+    public function delete(User $user, Mentorship $Mentorship): bool
     {
         return false;
     }
@@ -51,7 +51,7 @@ class MentorshipsPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Mentorships $mentorships): bool
+    public function restore(User $user, Mentorship $Mentorship): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class MentorshipsPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Mentorships $mentorships): bool
+    public function forceDelete(User $user, Mentorship $Mentorship): bool
     {
         return false;
     }

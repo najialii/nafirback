@@ -1,0 +1,33 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('mentorship_reqs', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('mentorship_id')->constrained('mentorships')->onDelete('set null');
+            $table->foreignId('mentee_id')->constrained('users')->onDelete('set null');
+            $table->string('selecteday');
+            $table->string('selectedtime');
+            $table->text('message')->nullable();
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('mentorship_reqs');
+    }
+};

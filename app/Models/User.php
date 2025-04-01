@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Department;
+ use App\Models\Mentorship;
+ use App\Models\MentorshipReq;
 use App\Models\Activity;
 class User extends Authenticatable
 {
@@ -36,7 +38,6 @@ class User extends Authenticatable
         'expertise',
         'education',
         'certificates',
-
     ];
 
 
@@ -50,6 +51,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(Activity::class);
     }
+
+    public function Mentorship()
+    {
+        return $this->hasMany(Mentorship::class);
+    }
+
+    public function mentorshipRequests()
+    {
+        return $this->hasMany(MentorshipReq::class, 'mentee_id');
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -73,4 +85,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+
 }
