@@ -25,9 +25,9 @@ class StoreUserRequest extends FormRequest
         return [
             //
             'name' => ['required'],
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required'],
-            // 'role' => ['required', Rule::in(['mentor', 'admin', 'mentee'])],
+            'role' => ['required', Rule::in(['mentor', 'admin', 'mentee'])],
             'department_id' => ['required'],
             'phone' => ['required'],
             'skills' => ['required'],

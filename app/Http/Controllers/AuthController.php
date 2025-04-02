@@ -13,6 +13,15 @@ class AuthController extends Controller
 public function register(StoreUserRequest $request){
 
 
+    $isEmailExist = User::where('email', $request->email)->exists();
+
+    if($isEmailExist){
+        return response()->json([
+            'error'=>'Email alrady exists',
+            'message' => 'Email already exists. Please login to your account.'
+        ],400);
+    }
+
     $user= User::create([
         'name' => $request->name,
         'email' => $request->email,

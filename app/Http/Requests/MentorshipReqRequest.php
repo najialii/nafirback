@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreMentorshipsRequest extends FormRequest
+class MentorshipReqRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +22,13 @@ class StoreMentorshipsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
-            'name' => ['required', 'string', 'max:255'],
-            'mentor_id' => ['required'],
-            'department_id' => ['required', 'integer', 'exists:departments,id'],
-            // 'date'=>['required', 'array'],
-            'days' => ['required', 'array'],
-            'available_times' => ['required', 'array'],
-
+             'mentorship_id'=>['required'],
+            'mentor_id'=>['required'],
+            'mentee_id'=>['required'],
+            'selecteday'=>['required'],
+            'selectedtime'=>['required'],
+            'message'=>['required'],
+            'status'=>['required']
         ];
     }
 }

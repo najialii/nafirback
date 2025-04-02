@@ -37,7 +37,10 @@ Route::post('/mentorship', [MentorshipController::class, 'store']);
 
 
 Route::get('/mentorshiprequest', [MentorshipReqController::class, 'index']);
-Route::get('/mentorshiprequest/{id}', [MentorshipReqController::class, 'show']);
+Route::get('/mentorshiprequest/{id}', [MentorshipReqController::class, 'getMentorMentorsRequests']);
+Route::put('/mentorshiprequest/{id}/status', [MentorshipReqController::class, 'getMentorMentorsRequests']);
+// Route::get('/mentorshiprequest/{id}', [MentorshipReqController::class, 'show']);
+
 Route::post('/request_session', [MentorshipReqController::class, 'store']);
 // Route::get('/mentorshiprequest', [MentorshipReqController::class, 'getUserMentorsRequests']);
 // ->middleware('auth:sanctum');

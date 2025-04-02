@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMentorshipsRequest;
+use App\Http\Requests\MentorshipReqRequest;
 use App\Http\Resources\MentorshipReqCollection;
 use App\Http\Resources\mentorshipReqResource;
 use App\Models\Mentorship;
 use App\Models\MentorshipReq;
 use Database\Seeders\MentorshipreqSeeder;
 use GuzzleHttp\Psr7\Message;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,7 +33,9 @@ class MentorshipReqController extends Controller
         }
     }
 
-    public function store(StoreMentorshipsRequest $request){
+
+
+public function store(MentorshipReqRequest $request){
 try {
 
     $validatedData = $request->validated();
@@ -44,7 +48,6 @@ if(!$mentorship){
         'message'=>'The mentorship session dose not exist'
     ], 404);
 }
-    //check if the session already booked
 
 $isSessionBooked = MentorshipReq::where('mentorship_id', $validatedData['mentorship_id'])->exists();
 if($isSessionBooked){
@@ -54,6 +57,8 @@ if($isSessionBooked){
     ], 400);
 }
 
+
+//todo check avilable times
     $metorshipreq = MentorshipReq::create($validatedData);
 
 
@@ -116,11 +121,12 @@ if($isSessionBooked){
 }
 
 
-    public function getUserMentorsRequests(Request $request){
+    public function getMentorMentorsRequests($userId){
         try {
 
-            $mentorId = Auth::id();
-            $requests = MentorshipReq::where('mentor_Id' , $mentorId)->with(['mentee', 'mentorship'])->get();
+            // $requests = MentorshipReq::where('mentor_Id' , $mentorId)->with(['mentee_id', 'mentorship_id'])->get();
+            $requests=MentorshipReq::where('mentor_id', $userId)->with(['user', 'mentor', 'mentorship'])->get();
+
 
             // return dd($mentorId);
             return response()->json($requests);
@@ -131,6 +137,40 @@ if($isSessionBooked){
             return response()->json([
                 'error'=>$th->getMessage()
             ],500);
+        }
+    }
+
+
+    //updatementorship status
+    public function processMentorshipRequest(Request $request, $id){
+        try {
+
+            $request->validate([
+                'status' => ['required', 'string', 'in:pending,approved,rejected'],
+            ]);
+
+            $mentorshipRequest = MentorshipReq::find($id);
+
+            if (!$mentorshipRequest) {
+                return response()->json([
+                    'error' => 'Mentorship request not found',
+                    'message' => 'The specified mentorship request does not exist'
+                ], 404);
+            }
+
+            $mentorshipRequest->status = $request->status;
+            $mentorshipRequest->save();
+
+            return response()->json([
+                'message' => 'Mentorship request status updated successfully',
+                'mentorship_request' => $mentorshipRequest
+            ], 200);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => 'Something went wrong',
+                'message' => $th->getMessage()
+            ], 500);
         }
     }
 
