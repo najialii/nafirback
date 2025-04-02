@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('mentorship_reqs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mentorship_id')->constrained('mentorships')->onDelete('set null');
-            $table->foreignId('mentee_id')->constrained('users')->onDelete('set null');
+            $table->foreignId('mentee_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('mentor_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('mentorship_id')->constrained('mentorships')->onDelete('cascade');
             $table->string('selecteday');
             $table->string('selectedtime');
             $table->text('message')->nullable();

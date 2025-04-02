@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\User;
 use App\Models\Activity;
 use App\Models\Mentorship;
+use App\Models\MentorshipReq;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
             UsersSeeder::class,
             ActivitySeeder::class,
             MentorshipSeeder::class,
+            MentorshipreqSeeder::class,
         ]);
 
 

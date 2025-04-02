@@ -21,7 +21,6 @@ class MentorshipFactory extends Factory
         return [
             'name' => $this->faker->sentence(3),
             'mentor_id' => User::factory(),
-            'mentee_id' => User::factory(),
             'department_id' => Department::factory(),
             'date' => $this->faker->date(),
             'days' => json_encode($this->faker->randomElements(

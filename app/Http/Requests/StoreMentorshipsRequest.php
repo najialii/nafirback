@@ -11,7 +11,7 @@ class StoreMentorshipsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,13 @@ class StoreMentorshipsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'mentorship_id'=>['required'],
+            'mentor_id'=>['required'],
+            'mentee_id'=>['required'],
+            'selecteday'=>['required'],
+            'selectedtime'=>['required'],
+            'message'=>['required'],
+            'status'=>['required'],
         ];
     }
 }

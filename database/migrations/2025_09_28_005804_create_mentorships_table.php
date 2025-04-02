@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('mentor_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('mentee_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');
             $table->date('date');
             $table->json('days');

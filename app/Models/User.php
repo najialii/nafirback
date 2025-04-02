@@ -57,10 +57,10 @@ class User extends Authenticatable
         return $this->hasMany(Mentorship::class);
     }
 
-    public function mentorshipRequests()
-    {
-        return $this->hasMany(MentorshipReq::class, 'mentee_id');
-    }
+    // public function mentorshipRequests()
+    // {
+    //     return $this->hasMany(MentorshipReq::class, 'mentee_id');
+    // }
 
 
     /**

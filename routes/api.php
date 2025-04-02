@@ -5,6 +5,8 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\MentorshipController;
+use App\Http\Controllers\MentorshipReqController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,10 +24,27 @@ Route::get('/department', [DepartmentController::class, 'index']);
 
 Route::get('/department/{id}', [DepartmentController::class, 'show']);
 
-
+//Activites
 Route::get('/activites', [ActivityController::class, 'index']);
 Route::post('/activites', [ActivityController::class, 'store']);
 Route::get('/activites/{id}', [ActivityController::class, 'show']);
+
+
+//mentorships
+Route::get('/mentorships', [MentorshipController::class, 'index']);
+Route::get('/mentorship/{id}', [MentorshipController::class, 'show']);
+Route::post('/mentorship', [MentorshipController::class, 'store']);
+
+
+Route::get('/mentorshiprequest', [MentorshipReqController::class, 'index']);
+Route::get('/mentorshiprequest/{id}', [MentorshipReqController::class, 'show']);
+Route::post('/request_session', [MentorshipReqController::class, 'store']);
+// Route::get('/mentorshiprequest', [MentorshipReqController::class, 'getUserMentorsRequests']);
+// ->middleware('auth:sanctum');
+// ->middleware('auth:sanctum');
+// ->middleware('auth:sanctum');
+
+
 
 // ->middleware('role:admin');
 
