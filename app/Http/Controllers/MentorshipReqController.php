@@ -141,12 +141,12 @@ if($isSessionBooked){
     }
 
 
-    //updatementorship status
+
     public function processMentorshipRequest(Request $request, $id){
         try {
 
             $request->validate([
-                'status' => ['required', 'string', 'in:pending,approved,rejected'],
+                'status' => ['required', 'string', 'in:pending,accepted,rejected'],
             ]);
 
             $mentorshipRequest = MentorshipReq::find($id);

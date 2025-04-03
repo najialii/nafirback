@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Department;
 use App\Models\User;
 use App\Models\Activity;
+use App\Models\ActivityParticipant;
 use App\Models\Mentorship;
 use App\Models\MentorshipReq;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -24,6 +25,8 @@ class DatabaseSeeder extends Seeder
             ActivitySeeder::class,
             MentorshipSeeder::class,
             MentorshipreqSeeder::class,
+            ActivityReqSeeder::class,
+            ActivitesParticpantSeeder::class,
         ]);
 
 
