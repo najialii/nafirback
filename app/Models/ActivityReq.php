@@ -13,6 +13,8 @@ class ActivityReq extends Model
 
     protected $fillable = [
         'activity_id',
+        'participant_id',
+
         'note'
     ];
 

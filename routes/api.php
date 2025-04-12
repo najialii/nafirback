@@ -30,9 +30,7 @@ Route::get('/activites', [ActivityController::class, 'index']);
 Route::post('/activites', [ActivityController::class, 'store']);
 Route::get('/activites/{id}', [ActivityController::class, 'show']);
 
-Route::post('/activity_req', [ActivityReqController::class, 'store']);
-
-
+Route::post('/activity-requests', [ActivityReqController::class, 'store']);
 //mentorships
 Route::get('/mentorships', [MentorshipController::class, 'index']);
 Route::get('/mentorship/{id}', [MentorshipController::class, 'show']);
