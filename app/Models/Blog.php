@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\Department;
 
 class Blog extends Model
 {
@@ -12,9 +14,23 @@ class Blog extends Model
     protected $fillable = [
         'author_id',
         'title',
-        'tags',
+        'department_id',
         'content',
+        'slug',
+        'featured'
 
     ];
+
+
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'author_id');
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id');
+    }
 
 }

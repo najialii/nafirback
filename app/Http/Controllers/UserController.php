@@ -37,11 +37,35 @@ class UserController
 
     $validatedData = $request->validated();
     $validatedData['password'] = Hash::make($validatedData['password']);
-
+    $validatedData['isActive'] = false;
     $user = User::create($validatedData);
 
     return new UserResource($user);
     }
+
+
+
+    public function approveUsers($id){
+        $user = User::find($id);
+
+        if (!$user){
+            return response()->json([
+                'error'=> 'User not found',
+                'message'=>'User not found'
+            ],404);
+
+            $user->update([
+                'isActive'=> true
+            ]);
+
+            return response()->json([
+                'message'=> 'User Approved Successfully',
+                'user'=> new UserResource($user)
+            ],200);
+        }
+
+    }
+
 
 
 

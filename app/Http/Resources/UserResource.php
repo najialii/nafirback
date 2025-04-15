@@ -28,8 +28,7 @@ class UserResource extends JsonResource
             'expertise' => $this->expertise,
             'education' => $this->education,
             'certificates' => $this->certificates,
-
-
+            'isActive' => $this->isActive,
         ];
     }
 }

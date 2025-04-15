@@ -28,9 +28,25 @@ class SuperAdminStats extends BaseWidget
                             ->pluck('count', 'date')
                             ->toArray();
 
-    
+        // $newActivitiesData = Activity::where('created_at', '>=', Carbon::now()->subDays(30))
+        //                               ->selectRaw('COUNT(*) as count, DATE(created_at) as date')
+        //                               ->groupBy('date')
+        //                               ->orderBy('date')
+        //                               ->get()
+        //                               ->pluck('count', 'date')
+        //                               ->toArray();
+
+   
+        // $newMentorshipsData = Mentorship::where('created_at', '>=', Carbon::now()->subDays(30))->selectRaw('COUNT(*) as count, DATE(created_at) as date')
+        //                                 ->groupBy('date')
+        //                                 ->orderBy('date')
+        //                                 ->get()
+        //                                 ->pluck('count', 'date')
+        //                                 ->toArray();
 
         $newUsersChartData = array_values($newUsersData);  
+        // $newActivitiesChartData = array_values($newActivitiesData);
+        // $newMentorshipsChartData = array_values($newMentorshipsData);
 
         return [
             
@@ -40,7 +56,7 @@ class SuperAdminStats extends BaseWidget
 
              Stat::make('New Activities', $lastThirtyDaysActivitiesCount)->descriptionIcon('heroicon-m-user-group', IconPosition::Before)
              ->description('New activities in the last 30 days')
-            //  ->chart()
+            //  ->chart($newActivitiesChartData)
              ->color('success'),
 
              Stat::make('New Mentorships', $lastThirtyDaysMentorshipsCount)->descriptionIcon('heroicon-m-user-group', IconPosition::Before)

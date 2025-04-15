@@ -174,4 +174,35 @@ if($isSessionBooked){
         }
     }
 
+
+
+    public function session_reschedule(Request $request ,$id){
+$request->validate([
+    'selectedDay'=> 'required|date',
+    'selectedtime' => 'required|date_format:H:i',
+    ]);
+
+    $mentorshipReq = MentorshipReq::find($id);
+
+    if (!$mentorshipReq) {
+        return response()->json([
+            'error' => 'Mentorship request not found',
+        ], 404);
+    }
+
+if(auth()->id() !== $mentorshipReq->mentor_id) {
+    return  response()->json([
+        'error'=>'Unauthorized'
+    ],403);
+}
+
+$mentorshipReq->reschedule($request->selecteday,$request->selectedtime);
+
+return response()->json([
+    'error'=>'Mentorship request was successfully rescheduled',
+    'mentorship request' => $mentorshipReq,
+],200);
+
+    }
+
 }

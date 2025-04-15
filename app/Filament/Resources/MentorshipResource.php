@@ -15,6 +15,13 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class MentorshipResource extends Resource
 {
+    protected static ?int $navigationSort = 3;
+
+    public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
+
     protected static ?string $model = Mentorship::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -33,7 +40,7 @@ class MentorshipResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('department.name'),
-                Tables\Columns\TextColumn::make('mentor_id.name')->label('Mentor'),
+                Tables\Columns\TextColumn::make('name.name')->label('Mentor'),
             ])
             ->filters([
                 //

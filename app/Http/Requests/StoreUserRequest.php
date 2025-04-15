@@ -31,8 +31,9 @@ class StoreUserRequest extends FormRequest
             // 'department_id' => ['required'],
             'phone' => ['required'],
             'skills' => ['required'],
-            'exp_years' => ['required', 'integer'], // Assuming it's an integer
+            'exp_years' => ['required', 'integer'],
             'country' => ['required'],
+            'isActive' => ['required', 'boolean'],
 
         ];
     }

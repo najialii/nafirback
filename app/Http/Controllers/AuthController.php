@@ -12,7 +12,6 @@ class AuthController extends Controller
 {
 public function register(StoreUserRequest $request){
 
-
     $isEmailExist = User::where('email', $request->email)->exists();
 
     if($isEmailExist){
@@ -53,7 +52,7 @@ public function login(Request $request){
 
     $user = User::where('email', $request->email)->first();
     if (!$user ||!Hash::check($request->password, $user->password)) {
-        return response()->json(['message' => 'The provided credentials are incorrect'], 401);
+        return response()->json(['message' => 'invalid credentials'], 401);
     }
 
 

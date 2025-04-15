@@ -30,7 +30,7 @@ $trend = Trend::model(User::class)
                 [
                     'label' => 'My First dataset',
                     'backgroundColor' => 'rgb(255, 99, 132)',
-                    'borderColor' => 'rgb(255, 99, 132)',
+                    'borderColor' => 'primary',
                     'data' => $trend->map(fn (TrendValue $value) => $value->aggregate),
                 ],
             ],

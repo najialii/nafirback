@@ -28,6 +28,7 @@ return new class extends Migration
             $table->json('expertise')->nullable();
             $table->json('education')->nullable();
             $table->json('certificates')->nullable();
+            $table->boolean('isActive')->default(false);
             // $table->foreignId('activity_id')->nullable()->constrained('activities')->onDelete('set null');
             $table->timestamps();
         });

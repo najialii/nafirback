@@ -12,7 +12,7 @@ class ActivitesChart extends ChartWidget
 
     protected function getData(): array
     {
-        
+
         return [
             'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
             'datasets' => [

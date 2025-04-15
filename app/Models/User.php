@@ -9,12 +9,15 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Department;
  use App\Models\Mentorship;
+ use App\Models\Blog;
  use App\Models\MentorshipReq;
 use App\Models\Activity;
+use Spatie\Permission\Traits\HasRoles;
+
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable , HasApiTokens;
+    use HasFactory, Notifiable , HasApiTokens , HasRoles;
 
 
 
@@ -38,6 +41,7 @@ class User extends Authenticatable
         'expertise',
         'education',
         'certificates',
+        'isActive',
     ];
 
 
@@ -86,6 +90,9 @@ class User extends Authenticatable
         ];
     }
 
-
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class, 'author_id');
+    }
 
 }
