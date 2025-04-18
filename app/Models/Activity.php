@@ -13,6 +13,7 @@ class Activity extends Model
     protected $fillable = [
 
         'name',
+        'img',
         'description',
         'department_id',
         'location',
@@ -28,7 +29,7 @@ class Activity extends Model
     ];
 
 
-        public function depatment(){
+        public function department(){
             return $this->belongsTo(Department::class);
         }
 

@@ -21,9 +21,9 @@ class MentorshipReq extends Model
     ];
 
 
-    public function User()
+    public function mentee()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'mentee_id');
     }
 
     public function mentor()

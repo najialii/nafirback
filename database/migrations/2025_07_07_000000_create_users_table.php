@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('profile_pic')->nullable();
-            $table->enum('role', ['superadmin' ,'admin', 'mentor' , 'mentee'])->default('mentee');
+            // $table->enum('role', ['superadmin' ,'admin', 'mentor' , 'mentee'])->default('mentee');
             $table->string('skills')->nullable();
             $table->string('country')->nullable();
             $table->integer('exp_years')->nullable();

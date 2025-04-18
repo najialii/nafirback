@@ -17,6 +17,7 @@ class DepartmentResource extends Resource
 {
     protected static ?int $navigationSort = 1;
 
+    protected static ?string $recordTitleAttribute = 'name';
 
 
     protected static ?string $model = Department::class;
@@ -43,7 +44,7 @@ class DepartmentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('description'),            ])
             ->filters([
                 //

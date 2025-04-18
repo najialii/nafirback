@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Clusters\MentorshipCluster;
 use App\Filament\Resources\MentorshipResource\Pages;
 use App\Filament\Resources\MentorshipResource\RelationManagers;
 use App\Models\Mentorship;
+use Filament\Clusters\Cluster;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,14 +15,18 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+
 class MentorshipResource extends Resource
 {
     protected static ?int $navigationSort = 3;
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function getNavigationBadge(): ?string
 {
     return static::getModel()::count();
 }
+
+protected static ?string $cluster = MentorshipCluster::class;
 
     protected static ?string $model = Mentorship::class;
 
@@ -31,6 +37,50 @@ class MentorshipResource extends Resource
         return $form
             ->schema([
 
+                Forms\Components\TextInput::make('name')
+                ->label('Activity Name')
+                ->required()
+                ->maxLength(255),
+
+            Forms\Components\TextInput::make('description')
+                ->label('Description')
+                ->nullable()
+                ->maxLength(500),
+
+                Forms\Components\Select::make('department_id')
+                ->label('Department')
+                ->relationship('department', 'name')
+                // ->searchable()
+                ->required()
+                ->options(function () use ($user) {
+                    if ($user && $user->hasRole('super_admin')) {
+                        return Department::pluck('name', 'id');
+                    }
+
+                    return Department::where('id', $user->department_id)->pluck('name', 'id');
+                })
+                ->disabled(function () use ($user) {
+                    return !$user->hasRole('super_admin');
+                })
+                ->default(function () use ($user) {
+                    return $user->department_id;
+                }),
+
+            Forms\Components\TextInput::make('location')
+                ->label('Location')
+                ->nullable()
+                ->maxLength(255),
+
+            Forms\Components\DatePicker::make('date')
+                ->label('Date')
+                ->required(),
+
+            Forms\Components\TimePicker::make('time')
+                ->label('Time')
+                ->required(),
+
+
+
             ]);
     }
 
@@ -40,7 +90,7 @@ class MentorshipResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('department.name'),
-                Tables\Columns\TextColumn::make('name.name')->label('Mentor'),
+                Tables\Columns\TextColumn::make('mentor.name')->label('Mentor'),
             ])
             ->filters([
                 //

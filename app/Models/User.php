@@ -13,6 +13,7 @@ use App\Models\Department;
  use App\Models\MentorshipReq;
 use App\Models\Activity;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Role;
 
 class User extends Authenticatable
 {
@@ -29,9 +30,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'profile_pic',
         'email',
         'password',
-        'role',
         'department_id',
         'phone',
         'activity_id',

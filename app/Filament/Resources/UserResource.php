@@ -13,12 +13,20 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Clusters\Users;
+use Illuminate\Database\Eloquent\Factories\Relationship;
+use Filament\Tables\Filters\TernaryFilter;
+
 class UserResource extends Resource
 {
     protected static ?int $navigationSort = 0;
 
 
+    protected static ?string $recordTitleAttribute = 'name';
 
+    public static function getGloballySearchableAttributes(): array
+{
+    return ['name', 'email'];
+}
 
 
     protected static ?string $model = User::class;
@@ -34,6 +42,7 @@ public static function form(Form $form): Form
                 ->required()
                 ->maxLength(255),
 
+
             Forms\Components\TextInput::make('email')
                 ->email()
                 ->required()
@@ -46,12 +55,9 @@ public static function form(Form $form): Form
                 ->maxLength(255),
 
             Forms\Components\Select::make('role')
-                ->options([
-                    'superadmin' => 'superadmin',
-                    'admin' => 'admin',
-                    'mentor' => 'Mentor',
-                    'mentee' => 'Mentee',
-                ])
+                ->relationship('roles', 'name')
+                ->multiple()
+                ->preload()
                 ->required(),
 
             Forms\Components\Select::make('department_id')
@@ -96,14 +102,22 @@ public static function form(Form $form): Form
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\TextColumn::make('role'),
+                Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('email')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('role')->sortable(),
                 Tables\Columns\TextColumn::make('department.name'),
                 Tables\Columns\TextColumn::make('country'),
+                Tables\Columns\IconColumn::make('isActive')->boolean()->sortable(),
             ])
             ->filters([
                 //
+
+                TernaryFilter::make('email_verified_at')
+                ->label('Email verification')
+                ->nullable()
+                ->placeholder('All users')
+                ->trueLabel('Verified users')
+                ->falseLabel('Not verified users')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -128,6 +142,8 @@ public static function form(Form $form): Form
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
+            'approve-mentors' => Pages\ApproveMentors::route('/approve-mentors'),
+
         ];
     }
 }

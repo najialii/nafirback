@@ -27,11 +27,10 @@ class StoreUserRequest extends FormRequest
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required'],
-            'role' => ['required', Rule::in(['mentor', 'admin', 'mentee'])],
             'department_id' => ['required'],
             'phone' => ['required'],
             'skills' => ['required'],
-            'exp_years' => ['required', 'integer'], // Assuming it's an integer
+            'exp_years' => ['required', 'integer'],
             'country' => ['required'],
             'isActive' => ['required', 'boolean'],
 

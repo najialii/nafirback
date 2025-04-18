@@ -37,8 +37,7 @@ class DepartmentsStats extends BaseWidget
 
 
 
-
-
+//departments with most activites
 
         return [
             Stat::make('New Users', $thirtyDaysUsersCount)->icon('heroicon-m-user-group', IconPosition::Before)

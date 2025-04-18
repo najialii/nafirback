@@ -20,7 +20,7 @@ return new class extends Migration
             $table->json('eventsSchedule')->nullable();
             $table->date('date');
             $table->string('time');
-            $table->string('type', 100);
+            $table->string('type', 100)->nullable();
          $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->integer('participants')->nullable()->default(0);
             $table->text('benifites')->nullable();
