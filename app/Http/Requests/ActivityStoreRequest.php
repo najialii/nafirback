@@ -22,12 +22,12 @@ class ActivityStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'department_id' => 'required|integer|exists:departments,id',
             'location' => 'nullable|string|max:255',
             'eventsSchedule' => 'nullable|array',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'date' => 'required|date',
             'time' => 'required|string',
             'type' => 'required|string|max:100',

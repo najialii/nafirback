@@ -18,8 +18,8 @@ class ActivityController
     public function index()
     {
         try {
-            $department = Activity::paginate(10);
-            return  new ActivitesResource(($department), 200);
+            $activity = Activity::paginate(10);
+            return  new ActivitesResource(($activity), 200);
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
@@ -91,10 +91,6 @@ class ActivityController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-      
-    }
 
     /**
      * Update the specified resource in storage.

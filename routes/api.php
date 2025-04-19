@@ -13,101 +13,65 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-
-//auth
-
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login',[AuthController::class, 'login']);
-Route::post('/logout',[AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-
-Route::post('/department', [DepartmentController::class, 'store']);
+// Department
 Route::get('/department', [DepartmentController::class, 'index']);
-
 Route::get('/department/{id}', [DepartmentController::class, 'show']);
+Route::post('/department', [DepartmentController::class, 'store'])->middleware('auth:sanctum');
 
-//Activites
+// Activities
 Route::get('/activites', [ActivityController::class, 'index']);
-Route::post('/activites', [ActivityController::class, 'store']);
-Route::put('/activites/{id}', [ActivityController::class, 'update']);
-Route::delete('/activites/{id}', [ActivityController::class, 'destroy']);
-Route::get('/activites/{id}', [ActivityController::class, 'show']);
-Route::post('/activity-requests', [ActivityReqController::class, 'store']);
+Route::get('/activities/{id}', [ActivityController::class, 'show']);
 
+Route::prefix('activities')->middleware('auth:sanctum')->group(function () {
+    Route::controller(ActivityController::class)->group(function () {
+        Route::post('/', 'store');
+        Route::put('/{id}', 'update');
+        Route::delete('/{id}', 'destroy');
+    });
+});
 
+// Activity Requests
+Route::post('/activity-requests', [ActivityReqController::class, 'store'])->middleware('auth:sanctum');
 
-
-//mentorships
+// Mentorships
 Route::get('/mentorships', [MentorshipController::class, 'index']);
 Route::get('/mentorship/{id}', [MentorshipController::class, 'show']);
-Route::post('/mentorship', [MentorshipController::class, 'store']);
-Route::put('/mentorship/{id}', [MentorshipController::class, 'update']);
-Route::delete('/mentorship/{id}', [MentorshipController::class, 'destroy']);
-// Route::post('/mentorship', [MentorshipController::class, 'store']);
-// Route::post('/mentorship', [MentorshipController::class, 'store']);
 
+Route::prefix('mentorship')->middleware('auth:sanctum')->group(function () {
+    Route::post('/', [MentorshipController::class, 'store']);
+    Route::put('/{id}', [MentorshipController::class, 'update']);
+    Route::delete('/{id}', [MentorshipController::class, 'destroy']);
+});
 
+// Mentorship Requests
 Route::get('/mentorshiprequest', [MentorshipReqController::class, 'index']);
 Route::get('/mentorshiprequest/{id}', [MentorshipReqController::class, 'show']);
-Route::put('/mentorshiprequest/{id}/status', [MentorshipReqController::class, 'processMentorshipRequest']);
-Route::post('/request_session', [MentorshipReqController::class, 'store']);
+Route::put('/mentorshiprequest/{id}/status', [MentorshipReqController::class, 'processMentorshipRequest'])->middleware('auth:sanctum');
+Route::post('/request_session', [MentorshipReqController::class, 'store'])->middleware('auth:sanctum');
 
-
-
-
-// ->middleware('role:admin');
-
-//users
-Route::get('/user',[UserController::class,'index']);
+// Users
+Route::get('/user', [UserController::class, 'index']);
 Route::get('/user/{id}', [UserController::class, 'show']);
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/user', [UserController::class, 'store']);
+    Route::put('/user/{id}', [UserController::class, 'update']);
+    Route::patch('/user/{id}', [UserController::class, 'update']);
+});
 
-Route::post('/user', [UserController::class, 'store']);
-Route::put('/user/{id}', [UserController::class, 'update']);
-Route::patch('/user/{id}', [UserController::class, 'update']);
-
-
+// Blogs
 Route::get('/posts', [BlogController::class, 'index']);
-Route::post('/post', [BlogController::class, 'store']);
 Route::get('/post/{id}', [BlogController::class, 'show']);
-Route::put('/post/{id}', [BlogController::class, 'update']);
-Route::delete('/post/{id}', [BlogController::class, 'destroy']);
 
-
-
-
-
-//departments
-
-
-// Route::get('/department', [DepartmentController::class, '']);
-
-
-// Route::get('/user',[UserController::class,'index']);
-
-
-
-
-
-
-
-//Mentorship sessions
-
-
-
-
-
-
-
-//Activites
-
-
-
-
-
-
-
-//Blogs
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/post', [BlogController::class, 'store']);
+    Route::put('/post/{id}', [BlogController::class, 'update']);
+    Route::delete('/post/{id}', [BlogController::class, 'destroy']);
+});
 
 
 
