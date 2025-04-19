@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreMentorshipsRequest;
 use Illuminate\Http\Request;
 use App\Models\Mentorship;
 use App\Http\Resources\MentorshipCollection;
 use App\Http\Resources\MentorshipResource;
+use App\Http\Requests\StoreMentorshipsRequest;
+use App\Http\Requests\MentorshipUpdateRequest;
 
 class MentorshipController extends Controller
 {
@@ -15,7 +16,7 @@ class MentorshipController extends Controller
   public function index(){
     try {
         $mentorship = Mentorship::paginate(10);
-        return  new MentorshipCollection(($mentorship), 200);
+        return new MentorshipCollection($mentorship);
 
     } catch (\Throwable $th) {
         return response()->json([
@@ -44,6 +45,7 @@ class MentorshipController extends Controller
   public function store(StoreMentorshipsRequest $request){
     try{
         $validatedData = $request->validated();
+        
         $validatedData['days'] = json_encode($validatedData['days']);
         $validatedData['available_times'] = json_encode($validatedData['available_times']);
         $mentorship = Mentorship::create($validatedData);
@@ -56,5 +58,44 @@ class MentorshipController extends Controller
     }
   }
 
+  public function update(MentorshipUpdateRequest $request, string $id)
+  {
+      try {
+          $mentorship = Mentorship::findOrFail($id);
+  
+          $data = $request->validated(); // Fixed the &request typo
+  
+          $mentorship->update($data); // Fixed $date to $data
+  
+          return response()->json([
+              'message' => 'Mentorship updated successfully',
+              'data' => new MentorshipResource($mentorship)
+          ]);
+  
+      } catch (\Throwable $th) {
+          return response()->json([
+              'error' => 'Something went wrong',
+              'message' => $th->getMessage()
+          ], 500);
+      }
+  }
+
+  
+  public function destroy(string $id)
+  {
+      try {
+          $mentorship = Mentorship::findOrFail($id);
+          $mentorship->delete();
+  
+          return response()->json([
+              'message' => 'Activity deleted successfully'
+          ]);
+      } catch (\Throwable $th) {
+          return response()->json([
+              'error' => 'Delete failed',
+              'message' => $th->getMessage()
+          ], 500);
+      }
+  }
 
 }

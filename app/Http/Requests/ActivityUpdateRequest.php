@@ -4,9 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ActivityRequest extends FormRequest
+class ActivityUpdateRequest extends FormRequest
 {
-    /**
+  /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
@@ -22,16 +22,17 @@ class ActivityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
+            'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
-            'department_id' => 'required|integer|exists:departments,id',
+            'department_id' => 'sometimes|required|integer|exists:departments,id',
             'location' => 'nullable|string|max:255',
             'eventsSchedule' => 'nullable|array',
-            'date' => 'required|date',
-            'time' => 'required|string',
-            'type' => 'required|string|max:100',
-            'user_id' => 'required|integer|exists:users,id',
+            'date' => 'sometimes|required|date',
+            'time' => 'sometimes|required|string',
+            'type' => 'sometimes|required|string|max:100',
+            'user_id' => 'sometimes|required|integer|exists:users,id',
             'benifites' => 'nullable|string',
+
         ];
     }
 }
