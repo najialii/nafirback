@@ -25,7 +25,7 @@ public function register(StoreUserRequest $request){
 
 
     if(!in_array($role, ['mentor', 'mentee'])){
-        return response([ 
+        return response([
             'error'=>'invalid role',
             'message'=>'invalid role, role must either be "mentor","mentee"',
         ]);
@@ -38,7 +38,6 @@ public function register(StoreUserRequest $request){
         $imgName = time() . '_' . $img->getClientOriginalName();
         $imgPath = $img->storeAs('users/profile_imgs', $imgName, 'public');
     }
-    //lets add image
 
     $user= User::create([
         'name' => $request->name,
@@ -88,6 +87,38 @@ public function login(Request $request){
 
 }
 
+public function sauth(Request $request)
+{
+
+    $request->validate([
+        'email' => 'required|email',
+        'name' => 'required|string',
+        'profile_pic'=>'nullable|url',
+    ]);
+
+    $user = User::where('email', $request->email)->first();
+
+
+
+    if (!$user) {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make(uniqid()),
+            'isActive' => true,
+            'profile_pic' => $request->image,
+        ]);
+
+    }
+
+    $token = $user->createToken($user->name)->plainTextToken;
+
+    return response()->json([
+        'message' => 'usss ',
+        'user' => $user,
+        'token' => $token,
+    ]);
+}
 
 
 public function logout(Request $request ){

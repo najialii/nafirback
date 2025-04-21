@@ -1,32 +1,52 @@
 <?php
+use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-public function run()
+class RolePermissionsSeeder extends Seeder
 {
-    // Super Admin
-    $superAdmin = Role::findByName('super-admin');
-    $superAdmin->givePermissionTo(Permission::all());
+    public function run()
+    {
+        // Clear cache
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-    // Department Admin
-    $departmentAdmin = Role::findByName('department-admin');
-    $departmentAdmin->givePermissionTo([
-        'create-user',
-        'edit-user',
-        'view-dashboard',
-        'assign-department',
-    ]);
+        // Define permissions
+        $permissions = [
+            'view_dashboard',
+            'create_user',
+            'edit_user',
+            'delete_user',
+            'manage_sessions',
+            'request_mentorship',
+        ];
 
-    // Mentor
-    $mentor = Role::findByName('mentor');
-    $mentor->givePermissionTo([
-        'join-session',
-        'view-dashboard',
-    ]);
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission]);
+        }
 
-    // Mentee
-    $mentee = Role::findByName('mentee');
-    $mentee->givePermissionTo([
-        'join-session',
-    ]);
+        // Define roles
+        $superAdmin = Role::firstOrCreate(['name' => 'super_admin']);
+        $admin = Role::firstOrCreate(['name' => 'admin']);
+        $mentor = Role::firstOrCreate(['name' => 'mentor']);
+        $mentee = Role::firstOrCreate(['name' => 'mentee']);
+
+        // Assign permissions to roles
+        $superAdmin->givePermissionTo(Permission::all());
+
+        $admin->givePermissionTo([
+            'view_dashboard',
+            'create_user',
+            'edit_user',
+        ]);
+
+        $mentor->givePermissionTo([
+            'view_dashboard',
+            'manage_sessions',
+        ]);
+
+        $mentee->givePermissionTo([
+            'view_dashboard',
+            'request_mentorship',
+        ]);
+    }
 }

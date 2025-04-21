@@ -18,8 +18,7 @@ class Mentorship extends Model
          'name',
          'mentor_id',
          'department_id',
-         'days',
-         'available_times',
+         'availability',
         ];
 
 

@@ -27,7 +27,7 @@ class ActivityStoreRequest extends FormRequest
             'department_id' => 'required|integer|exists:departments,id',
             'location' => 'nullable|string|max:255',
             'eventsSchedule' => 'nullable|array',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'img' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'date' => 'required|date',
             'time' => 'required|string',
             'type' => 'required|string|max:100',

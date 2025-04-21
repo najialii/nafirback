@@ -45,19 +45,30 @@ class ActivityController
     public function store(ActivityStoreRequest $request)
     {
         try {
+
             $validatedData = $request->validated();
-    
+
+
+            $imgPath = null;
+
+    if ($request->hasFile('img')) {
+        $img = $request->file('img');
+        $imgName = time() . '_' . $img->getClientOriginalName();
+        $imgPath = $img->storeAs('activities', $imgName, 'public');
+        $validatedData['img'] = $imgPath;
+    }
+
             if (isset($validatedData['eventsSchedule'])) {
                 $validatedData['eventsSchedule'] = json_encode($validatedData['eventsSchedule']);
             }
-    
+
             $activity = Activity::create($validatedData);
-    
+
             return response()->json([
                 'message' => 'Activity created successfully',
                 'data' => new ActivitesResource($activity)
             ], 201);
-    
+
         } catch (\Throwable $th) {
             return response()->json([
                 'error' => 'Something went wrong!',
@@ -65,7 +76,7 @@ class ActivityController
             ], 500);
         }
     }
-    
+
 
     /**
      * Display the specified resource.
@@ -79,7 +90,7 @@ class ActivityController
 
     public function joinActivity(){
         try {
-            
+
         } catch (\Throwable $th) {
             return response()->json([
                 'error'=>'Something went wrong',
@@ -128,7 +139,7 @@ class ActivityController
         try {
             $activity = Activity::findOrFail($id);
             $activity->delete();
-    
+
             return response()->json([
                 'message' => 'Activity deleted successfully'
             ]);
@@ -139,5 +150,5 @@ class ActivityController
             ], 500);
         }
     }
-    
+
 }

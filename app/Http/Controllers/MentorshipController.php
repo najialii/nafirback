@@ -45,7 +45,7 @@ class MentorshipController extends Controller
   public function store(StoreMentorshipsRequest $request){
     try{
         $validatedData = $request->validated();
-        
+
         $validatedData['days'] = json_encode($validatedData['days']);
         $validatedData['available_times'] = json_encode($validatedData['available_times']);
         $mentorship = Mentorship::create($validatedData);
@@ -62,16 +62,16 @@ class MentorshipController extends Controller
   {
       try {
           $mentorship = Mentorship::findOrFail($id);
-  
-          $data = $request->validated(); // Fixed the &request typo
-  
-          $mentorship->update($data); // Fixed $date to $data
-  
+
+          $data = $request->validated();
+
+          $mentorship->update($data);
+
           return response()->json([
               'message' => 'Mentorship updated successfully',
               'data' => new MentorshipResource($mentorship)
           ]);
-  
+
       } catch (\Throwable $th) {
           return response()->json([
               'error' => 'Something went wrong',
@@ -80,13 +80,13 @@ class MentorshipController extends Controller
       }
   }
 
-  
+
   public function destroy(string $id)
   {
       try {
           $mentorship = Mentorship::findOrFail($id);
           $mentorship->delete();
-  
+
           return response()->json([
               'message' => 'Activity deleted successfully'
           ]);

@@ -26,7 +26,8 @@ class DepartmentController
             return response()->json([
                 'error' => 'Something went wrong!',
                 'message' => $th->getMessage()
-            ], 500);        }
+            ], 500);      
+          }
 
     }
 

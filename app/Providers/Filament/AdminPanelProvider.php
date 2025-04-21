@@ -29,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->colors([
                 'primary' => '#221F42',
+                'secondary'=>'#EDB44B',
             ])
             ->font('Poppins')
             ->brandLogo(asset('images/nafir.svg'))

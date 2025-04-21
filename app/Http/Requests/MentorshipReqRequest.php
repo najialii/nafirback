@@ -22,7 +22,7 @@ class MentorshipReqRequest extends FormRequest
     public function rules(): array
     {
         return [
-             'mentorship_id'=>['required'],
+            'mentorship_id'=>['required'],
             'mentor_id'=>['required'],
             'mentee_id'=>['required'],
             'selecteday'=>['required'],
