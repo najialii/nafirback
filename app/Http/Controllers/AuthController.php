@@ -91,15 +91,31 @@ public function sauth(Request $request)
 {
 try {
     $request->validate([
+        //provider example(google, fb wa keda )
+        'provider' => 'required|string|in:google,linkedin',
         'email' => 'required|email',
         'name' => 'required|string',
         'profile_pic'=>'nullable|url',
         'googele_token'=> 'required|string',
     ]);
+//send the provider with the request
+//validate providers with the actual service provider with a switch
+
+$payload = null;
+
+switch ($request->provider) {
+    case 'google':
+        $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
+        $payload = $client->verifyIdToken($request->googele_token);
+        break;
+    case 'linkedin':
+        // Handle ver
+//othercases too
+    }
 
 
-    $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
-    $payload = $client->verifyIdToken($request->googele_token);
+    // $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
+    // $payload = $client->verifyIdToken($request->googele_token);
 
 
 
@@ -108,7 +124,7 @@ try {
     }
 
 
-$user= User::where('email', $payload['email'])->first();
+    $user= User::where('email', $payload['email'])->first();
 
     // $user = User::where('email', $request->email)->first();
 
@@ -121,7 +137,8 @@ $user= User::where('email', $payload['email'])->first();
             'password' => Hash::make(uniqid()),
             'isActive' => true,
             'profile_pic' => $request->image,
-        ]);
+
+            ]);
 
     }
 
