@@ -89,14 +89,28 @@ public function login(Request $request){
 
 public function sauth(Request $request)
 {
-
+try {
     $request->validate([
         'email' => 'required|email',
         'name' => 'required|string',
         'profile_pic'=>'nullable|url',
+        'googele_token'=> 'required|string',
     ]);
 
-    $user = User::where('email', $request->email)->first();
+
+    $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
+    $payload = $client->verifyIdToken($request->googele_token);
+
+
+
+    if(!$payload){
+        return response()->json(['message' => 'Invalid token'], 401);
+    }
+
+
+$user= User::where('email', $payload['email'])->first();
+
+    // $user = User::where('email', $request->email)->first();
 
 
 
@@ -114,10 +128,15 @@ public function sauth(Request $request)
     $token = $user->createToken($user->name)->plainTextToken;
 
     return response()->json([
-        'message' => 'usss ',
+        'message' => 'user was successfully authenticated',
         'user' => $user,
         'token' => $token,
-    ]);
+    ],200);
+} catch (\Exception $e) {
+    return response()->json([
+        'error' => 'Token verification failed',
+         'message' => $e->getMessage()], 500);
+}
 }
 
 
