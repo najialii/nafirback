@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;
+use Laravel\Socialite\Facades\Socialite;
 class AuthController extends Controller
 {
 public function register(StoreUserRequest $request){
@@ -78,7 +79,7 @@ public function login(Request $request){
         return response()->json(['message' => 'invalid credentials'], 401);
     }
 
-
+    $test = Socialite::driver('google')->userFromToken('asdfasdf');
 
     $token = $user->createToken($user->name);
 
@@ -87,21 +88,48 @@ public function login(Request $request){
 
 }
 
+public function atauth(Request $request) 
+{
+    $request->validate([
+        'access_token' => 'required|string',
+        'provider' => 'required|in:google' // only google for now!
+    ]);
+
+    try {
+        $authUser = Socialite::driver('google')->stateless()->userFromToken($request->access_token);
+    } catch (\Exception $e) {
+          return response()->json([
+        'error' => 'Token verification failed',
+         'message' => $e->getMessage()], 500);
+    }
+
+    
+    $user = User::create([
+        'name' => $authUser->getName(),
+        'email' => $authUser->getEmail(),
+        'password' => Hash::make(uniqid()),
+        'isActive' => true,
+        'profile_pic' => 'testtesttest'
+    ]);
+
+    $token = $user->createToken('google-token')->plainTextToken;
+
+    return response()->json([
+        'authToken' => $token,
+        'email' => $user->email,
+        'name' => $user->name,
+        'id' => $user-> id
+    ]);
+}
+
 public function sauth(Request $request)
 {
 try {
     $request->validate([
         //provider example(google, fb wa keda )
         'provider' => 'required|string|in:google,linkedin',
-        'email' => 'required|email',
-        'name' => 'required|string',
-        'profile_pic'=>'nullable|url',
-        'googele_token'=> 'required|string',
+        'access_token'=> 'required|string',
     ]);
-//send the provider with the request
-//validate providers with the actual service provider with a switch
-
-$payload = null;
 
 switch ($request->provider) {
     case 'google':
@@ -136,8 +164,7 @@ switch ($request->provider) {
             'email' => $request->email,
             'password' => Hash::make(uniqid()),
             'isActive' => true,
-            'profile_pic' => $request->image,
-
+            'profile_pic' => $request->image
             ]);
 
     }

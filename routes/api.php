@@ -17,7 +17,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/sauth', [AuthController::class, 'sauth']);
-
+Route::post('/atauth', [AuthController::class, 'atauth']);
 // Department
 Route::get('/department', [DepartmentController::class, 'index']);
 Route::get('/department/{id}', [DepartmentController::class, 'show']);
