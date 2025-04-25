@@ -27,7 +27,7 @@ Route::post('/department', [DepartmentController::class, 'store'])->middleware('
 Route::get('/activites', [ActivityController::class, 'index']);
 Route::get('/activities/{id}', [ActivityController::class, 'show']);
 
-Route::prefix('activities')->middleware('auth:sanctum')->group(function () {
+Route::prefix('activity')->middleware('auth:sanctum')->group(function () {
     Route::controller(ActivityController::class)->group(function () {
         Route::post('/', 'store');
         Route::put('/{id}', 'update');
@@ -65,7 +65,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // Blogs
-Route::get('/posts', [BlogController::class, 'index']);
+Route::get('/post', [BlogController::class, 'index']);
 Route::get('/post/{id}', [BlogController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
