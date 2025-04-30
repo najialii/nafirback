@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+
+use OpenAI\Laravel\Facades\OpenAI;
+
 
 class CVController extends Controller
 {
@@ -21,12 +25,13 @@ class CVController extends Controller
 
         $text = $this->extractText($file);
 
-        $score = $this->dummyrRting($text);
+
+        $suggestions = $this->getSuggestions($text);
 
         return response()->json([
             'message' => 'CV has been rated successfully',
-            'score' => $score,
-            'text'=> $text,
+            'text' => $text,
+            'suggestions' => $suggestions,
         ]);
     }
 
@@ -56,26 +61,61 @@ class CVController extends Controller
         return '';
     }
 
-    private function dummyrRting($text)
+
+
+    private function getSuggestions($text)
     {
-        $score = 0;
 
-        if (stripos($text, 'experience') !== false) {
-            $score += 30;
-        }
+        $prompt = <<<"EOT"
+    You are an expert in CV writing and ATS (Applicant Tracking Systems) optimization.
 
-        if (stripos($text, 'education') !== false) {
-            $score += 30;
-        }
+    Analyze the following CV and provide detailed feedback and suggestions. The analysis should be tailored to common job postings in the software/tech industry and focus on optimizing the CV for ATS filters , Suggestions must be in  a list and i will  render this to AI.
 
-        if (stripos($text, 'skills') !== false) {
-            $score += 30;
-        }
+    CV Text:
+    ---
+    $text
+    ---
 
-        if (strlen($text) > 300) {
-            $score += 10;
-        }
+    Respond in this exact JSON format:
 
-        return min($score, 100);
+    {
+      "title": "CV Review & Suggestions",
+      "description": "A summary of the CV analysis based on ATS and professional CV writing standards.",
+      "sections_present": [],
+      "missing_sections": [],
+      "keyword_analysis": {
+        "matched_keywords": [],
+        "missing_keywords": []
+      },
+      "formatting_issues": [],
+      "clarity_issues": [],
+      "grammar_spelling": [],
+      "suggestions": []
     }
+
+    Important:
+    - The keyword_analysis must be dynamic. Extract keywords from the CV text AND compare them to commonly expected skills for a software/tech position.
+    - All fields must be included even if empty.
+    - Ensure output is always valid JSON.
+    EOT;
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . config('services.openrouter.key'),
+            'X-Title'        => 'CV Review Tool',
+        ])->post('https://openrouter.ai/api/v1/chat/completions', [
+            'model' => 'openai/gpt-3.5-turbo-0125',
+            'messages' => [
+                [
+                    'role'    => 'user',
+                    'content' => $prompt,
+                ]
+            ],
+        ]);
+
+
+        return $response->json();
+    }
+
+
+
 }
