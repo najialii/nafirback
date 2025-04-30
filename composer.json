@@ -14,6 +14,7 @@
         "filament/notifications": "3.3",
         "flowframe/laravel-trend": "^0.4.0",
         "google/apiclient": "^2.18",
+        "knuckleswtf/scribe": "*",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.20",

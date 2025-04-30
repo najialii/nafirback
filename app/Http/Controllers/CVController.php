@@ -21,7 +21,7 @@ class CVController extends Controller
 
         $text = $this->extractText($file);
 
-        $score = $this->rateCVContent($text);
+        $score = $this->dummyrRting($text);
 
         return response()->json([
             'message' => 'CV has been rated successfully',
@@ -56,7 +56,7 @@ class CVController extends Controller
         return '';
     }
 
-    private function dummyRateCVContent($text)
+    private function dummyrRting($text)
     {
         $score = 0;
 
