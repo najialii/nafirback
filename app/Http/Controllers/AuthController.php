@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;
 use Laravel\Socialite\Facades\Socialite;
+
 class AuthController extends Controller
 {
 public function register(StoreUserRequest $request){
@@ -50,7 +51,7 @@ public function register(StoreUserRequest $request){
         'phone' => $request->phone,
         'exp_years' => $request->exp_years,
         'country' => $request->country,
-        // 'role' => 'required|in:mentor,mentees',
+        'role' => 'required|in:mentor,mentees',
         'profile_pic'=>$imgPath,
         'isActive' => $role === 'mentor' ? false :true,
     ]);
@@ -79,7 +80,6 @@ public function login(Request $request){
         return response()->json(['message' => 'invalid credentials'], 401);
     }
 
-    $test = Socialite::driver('google')->userFromToken('asdfasdf');
 
     $token = $user->createToken($user->name);
 
@@ -88,7 +88,7 @@ public function login(Request $request){
 
 }
 
-public function atauth(Request $request) 
+public function atauth(Request $request)
 {
     $request->validate([
         'access_token' => 'required|string',
@@ -103,7 +103,16 @@ public function atauth(Request $request)
          'message' => $e->getMessage()], 500);
     }
 
-    
+    \Log::info('Google User:', [
+        'name' => $authUser->getName(),
+        'email' => $authUser->getEmail(),
+        'id' => $authUser->getId(),
+    ]);
+$user = User::where('email', $authUser->getEmail())->first();
+
+
+if (!$user){
+
     $user = User::create([
         'name' => $authUser->getName(),
         'email' => $authUser->getEmail(),
@@ -111,6 +120,7 @@ public function atauth(Request $request)
         'isActive' => true,
         'profile_pic' => 'testtesttest'
     ]);
+}
 
     $token = $user->createToken('google-token')->plainTextToken;
 
@@ -197,4 +207,18 @@ $request->user()->tokens()->delete();
        return response()->json(['message' => 'You have been logged out'], 200);
 
 }
+public function getMeData(Request $request)
+{
+    $user = $request->user();
+
+    if (!$user) {
+        return response()->json(['message' => 'Unauthenticated'], 401);
+    }
+
+    return response()->json([
+        'message' => 'User data retrieved successfully',
+        'user' => $user
+    ], 200);
+}
+
 }

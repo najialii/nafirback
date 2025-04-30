@@ -76,8 +76,67 @@ class ActivityController
             ], 500);
         }
     }
+    public function searchActivity($keyword) {
+        $activtes = Activity::limit(10)->select(
+            [
+                'id',
+                'name',
+            ]
+            );
+            $activtes = $activtes->where('name', 'like', '%' . $keyword . '%')->get();
+           if(!$activtes){
+            return response()->json([
+                'message'=> 'mentorships not found'
+            ]);
+           }
+           return response()->json([
+            'mentorships'=> $activtes,
+
+           ],200);
+    }
 
 
+public function search ($keyword)
+{
+    $activities = Activity::limit(10)->select(
+        [
+            'img',
+            "name",
+            "id"
+        ]
+    )->where('name', 'like', '%' . $keyword . '%')->get();
+
+    return response()->json([
+        'activities' => $activities,
+    ], 200);
+}
+    public function filter(Request $request)
+    {
+        $query = Activity::query();
+
+        if ($request->has('department_id')) {
+            $query->where('department_id', $request->input('department_id'));
+        }
+
+        if ($request->has('type')) {
+            $query->where('type', $request->input('type'));
+        }
+
+        if ($request->has('date')) {
+            $query->whereDate('date', $request->input('date'));
+        }
+
+        if ($request->has('time')) {
+            $query->whereTime('time', $request->input('time'));
+        }
+
+        $activities = $query->paginate(10);
+
+        return response()->json([
+            'message' => 'Activities retrieved successfully',
+            'data' => ActivitesResource::collection($activities)
+        ]);
+    }
     /**
      * Display the specified resource.
      */

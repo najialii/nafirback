@@ -40,7 +40,29 @@ class MentorshipController extends Controller
     }
   }
 
+public function search ($keyword) {
+    $mentorships = Mentorship::limit(10)->select(
+        [
 
+            "name",
+            "id"
+        ]
+        )->where('name', 'like', '%' . $keyword . '%')->get();
+
+        if(!$mentorships){
+            return response()->json([
+            'message'=> 'mentorship not found'
+            ]);
+
+        }
+
+            return response()->json([
+            'mentorship sessions'=>  $mentorships,
+
+            ],200);
+
+
+}
 
   public function store(StoreMentorshipsRequest $request){
     try{
@@ -80,6 +102,25 @@ class MentorshipController extends Controller
       }
   }
 
+
+public function searchMentorships($keyword) {
+    $mentorships = Mentorship::limit(10)->select(
+        [
+            'id',
+            'name',
+        ]
+        );
+        $mentorships = $mentorships->where('name', 'like', '%' . $keyword . '%')->get();
+       if(!$mentorships){
+        return response()->json([
+            'message'=> 'mentorships not found'
+        ]);
+       }
+       return response()->json([
+        'mentorships'=> $mentorships,
+
+       ],200);
+}
 
   public function destroy(string $id)
   {

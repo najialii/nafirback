@@ -23,6 +23,7 @@ class StoreBlogRequest extends FormRequest
     {
         return [
             //
+            'img' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'author_id' => 'required|exists:users,id',
             'title' => 'required|string|max:255',
             'department_id' => 'nullable|exists:departments,id',

@@ -9,6 +9,7 @@ use App\Http\Controllers\MentorshipController;
 use App\Http\Controllers\MentorshipReqController;
 use App\Http\Controllers\ActivityReqController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CVController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->get('/user/me', [AuthController::class, 'getMeData']);
 Route::post('/sauth', [AuthController::class, 'sauth']);
 Route::post('/atauth', [AuthController::class, 'atauth']);
 // Department
@@ -25,6 +27,7 @@ Route::post('/department', [DepartmentController::class, 'store'])->middleware('
 
 // Activities
 Route::get('/activites', [ActivityController::class, 'index']);
+Route::get('/activities/search/{keyword}',[ActivityController::class, 'searchActivity']);
 Route::get('/activities/{id}', [ActivityController::class, 'show']);
 
 Route::prefix('activities')->middleware('auth:sanctum')->group(function () {
@@ -41,6 +44,7 @@ Route::post('/activity-requests', [ActivityReqController::class, 'store'])->midd
 // Mentorships
 Route::get('/mentorships', [MentorshipController::class, 'index']);
 Route::get('/mentorship/{id}', [MentorshipController::class, 'show']);
+Route::get('/search/mentorship/{keyword}', [MentorshipController::class, 'searchMentorships']);
 
 Route::prefix('mentorship')->middleware('auth:sanctum')->group(function () {
     Route::post('/', [MentorshipController::class, 'store']);
@@ -67,6 +71,11 @@ Route::middleware('auth:sanctum')->group(function () {
 // Blogs
 Route::get('/posts', [BlogController::class, 'index']);
 Route::get('/post/{id}', [BlogController::class, 'show']);
+// Route::post('/post', [BlogController::class, 'store']);
+// Route::put('/post/{id}', [BlogController::class, 'update']);
+// Route::delete('/post/{id}', [BlogController::class, 'destroy']);
+Route::get('search/{keyword}', [BlogController::class, 'search']);
+Route::get('/posts/department/{id}', [BlogController::class, 'departmentBlogs']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/post', [BlogController::class, 'store']);
@@ -76,3 +85,4 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
+Route::post('/rate-cv', [CVController::class, 'rate']);
