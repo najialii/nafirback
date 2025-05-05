@@ -22,7 +22,7 @@ class ActivitiesResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
-//     public static function getNavigationBadge(): ?string
+    //     public static function getNavigationBadge(): ?string
 // {
 //     return static::getModel()::count();
 // }
@@ -48,71 +48,71 @@ class ActivitiesResource extends Resource
 
 
         return $form
-        ->schema([
-            Forms\Components\TextInput::make('name')
-                ->label('Activity Name')
-                ->required()
-                ->maxLength(255),
+            ->schema([
+                Forms\Components\TextInput::make('name')
+                    ->label('Activity Name')
+                    ->required()
+                    ->maxLength(255),
 
-            Forms\Components\TextInput::make('description')
-                ->label('Description')
-                ->nullable()
-                ->maxLength(500),
+                Forms\Components\TextInput::make('description')
+                    ->label('Description')
+                    ->nullable()
+                    ->maxLength(500),
 
                 Forms\Components\Select::make('department_id')
-                ->label('Department')
-                ->relationship('department', 'name')
-                // ->searchable()
-                ->required()
-                ->options(function () use ($user) {
-                    if ($user && $user->hasRole('super_admin')) {
-                        return Department::pluck('name', 'id');
-                    }
+                    ->label('Department')
+                    ->relationship('department', 'name')
+                    // ->searchable()
+                    ->required()
+                    ->options(function () use ($user) {
+                        if ($user && $user->hasRole('super_admin')) {
+                            return Department::pluck('name', 'id');
+                        }
 
-                    return Department::where('id', $user->department_id)->pluck('name', 'id');
-                })
-                ->disabled(function () use ($user) {
-                    return !$user->hasRole('super_admin');
-                })
-                ->default(function () use ($user) {
-                    return $user->department_id;
-                }),
+                        return Department::where('id', $user->department_id)->pluck('name', 'id');
+                    })
+                    ->disabled(function () use ($user) {
+                        return !$user->hasRole('super_admin');
+                    })
+                    ->default(function () use ($user) {
+                        return $user->department_id;
+                    }),
 
-            Forms\Components\TextInput::make('location')
-                ->label('Location')
-                ->nullable()
-                ->maxLength(255),
+                Forms\Components\TextInput::make('location')
+                    ->label('Location')
+                    ->nullable()
+                    ->maxLength(255),
 
-            Forms\Components\DatePicker::make('date')
-                ->label('Date')
-                ->required(),
+                Forms\Components\DatePicker::make('date')
+                    ->label('Date')
+                    ->required(),
 
-            Forms\Components\TimePicker::make('time')
-                ->label('Time')
-                ->required(),
+                Forms\Components\TimePicker::make('time')
+                    ->label('Time')
+                    ->required(),
 
-            // Forms\Components\TextInput::make('participants')
-            //     ->label('Participants')
-            //     ->numeric()
-            //     ->minValue(1)
-            //     ->required(),
-            Forms\Components\TextInput::make('user.name')
-            ->label('User')
-            ->default(auth()->id())
-            ->disabled()
-            ->required(),
+                // Forms\Components\TextInput::make('participants')
+                //     ->label('Participants')
+                //     ->numeric()
+                //     ->minValue(1)
+                //     ->required(),
+                Forms\Components\TextInput::make('user.name')
+                    ->label('User')
+                    ->default(auth()->id())
+                    ->disabled()
+                    ->required(),
 
 
-            Forms\Components\TextInput::make('type')
-    ->label('Type')
-    ->required()
-    ->maxLength(100),
+                Forms\Components\TextInput::make('type')
+                    ->label('Type')
+                    ->required()
+                    ->maxLength(100),
 
-            Forms\Components\TextInput::make('benifites')
-                ->label('Benefits')
-                ->nullable()
-                ->maxLength(500),
-        ]);
+                Forms\Components\TextInput::make('benifites')
+                    ->label('Benefits')
+                    ->nullable()
+                    ->maxLength(500),
+            ]);
     }
 
 
@@ -132,11 +132,11 @@ class ActivitiesResource extends Resource
             ->filters([
                 //
                 TernaryFilter::make('email_verified_at')
-                ->label('Email verification')
-                ->nullable()
-                ->placeholder('All users')
-                ->trueLabel('Verified users')
-                ->falseLabel('Not verified users')
+                    ->label('Email verification')
+                    ->nullable()
+                    ->placeholder('All users')
+                    ->trueLabel('Verified users')
+                    ->falseLabel('Not verified users')
 
             ])
             ->actions([

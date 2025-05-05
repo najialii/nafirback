@@ -41,7 +41,7 @@ class MentorshipTest extends TestCase
 
     public function test_can_search_mentorships()
     {
-        $mentorships = Mentorship::factory()->create(['name'=> 'laravel']);
+        $mentorships = Mentorship::factory()->create(['name' => 'laravel']);
         $response = $this->get('/api/search/mentorship/' . $mentorships->name);
         $response->assertStatus(200);
         $response->assertJsonFragment(['name' => 'laravel']);
@@ -65,16 +65,16 @@ class MentorshipTest extends TestCase
         $response = $this->postJson('/api/mentorship', $data);
 
         $response->assertStatus(201)
-                 ->assertJsonFragment([
-                     'name' => 'New Mentorship'
-                 ]);
+            ->assertJsonFragment([
+                'name' => 'New Mentorship'
+            ]);
 
 
-    $this->assertDatabaseHas('mentorships', [
-        'name' => 'New Mentorship',
-        'mentor_id' => $mentor->id,
-        'department_id' => $department->id,
-    ]);
+        $this->assertDatabaseHas('mentorships', [
+            'name' => 'New Mentorship',
+            'mentor_id' => $mentor->id,
+            'department_id' => $department->id,
+        ]);
     }
 
     public function test_can_update_mentorship()
@@ -95,9 +95,9 @@ class MentorshipTest extends TestCase
         $response = $this->putJson('/api/mentorship/' . $mentorship->id, $updateData);
 
         $response->assertStatus(200)
-                 ->assertJsonFragment([
-                     'message' => 'Mentorship updated successfully'
-                 ]);
+            ->assertJsonFragment([
+                'message' => 'Mentorship updated successfully'
+            ]);
 
         $this->assertDatabaseHas('mentorships', [
             'id' => $mentorship->id,
@@ -114,9 +114,9 @@ class MentorshipTest extends TestCase
         $response = $this->deleteJson('/api/mentorship/' . $mentorship->id);
 
         $response->assertStatus(200)
-                 ->assertJsonFragment([
-                     'message' => 'Activity deleted successfully'
-                 ]);
+            ->assertJsonFragment([
+                'message' => 'Activity deleted successfully'
+            ]);
 
         $this->assertDatabaseMissing('mentorships', [
             'id' => $mentorship->id,

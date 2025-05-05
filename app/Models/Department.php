@@ -19,7 +19,7 @@ class Department extends Model
 
 
     public function blogs()
-{
-    return $this->hasMany(Blog::class, 'department_id');
-}
+    {
+        return $this->hasMany(Blog::class, 'department_id');
+    }
 }

@@ -16,7 +16,7 @@ class UserController
     public function index()
     {
         $user = User::paginate(10);
-        return  new UserCollection($user, 200);
+        return new UserCollection($user, 200);
     }
 
     public function show($id)
@@ -31,37 +31,39 @@ class UserController
 
     }
 
-    public function store(StoreUserRequest $request){
+    public function store(StoreUserRequest $request)
+    {
         // return new UserResource(User::Create($request->all()));
 
 
-    $validatedData = $request->validated();
-    $validatedData['password'] = Hash::make($validatedData['password']);
-    $validatedData['isActive'] = false;
-    $user = User::create($validatedData);
+        $validatedData = $request->validated();
+        $validatedData['password'] = Hash::make($validatedData['password']);
+        $validatedData['isActive'] = false;
+        $user = User::create($validatedData);
 
-    return new UserResource($user);
+        return new UserResource($user);
     }
 
 
 
-    public function approveUsers($id){
+    public function approveUsers($id)
+    {
         $user = User::find($id);
 
-        if (!$user){
+        if (!$user) {
             return response()->json([
-                'error'=> 'User not found',
-                'message'=>'User not found'
-            ],404);
+                'error' => 'User not found',
+                'message' => 'User not found'
+            ], 404);
 
             $user->update([
-                'isActive'=> true
+                'isActive' => true
             ]);
 
             return response()->json([
-                'message'=> 'User Approved Successfully',
-                'user'=> new UserResource($user)
-            ],200);
+                'message' => 'User Approved Successfully',
+                'user' => new UserResource($user)
+            ], 200);
         }
 
     }
@@ -70,7 +72,8 @@ class UserController
 
 
 
-    public function update(UpdateUserRequest $request, User $user){
+    public function update(UpdateUserRequest $request, User $user)
+    {
         // $user->update($request->all());
 
         $user->update($request->validated());

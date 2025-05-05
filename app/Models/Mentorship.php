@@ -15,23 +15,25 @@ class Mentorship extends Model
 
 
     protected $fillable = [
-         'name',
-         'mentor_id',
-         'department_id',
-         'availability',
-        ];
+        'name',
+        'mentor_id',
+        'department_id',
+        'availability',
+    ];
 
 
     // public function dpeartmnet(){
     //     return $this-> belongsTo(Department::class);
     // }
 
-    public function user(){
-        return $this-> belongsTo(User::class);
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
-    public function department(){
-        return $this-> belongsTo(Department::class);
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 
     // public function mentorshipreqs(){

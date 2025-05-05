@@ -34,11 +34,11 @@ class AuthControllerTest extends TestCase
         ]);
 
         $response->assertStatus(201)
-                 ->assertJsonStructure([
-                     'message',
-                     'user' => ['id', 'name', 'email'],
-                     'token',
-                 ]);
+            ->assertJsonStructure([
+                'message',
+                'user' => ['id', 'name', 'email'],
+                'token',
+            ]);
 
         $this->assertDatabaseHas('users', [
             'email' => 'test@example.com',
@@ -63,9 +63,9 @@ class AuthControllerTest extends TestCase
         ]);
 
         $response->assertStatus(400)
-                 ->assertJson([
-                     'error' => 'Email alrady exists',
-                 ]);
+            ->assertJson([
+                'error' => 'Email alrady exists',
+            ]);
     }
 
     /** @test */
@@ -82,10 +82,10 @@ class AuthControllerTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-                 ->assertJsonStructure([
-                     'user' => ['id', 'name', 'email'],
-                     'token',
-                 ]);
+            ->assertJsonStructure([
+                'user' => ['id', 'name', 'email'],
+                'token',
+            ]);
     }
 
     /** @test */
@@ -102,9 +102,9 @@ class AuthControllerTest extends TestCase
         ]);
 
         $response->assertStatus(401)
-                 ->assertJson([
-                     'message' => 'invalid credentials',
-                 ]);
+            ->assertJson([
+                'message' => 'invalid credentials',
+            ]);
     }
 
     /** @test */
@@ -117,8 +117,8 @@ class AuthControllerTest extends TestCase
         $response = $this->postJson('/api/logout');
 
         $response->assertStatus(200)
-                 ->assertJson([
-                     'message' => 'You have been logged out',
-                 ]);
+            ->assertJson([
+                'message' => 'You have been logged out',
+            ]);
     }
 }

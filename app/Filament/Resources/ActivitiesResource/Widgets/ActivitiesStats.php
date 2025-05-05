@@ -15,29 +15,29 @@ class ActivitiesStats extends BaseWidget
     {
         $thirtyDaysUsersCount = User::where('created_at', '>=', Carbon::now()->subDays(30))->count();
         $newUsersData = User::where('created_at', '>=', Carbon::now()->subDays(30))
-        ->selectRaw('COUNT(*) as count, DATE(created_at) as date')
-        ->groupBy('date')
-        ->orderBy('date')
-        ->get()
-        ->pluck('count', 'date')
-        ->toArray();
+            ->selectRaw('COUNT(*) as count, DATE(created_at) as date')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get()
+            ->pluck('count', 'date')
+            ->toArray();
         $newUsersChartData = array_values($newUsersData);
 
 
 
         $UserPartActivites = Activity::where('user_id')->get()
-    ->sum(function ($activity) {
-        return is_array($activity->participants);
-    });
+            ->sum(function ($activity) {
+                return is_array($activity->participants);
+            });
 
-    $newActivitiesCount = Activity::where('created_at', '>=', Carbon::now()->subDays(30))->count();
-    // $upcomingActivitiesCount = Activity::where('created_at', '>=', Carbon::now())->count();
-    // $averageParticipants = Activity::withCount('crea')->get()->avg('participants_count');
+        $newActivitiesCount = Activity::where('created_at', '>=', Carbon::now()->subDays(30))->count();
+        // $upcomingActivitiesCount = Activity::where('created_at', '>=', Carbon::now())->count();
+        // $averageParticipants = Activity::withCount('crea')->get()->avg('participants_count');
 
 
         return [
             Stat::make('New Activites', $newActivitiesCount)->icon('heroicon-m-user-group', IconPosition::Before)
-            ->description('New users in the last 30 days')->color('primary')->chart($newUsersChartData),
+                ->description('New users in the last 30 days')->color('primary')->chart($newUsersChartData),
 
             // Stat::make('upcoming Activities', $upcomingActivitiesCount)->icon('heroicon-m-user-group', IconPosition::Before)
             // ->description('New users in the last 30 days')->color('primary')->chart($newUsersChartData),
@@ -46,8 +46,8 @@ class ActivitiesStats extends BaseWidget
 
 
             Stat::make('Total Activity Participants', $UserPartActivites)->description('Total participants in your activities')
-    ->icon('heroicon-o-user-group')->color('warning'),
+                ->icon('heroicon-o-user-group')->color('warning'),
 
-];
+        ];
     }
 }

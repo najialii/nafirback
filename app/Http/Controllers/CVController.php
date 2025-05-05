@@ -101,16 +101,16 @@ class CVController extends Controller
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . config('services.openrouter.key'),
-            'X-Title'        => 'CV Review Tool',
+            'X-Title' => 'CV Review Tool',
         ])->post('https://openrouter.ai/api/v1/chat/completions', [
-            'model' => 'openai/gpt-3.5-turbo-0125',
-            'messages' => [
-                [
-                    'role'    => 'user',
-                    'content' => $prompt,
-                ]
-            ],
-        ]);
+                    'model' => 'openai/gpt-3.5-turbo-0125',
+                    'messages' => [
+                        [
+                            'role' => 'user',
+                            'content' => $prompt,
+                        ]
+                    ],
+                ]);
 
 
         return $response->json();

@@ -23,7 +23,7 @@ class MentorshipsStats extends BaseWidget
 
         return [
             Stat::make('New Users', $ThirtyDaysMentorshipsCount)->icon('heroicon-m-user-group', IconPosition::Before)
-            ->description('New users in the last 30 days')->color('primary'),
+                ->description('New users in the last 30 days')->color('primary'),
             // Stat::make('New Users', $moReqPerDepar)->icon('heroicon-m-user-group', IconPosition::Before)
             // ->description('most requsted ')->color('primary'),
 

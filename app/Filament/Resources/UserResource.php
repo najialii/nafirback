@@ -24,79 +24,79 @@ class UserResource extends Resource
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function getGloballySearchableAttributes(): array
-{
-    return ['name', 'email'];
-}
+    {
+        return ['name', 'email'];
+    }
 
 
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-protected static ?string $cluster = Users::class;
+    protected static ?string $cluster = Users::class;
 
-public static function form(Form $form): Form
-{
-    return $form
-        ->schema([
-            Forms\Components\TextInput::make('name')
-                ->required()
-                ->maxLength(255),
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
 
 
-            Forms\Components\TextInput::make('email')
-                ->email()
-                ->required()
-                ->unique(User::class, 'email'),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->required()
+                    ->unique(User::class, 'email'),
 
-            Forms\Components\TextInput::make('password')
-                ->password()
-                ->required()
-                ->minLength(8)
-                ->maxLength(255),
+                Forms\Components\TextInput::make('password')
+                    ->password()
+                    ->required()
+                    ->minLength(8)
+                    ->maxLength(255),
 
-            Forms\Components\Select::make('role')
-                ->relationship('roles', 'name')
-                ->multiple()
-                ->preload()
-                ->required(),
+                Forms\Components\Select::make('role')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->required(),
 
-            Forms\Components\Select::make('department_id')
-                ->relationship('department', 'name')
-                ->label('Department')
-                ->nullable(),
+                Forms\Components\Select::make('department_id')
+                    ->relationship('department', 'name')
+                    ->label('Department')
+                    ->nullable(),
 
-            Forms\Components\TextInput::make('phone')
-                ->tel()
-                ->maxLength(15),
+                Forms\Components\TextInput::make('phone')
+                    ->tel()
+                    ->maxLength(15),
 
-            Forms\Components\TextInput::make('skills')
-                ->maxLength(255),
+                Forms\Components\TextInput::make('skills')
+                    ->maxLength(255),
 
-            Forms\Components\TextInput::make('exp_years')
-                ->label('Experience Years')
-                ->numeric()
-                ->rules('min:0')
-                ->maxLength(355),
+                Forms\Components\TextInput::make('exp_years')
+                    ->label('Experience Years')
+                    ->numeric()
+                    ->rules('min:0')
+                    ->maxLength(355),
 
-            Forms\Components\TextInput::make('country')
-                ->maxLength(255),
+                Forms\Components\TextInput::make('country')
+                    ->maxLength(255),
 
-            Forms\Components\TextInput::make('expertise')
-                ->maxLength(255),
+                Forms\Components\TextInput::make('expertise')
+                    ->maxLength(255),
 
-            Forms\Components\Textarea::make('education')
-                ->label('Education')
-                ->nullable(),
+                Forms\Components\Textarea::make('education')
+                    ->label('Education')
+                    ->nullable(),
 
-            Forms\Components\Textarea::make('certificates')
-                ->label('Certificates')
-                ->nullable(),
+                Forms\Components\Textarea::make('certificates')
+                    ->label('Certificates')
+                    ->nullable(),
 
-            Forms\Components\Toggle::make('isActive')
-                ->label('Active')
-                ->default(false),
-        ]);
-}
+                Forms\Components\Toggle::make('isActive')
+                    ->label('Active')
+                    ->default(false),
+            ]);
+    }
 
     public static function table(Table $table): Table
     {
@@ -113,11 +113,11 @@ public static function form(Form $form): Form
                 //
 
                 TernaryFilter::make('email_verified_at')
-                ->label('Email verification')
-                ->nullable()
-                ->placeholder('All users')
-                ->trueLabel('Verified users')
-                ->falseLabel('Not verified users')
+                    ->label('Email verification')
+                    ->nullable()
+                    ->placeholder('All users')
+                    ->trueLabel('Verified users')
+                    ->falseLabel('Not verified users')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

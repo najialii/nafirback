@@ -23,12 +23,13 @@ class BlogsTest extends TestCase
         $this->seed(BlogSeeder::class);
     }
 
-    private function authUser(){
+    private function authUser()
+    {
         $department = \App\Models\Department::factory()->create();
 
         $user = User::factory()->create([
-            'password' =>hash::make('password'),
-            'isActive'=> 1,
+            'password' => hash::make('password'),
+            'isActive' => 1,
             'department_id' => $department->id,
         ]);
         $user->assignRole('admin');
@@ -81,39 +82,39 @@ class BlogsTest extends TestCase
 
 
     public function test_can_create_blog()
-{
-    $this->authUser();
-    $author = \App\Models\User::factory()->create();
-    $department = Department::factory()->create();
+    {
+        $this->authUser();
+        $author = \App\Models\User::factory()->create();
+        $department = Department::factory()->create();
 
-    $blog = Blog::factory()->make();
+        $blog = Blog::factory()->make();
 
-    Storage::fake('public');
+        Storage::fake('public');
 
-    $response = $this->postJson('/api/post', [
-        'img' => UploadedFile::fake()->image('blog.jpg'),
-        'author_id' => $author->id,
-        'title' => $blog->title,
-        'department_id' => $department->id,
-        'content' => $blog->content,
-        'slug' => $blog->slug,
-        'featured' => $blog->featured,
-    ]);
+        $response = $this->postJson('/api/post', [
+            'img' => UploadedFile::fake()->image('blog.jpg'),
+            'author_id' => $author->id,
+            'title' => $blog->title,
+            'department_id' => $department->id,
+            'content' => $blog->content,
+            'slug' => $blog->slug,
+            'featured' => $blog->featured,
+        ]);
 
-    $response->assertStatus(201);
+        $response->assertStatus(201);
 
-    $response->assertJsonStructure([
-        'data' => [
-            'img',
-            'author_id',
-            'title',
-            'department_id',
-            'content',
-            'slug',
-            'featured',
-        ]
-    ]);
-}
+        $response->assertJsonStructure([
+            'data' => [
+                'img',
+                'author_id',
+                'title',
+                'department_id',
+                'content',
+                'slug',
+                'featured',
+            ]
+        ]);
+    }
 
     public function test_can_update_blog()
     {
@@ -126,7 +127,7 @@ class BlogsTest extends TestCase
         $response = $this->put('/api/post/' . $blog->id, [
             'title' => 'Updated Title',
             'author_id' => $auther_id->id,
-            'slug' =>  'updated_title_sss',
+            'slug' => 'updated_title_sss',
             'content' => 'Updated Content',
         ]);
 
@@ -141,8 +142,8 @@ class BlogsTest extends TestCase
                 'content',
                 'slug',
                 'featured',
-               'created_at',
-               'updated_at',
+                'created_at',
+                'updated_at',
             ]
         ]);
     }
@@ -161,7 +162,7 @@ class BlogsTest extends TestCase
 
     public function test_can_search_blogs()
     {
-        $blog = Blog::factory()->create(['title'=> 'laravel blog']);
+        $blog = Blog::factory()->create(['title' => 'laravel blog']);
         $response = $this->get('/api/search/' . $blog->title);
         $response->assertStatus(200);
     }

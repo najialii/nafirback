@@ -27,7 +27,7 @@ Route::post('/department', [DepartmentController::class, 'store'])->middleware('
 
 // Activities
 Route::get('/activities', [ActivityController::class, 'index']);
-Route::get('/activities/search/{keyword}',[ActivityController::class, 'searchActivity']);
+Route::get('/activities/search/{keyword}', [ActivityController::class, 'searchActivity']);
 Route::get('/activities/{id}', [ActivityController::class, 'show']);
 
 Route::prefix('activities')->middleware('auth:sanctum')->group(function () {

@@ -26,14 +26,14 @@ class RoleMiddleWare
             ], 401);
         }
 
-           if (!in_array(Auth::user()->role, $roles)){
+        if (!in_array(Auth::user()->role, $roles)) {
             return response()->json([
                 'message' => "Forbidden - You don't have permission",
             ], 403);
         }
 
 
-         
+
         return $next($request);
     }
 }

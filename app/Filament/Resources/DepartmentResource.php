@@ -27,17 +27,17 @@ class DepartmentResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-        ->schema([
-            Forms\Components\TextInput::make('name')
-                ->label('Department Name')
-                ->required()
-                ->maxLength(255),
+            ->schema([
+                Forms\Components\TextInput::make('name')
+                    ->label('Department Name')
+                    ->required()
+                    ->maxLength(255),
 
-            Forms\Components\Textarea::make('description')
-                ->label('Description')
-                ->nullable()
-                ->maxLength(500),
-        ]);
+                Forms\Components\Textarea::make('description')
+                    ->label('Description')
+                    ->nullable()
+                    ->maxLength(500),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -45,7 +45,8 @@ class DepartmentResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('description'),            ])
+                Tables\Columns\TextColumn::make('description'),
+            ])
             ->filters([
                 //
             ])

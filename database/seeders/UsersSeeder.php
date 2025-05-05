@@ -12,7 +12,7 @@ class UsersSeeder extends Seeder
      */
     public function run(): void
     {
-            User::factory()
+        User::factory()
             ->count(25)
             ->hasDepartment(25)
             ->create();

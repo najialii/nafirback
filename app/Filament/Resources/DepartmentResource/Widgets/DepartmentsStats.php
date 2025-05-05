@@ -15,12 +15,12 @@ class DepartmentsStats extends BaseWidget
     {
         $thirtyDaysUsersCount = User::where('created_at', '>=', Carbon::now()->subDays(30))->count();
         $newUsersData = User::where('created_at', '>=', Carbon::now()->subDays(30))
-        ->selectRaw('COUNT(*) as count, DATE(created_at) as date')
-        ->groupBy('date')
-        ->orderBy('date')
-        ->get()
-        ->pluck('count', 'date')
-        ->toArray();
+            ->selectRaw('COUNT(*) as count, DATE(created_at) as date')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get()
+            ->pluck('count', 'date')
+            ->toArray();
         $newUsersChartData = array_values($newUsersData);
 
         $depAdminsCount = User::where('role', 'admin')->count();
@@ -31,26 +31,26 @@ class DepartmentsStats extends BaseWidget
 
 
         $UserPartActivites = Activity::where('user_id')->get()
-    ->sum(function ($activity) {
-        return is_array($activity->participants);
-    });
+            ->sum(function ($activity) {
+                return is_array($activity->participants);
+            });
 
 
 
-//departments with most activites
+        //departments with most activites
 
         return [
             Stat::make('New Users', $thirtyDaysUsersCount)->icon('heroicon-m-user-group', IconPosition::Before)
-            ->description('New users in the last 30 days')->color('primary')->chart($newUsersChartData),
+                ->description('New users in the last 30 days')->color('primary')->chart($newUsersChartData),
 
             Stat::make('Users by Role', "{$total}  Users/Role")
-            ->description("Admins: {$depAdminsCount} | Mentors: {$mentorCount} | Mentees: {$menteeCount}")
-            ->icon('heroicon-o-users')
-            ->color('primary'),
+                ->description("Admins: {$depAdminsCount} | Mentors: {$mentorCount} | Mentees: {$menteeCount}")
+                ->icon('heroicon-o-users')
+                ->color('primary'),
 
 
             Stat::make('Total Activity Participants', $UserPartActivites)->description('Total participants in your activities')
-    ->icon('heroicon-o-user-group')->color('warning'),
+                ->icon('heroicon-o-user-group')->color('warning'),
         ];
     }
 }

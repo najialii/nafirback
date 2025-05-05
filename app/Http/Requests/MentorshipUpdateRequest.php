@@ -26,8 +26,8 @@ class MentorshipUpdateRequest extends FormRequest
             'mentor_id' => 'sometimes|required|integer|exists:users,id',
             'department_id' => 'sometimes|required|integer|exists:departments,id',
             'date' => 'nullable|date',
-            'days' => 'sometimes|required|array', 
-            'available_times' => 'nullable|array', 
+            'days' => 'sometimes|required|array',
+            'available_times' => 'nullable|array',
         ];
     }
 }

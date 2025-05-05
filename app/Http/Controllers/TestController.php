@@ -13,7 +13,7 @@ class TestController
      */
     public function index()
     {
-        return response("aaaa",200);
+        return response("aaaa", 200);
     }
 
     /**

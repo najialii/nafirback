@@ -24,7 +24,7 @@ class BlogFactory extends Factory
             'title' => $this->faker->sentence(),
             'department_id' => Department::factory(),
             'content' => $this->faker->paragraphs(3, true),
-            'slug' =>$this->faker->word(),
+            'slug' => $this->faker->word(),
             'featured' => $this->faker->boolean(),
         ];
     }

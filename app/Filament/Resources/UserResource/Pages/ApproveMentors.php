@@ -21,7 +21,7 @@ class ApproveMentors extends ListRecords
     protected function getTableQuery(): Builder
     {
         return User::query()
-            ->whereHas('roles', fn ($q) => $q->where('name', 'mentor'))
+            ->whereHas('roles', fn($q) => $q->where('name', 'mentor'))
             ->where('isActive', false);
     }
 

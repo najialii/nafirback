@@ -30,7 +30,7 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             // 'role' => $this->faker->randomElement(['admin', 'mentor', 'mentee']),
-          'department_id' => \App\Models\Department::inRandomOrder()->first()?->id ?? null,
+            'department_id' => \App\Models\Department::inRandomOrder()->first()?->id ?? null,
             'phone' => $this->faker->phoneNumber,
             'country' => $this->faker->country(),
             'skills' => $this->faker->words(3, true),
@@ -50,7 +50,7 @@ class UserFactory extends Factory
                 ]
             ]),
 
-              'education' => json_encode([
+            'education' => json_encode([
                 [
                     'name' => $this->faker->word() . ' Degree',
                     'institution' => $this->faker->company(),
@@ -81,7 +81,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }

@@ -22,7 +22,7 @@ class PreviewMentorship extends ViewRecord implements HasTable
                 Mentorship::query()
                     ->where(function ($q) {
                         $q->where('mentor_id', $this->record->mentor_id)
-                          ->orWhere('mentee_id', $this->record->mentee_id);
+                            ->orWhere('mentee_id', $this->record->mentee_id);
                     })
                     ->latest()
             )

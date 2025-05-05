@@ -28,36 +28,36 @@ class BlogResource extends Resource
         $user = auth()->user();
 
         return $form
-        ->schema([
-            Forms\Components\TextInput::make('title')
-                ->label('Title')
-                ->required()
-                ->maxLength(255),
+            ->schema([
+                Forms\Components\TextInput::make('title')
+                    ->label('Title')
+                    ->required()
+                    ->maxLength(255),
 
-            Forms\Components\TextInput::make('slug')
-                ->label('Slug')
-                ->required()
-                ->unique(Blog::class, 'slug', ignoreRecord: true),
+                Forms\Components\TextInput::make('slug')
+                    ->label('Slug')
+                    ->required()
+                    ->unique(Blog::class, 'slug', ignoreRecord: true),
 
-            Forms\Components\Select::make('department_id')
-                ->label('Department')
-                ->relationship('department', 'name')
-                ->required()
-                ->options(function () use ($user) {
-                    if ($user) {
-                        return Department::where('id', $user->department_id)->pluck('name', 'id');
-                    }
-                    return Department::pluck('name', 'id');
-                }),
+                Forms\Components\Select::make('department_id')
+                    ->label('Department')
+                    ->relationship('department', 'name')
+                    ->required()
+                    ->options(function () use ($user) {
+                        if ($user) {
+                            return Department::where('id', $user->department_id)->pluck('name', 'id');
+                        }
+                        return Department::pluck('name', 'id');
+                    }),
 
-            Forms\Components\Toggle::make('featured')
-                ->label('Featured'),
+                Forms\Components\Toggle::make('featured')
+                    ->label('Featured'),
 
-            RichEditor::make('content')
-                ->label('Content')
-                ->required()
-                ->columnSpan('full'),
-        ]);
+                RichEditor::make('content')
+                    ->label('Content')
+                    ->required()
+                    ->columnSpan('full'),
+            ]);
     }
 
     public static function table(Table $table): Table

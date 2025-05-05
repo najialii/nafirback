@@ -29,7 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->colors([
                 'primary' => '#221F42',
-                'secondary'=>'#EDB44B',
+                'secondary' => '#EDB44B',
             ])
             ->font('Poppins')
             ->brandLogo(asset('images/nafir.svg'))
@@ -58,7 +58,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
-                ])
+            ])
             ->authMiddleware([
                 Authenticate::class,
             ]);

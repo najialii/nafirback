@@ -47,9 +47,9 @@ class ActivitiesTest extends TestCase
     public function test_can_search_activities()
     {
 
-            $activites = Activity::factory()->create(['name'=> 'laravel']);
-            $response = $this->get('/api/activities/search/' . $activites->name);
-            $response->assertStatus(200);
+        $activites = Activity::factory()->create(['name' => 'laravel']);
+        $response = $this->get('/api/activities/search/' . $activites->name);
+        $response->assertStatus(200);
 
     }
 
@@ -64,29 +64,29 @@ class ActivitiesTest extends TestCase
     }
 
     public function test_can_store_activity()
-{
-    $this->authUser();
-    Storage::fake('public');
+    {
+        $this->authUser();
+        Storage::fake('public');
 
-    $user = \App\Models\User::factory()->create();
-    Department::factory()->create(['id' => 1]);
+        $user = \App\Models\User::factory()->create();
+        Department::factory()->create(['id' => 1]);
 
-    $data = [
-        'name' => 'New Activity',
-        'description' => 'Activity description',
-        'date' => now()->toDateString(),
-        'time' => now()->format('H:i:s'),
-        'department_id' => 1,
-        'type' => 'Workshop',
-        'user_id' => $user->id,
-        'img' => UploadedFile::fake()->image('activity.jpg'),
-    ];
+        $data = [
+            'name' => 'New Activity',
+            'description' => 'Activity description',
+            'date' => now()->toDateString(),
+            'time' => now()->format('H:i:s'),
+            'department_id' => 1,
+            'type' => 'Workshop',
+            'user_id' => $user->id,
+            'img' => UploadedFile::fake()->image('activity.jpg'),
+        ];
 
-    $response = $this->postJson('/api/activities', $data);
+        $response = $this->postJson('/api/activities', $data);
 
-    $response->assertStatus(201);
-    $this->assertDatabaseHas('activities', ['name' => 'New Activity']);
-}
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('activities', ['name' => 'New Activity']);
+    }
 
 
     public function test_can_update_activity()

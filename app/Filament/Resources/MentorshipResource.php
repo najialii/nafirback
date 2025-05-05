@@ -22,11 +22,11 @@ class MentorshipResource extends Resource
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function getNavigationBadge(): ?string
-{
-    return static::getModel()::count();
-}
+    {
+        return static::getModel()::count();
+    }
 
-protected static ?string $cluster = MentorshipCluster::class;
+    protected static ?string $cluster = MentorshipCluster::class;
 
     protected static ?string $model = Mentorship::class;
 
@@ -38,46 +38,46 @@ protected static ?string $cluster = MentorshipCluster::class;
             ->schema([
 
                 Forms\Components\TextInput::make('name')
-                ->label('Activity Name')
-                ->required()
-                ->maxLength(255),
+                    ->label('Activity Name')
+                    ->required()
+                    ->maxLength(255),
 
-            Forms\Components\TextInput::make('description')
-                ->label('Description')
-                ->nullable()
-                ->maxLength(500),
+                Forms\Components\TextInput::make('description')
+                    ->label('Description')
+                    ->nullable()
+                    ->maxLength(500),
 
                 Forms\Components\Select::make('department_id')
-                ->label('Department')
-                ->relationship('department', 'name')
-                // ->searchable()
-                ->required()
-                ->options(function () use ($user) {
-                    if ($user && $user->hasRole('super_admin')) {
-                        return Department::pluck('name', 'id');
-                    }
+                    ->label('Department')
+                    ->relationship('department', 'name')
+                    // ->searchable()
+                    ->required()
+                    ->options(function () use ($user) {
+                        if ($user && $user->hasRole('super_admin')) {
+                            return Department::pluck('name', 'id');
+                        }
 
-                    return Department::where('id', $user->department_id)->pluck('name', 'id');
-                })
-                ->disabled(function () use ($user) {
-                    return !$user->hasRole('super_admin');
-                })
-                ->default(function () use ($user) {
-                    return $user->department_id;
-                }),
+                        return Department::where('id', $user->department_id)->pluck('name', 'id');
+                    })
+                    ->disabled(function () use ($user) {
+                        return !$user->hasRole('super_admin');
+                    })
+                    ->default(function () use ($user) {
+                        return $user->department_id;
+                    }),
 
-            Forms\Components\TextInput::make('location')
-                ->label('Location')
-                ->nullable()
-                ->maxLength(255),
+                Forms\Components\TextInput::make('location')
+                    ->label('Location')
+                    ->nullable()
+                    ->maxLength(255),
 
-            Forms\Components\DatePicker::make('date')
-                ->label('Date')
-                ->required(),
+                Forms\Components\DatePicker::make('date')
+                    ->label('Date')
+                    ->required(),
 
-            Forms\Components\TimePicker::make('time')
-                ->label('Time')
-                ->required(),
+                Forms\Components\TimePicker::make('time')
+                    ->label('Time')
+                    ->required(),
 
 
 

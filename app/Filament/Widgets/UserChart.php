@@ -17,22 +17,22 @@ class UserChart extends ChartWidget
 
     protected function getData(): array
     {
-$trend = Trend::model(User::class)
-->between(
-        start: now()->startOfYear(),
-        end: now()->endOfYear(),
-)->perMonth()->count();
+        $trend = Trend::model(User::class)
+            ->between(
+                start: now()->startOfYear(),
+                end: now()->endOfYear(),
+            )->perMonth()->count();
 
         return [
             //
-            'labels' => $trend->map(fn (TrendValue $value) => $value->date),
+            'labels' => $trend->map(fn(TrendValue $value) => $value->date),
             'datasets' => [
                 [
                     'label' => 'User per month',
                     'backgroundColor' => 'rgb(34, 31, 66)',
                     'borderColor' => 'primary',
-                    'color'=>'primary',
-                    'data' => $trend->map(fn (TrendValue $value) => $value->aggregate),
+                    'color' => 'primary',
+                    'data' => $trend->map(fn(TrendValue $value) => $value->aggregate),
                 ],
             ],
         ];
@@ -40,14 +40,14 @@ $trend = Trend::model(User::class)
 
 
     protected function getFilters(): ?array
-{
-    return [
-        'today' => 'Today',
-        'week' => 'Last week',
-        'month' => 'Last month',
-        'year' => 'This year',
-    ];
-}
+    {
+        return [
+            'today' => 'Today',
+            'week' => 'Last week',
+            'month' => 'Last month',
+            'year' => 'This year',
+        ];
+    }
 
     protected function getType(): string
     {

@@ -19,15 +19,15 @@ class DepartmentController
 
         try {
             $department = Department::paginate(10);
-            return  new DepartmentCollection(($department), 200);
+            return new DepartmentCollection(($department), 200);
 
 
         } catch (\Throwable $th) {
             return response()->json([
                 'error' => 'Something went wrong!',
                 'message' => $th->getMessage()
-            ], 500);      
-          }
+            ], 500);
+        }
 
     }
 
@@ -39,9 +39,9 @@ class DepartmentController
         //     return response()->json(['message' => 'User not found'], 404);
         // }
 
-    return new DepartmentResource(User::findOrFail($id));
+        return new DepartmentResource(User::findOrFail($id));
 
-}
+    }
 
 
     public function store(StoreDepartmentsRequest $request)

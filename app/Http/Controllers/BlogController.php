@@ -12,26 +12,26 @@ class BlogController extends Controller
 {
     public function index()
     {
-        try{
+        try {
 
             $blogs = Blog::paginate(10);
             return new BlogCollection($blogs);
-        } catch(\Throwable $th){
+        } catch (\Throwable $th) {
             return response()->json([
                 'error' => 'Something went wrong!',
                 'message' => $th->getMessage()
             ], 500);
         }
 
-        }
+    }
 
 
     public function show($id)
     {
-        try{
+        try {
 
             return new BlogResource(Blog::findOrFail($id));
-        } catch(\Throwable $th){
+        } catch (\Throwable $th) {
             return response()->json([
                 'error' => 'Something went wrong!',
                 'message' => $th->getMessage()
@@ -42,29 +42,29 @@ class BlogController extends Controller
 
 
     public function store(StoreBlogRequest $request)
-{
-    try {
-        $validatedData = $request->validated();
+    {
+        try {
+            $validatedData = $request->validated();
 
-        if ($request->hasFile('img')) {
-            $img = $request->file('img');
-            $imgName = time() . '_' . $img->getClientOriginalName();
-            $imgPath = $img->storeAs('blogs', $imgName, 'public');
-            $validatedData['img'] = $imgPath;
+            if ($request->hasFile('img')) {
+                $img = $request->file('img');
+                $imgName = time() . '_' . $img->getClientOriginalName();
+                $imgPath = $img->storeAs('blogs', $imgName, 'public');
+                $validatedData['img'] = $imgPath;
+            }
+
+            $blog = Blog::create($validatedData);
+
+            return (new BlogResource($blog))
+                ->response()
+                ->setStatusCode(201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => 'Something went wrong!',
+                'message' => $th->getMessage()
+            ], 500);
         }
-
-        $blog = Blog::create($validatedData);
-
-        return (new BlogResource($blog))
-            ->response()
-            ->setStatusCode(201);
-    } catch (\Throwable $th) {
-        return response()->json([
-            'error' => 'Something went wrong!',
-            'message' => $th->getMessage()
-        ], 500);
     }
-}
 
 
     public function update(UpdateBlogRequest $request, $id)
@@ -79,26 +79,28 @@ class BlogController extends Controller
     }
 
 
-public function departmentBlogs($id){
-try{
-    $blogs = Blog::where('department_id', $id)->paginate(10);
-    if (!$blogs) {
-        return response()->json([
-            'message' => 'blogs not found'
-        ]);
+    public function departmentBlogs($id)
+    {
+        try {
+            $blogs = Blog::where('department_id', $id)->paginate(10);
+            if (!$blogs) {
+                return response()->json([
+                    'message' => 'blogs not found'
+                ]);
+            }
+            return new BlogCollection($blogs);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => 'something went wrong!',
+                'message' => $th->getMessage()
+            ]);
+
+        }
     }
-    return new BlogCollection($blogs);
-} catch(\Throwable $th){
-    return response()->json([
-        'error' => 'something went wrong!',
-    'message' => $th->getMessage()
-    ]);
-
-}
-}
 
 
-    public function search ($keyword) {
+    public function search($keyword)
+    {
 
         $blogs = Blog::limit(10)->select(
             [
@@ -106,30 +108,30 @@ try{
                 "title",
                 "id"
             ]
-            )->where('title', 'like', '%' . $keyword . '%')->get();
+        )->where('title', 'like', '%' . $keyword . '%')->get();
 
-            if(!$blogs){
-                return response()->json([
-                'message'=> 'blogs not found'
-                ]);
+        if (!$blogs) {
+            return response()->json([
+                'message' => 'blogs not found'
+            ]);
 
-            }
+        }
 
-                return response()->json([
-                'blog posts'=>  $blogs,
+        return response()->json([
+            'blog posts' => $blogs,
 
-                ],200);
-            }
+        ], 200);
+    }
 
     public function destroy($id)
     {
-        try{
+        try {
 
             $blog = Blog::findOrFail($id);
 
-            if(!$blog){
+            if (!$blog) {
                 return response()->json([
-                    'message'=> 'Blog is not found'
+                    'message' => 'Blog is not found'
                 ]);
             }
 
@@ -137,10 +139,10 @@ try{
             return response()->json([
                 'message' => 'Blog deleted successfully'
             ]);
-        }catch(\Throwable $th){
+        } catch (\Throwable $th) {
             return response()->json([
-                'error'=> 'something went wrong!',
-                'message'=> $th->getMessage()
+                'error' => 'something went wrong!',
+                'message' => $th->getMessage()
             ]);
         }
     }

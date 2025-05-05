@@ -10,7 +10,7 @@ class MentorshipReq extends Model
 
     use HasFactory;
 
-    protected $fillable =[
+    protected $fillable = [
         'mentorship_id',
         'mentor_id',
         'mentee_id',
@@ -32,9 +32,10 @@ class MentorshipReq extends Model
     }
 
 
-        public function mentorship(){
-            return $this->belongsTo(Mentorship::class);
-        }
+    public function mentorship()
+    {
+        return $this->belongsTo(Mentorship::class);
+    }
 
 
 }

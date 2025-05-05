@@ -19,7 +19,7 @@ class ActivityController
     {
         try {
             $activity = Activity::paginate(10);
-            return  new ActivitesResource(($activity), 200);
+            return new ActivitesResource(($activity), 200);
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
@@ -34,7 +34,7 @@ class ActivityController
      */
     public function create()
     {
-     //
+        //
 
     }
 
@@ -51,12 +51,12 @@ class ActivityController
 
             $imgPath = null;
 
-    if ($request->hasFile('img')) {
-        $img = $request->file('img');
-        $imgName = time() . '_' . $img->getClientOriginalName();
-        $imgPath = $img->storeAs('activities', $imgName, 'public');
-        $validatedData['img'] = $imgPath;
-    }
+            if ($request->hasFile('img')) {
+                $img = $request->file('img');
+                $imgName = time() . '_' . $img->getClientOriginalName();
+                $imgPath = $img->storeAs('activities', $imgName, 'public');
+                $validatedData['img'] = $imgPath;
+            }
 
             if (isset($validatedData['eventsSchedule'])) {
                 $validatedData['eventsSchedule'] = json_encode($validatedData['eventsSchedule']);
@@ -76,40 +76,41 @@ class ActivityController
             ], 500);
         }
     }
-    public function searchActivity($keyword) {
+    public function searchActivity($keyword)
+    {
         $activtes = Activity::limit(10)->select(
             [
                 'id',
                 'name',
             ]
-            );
-            $activtes = $activtes->where('name', 'like', '%' . $keyword . '%')->get();
-           if(!$activtes){
+        );
+        $activtes = $activtes->where('name', 'like', '%' . $keyword . '%')->get();
+        if (!$activtes) {
             return response()->json([
-                'message'=> 'mentorships not found'
+                'message' => 'mentorships not found'
             ]);
-           }
-           return response()->json([
-            'mentorships'=> $activtes,
+        }
+        return response()->json([
+            'mentorships' => $activtes,
 
-           ],200);
+        ], 200);
     }
 
 
-public function search ($keyword)
-{
-    $activities = Activity::limit(10)->select(
-        [
-            'img',
-            "name",
-            "id"
-        ]
-    )->where('name', 'like', '%' . $keyword . '%')->get();
+    public function search($keyword)
+    {
+        $activities = Activity::limit(10)->select(
+            [
+                'img',
+                "name",
+                "id"
+            ]
+        )->where('name', 'like', '%' . $keyword . '%')->get();
 
-    return response()->json([
-        'activities' => $activities,
-    ], 200);
-}
+        return response()->json([
+            'activities' => $activities,
+        ], 200);
+    }
     public function filter(Request $request)
     {
         $query = Activity::query();
@@ -147,14 +148,15 @@ public function search ($keyword)
 
     }
 
-    public function joinActivity(){
+    public function joinActivity()
+    {
         try {
 
         } catch (\Throwable $th) {
             return response()->json([
-                'error'=>'Something went wrong',
-                'message'=> $th->getMessage()
-            ],500);
+                'error' => 'Something went wrong',
+                'message' => $th->getMessage()
+            ], 500);
         }
     }
 
@@ -166,28 +168,28 @@ public function search ($keyword)
      * Update the specified resource in storage.
      */
     public function update(ActivityUpdateRequest $request, string $id)
-{
-    try {
-        $activity = Activity::findOrFail($id);
-        $data = $request->validated();
+    {
+        try {
+            $activity = Activity::findOrFail($id);
+            $data = $request->validated();
 
-        if (isset($data['eventsSchedule'])) {
-            $data['eventsSchedule'] = json_encode($data['eventsSchedule']);
+            if (isset($data['eventsSchedule'])) {
+                $data['eventsSchedule'] = json_encode($data['eventsSchedule']);
+            }
+
+            $activity->update($data);
+
+            return response()->json([
+                'message' => 'Activity updated successfully',
+                'data' => new ActivitesResource($activity)
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => 'Update failed',
+                'message' => $th->getMessage()
+            ], 500);
         }
-
-        $activity->update($data);
-
-        return response()->json([
-            'message' => 'Activity updated successfully',
-            'data' => new ActivitesResource($activity)
-        ]);
-    } catch (\Throwable $th) {
-        return response()->json([
-            'error' => 'Update failed',
-            'message' => $th->getMessage()
-        ], 500);
     }
-}
 
 
     /**

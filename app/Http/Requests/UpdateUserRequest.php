@@ -29,7 +29,7 @@ class UpdateUserRequest extends FormRequest
             return [
                 'name' => ['required'],
                 'email' => ['required', 'email'],
-                'password' => ['sometimes','required'],
+                'password' => ['sometimes', 'required'],
                 'phone' => ['required'],
                 'skills' => ['required'],
                 'exp_years' => ['required', 'integer'],

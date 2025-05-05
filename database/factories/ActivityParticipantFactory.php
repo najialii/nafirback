@@ -19,9 +19,9 @@ class ActivityParticipantFactory extends Factory
      */
     public function definition(): array
     {
-        return [    
+        return [
             //
-            'user_id'=>User::factory(),
+            'user_id' => User::factory(),
             'activityreq_id' => ActivityReq::factory(),
         ];
     }
