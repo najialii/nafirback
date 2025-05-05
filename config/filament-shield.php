@@ -5,7 +5,7 @@ return [
         'should_register_navigation' => true,
         'slug' => 'shield/roles',
         'navigation_sort' => -1,
-        'navigation_badge' => false,
+        'navigation_badge' => true,
         'navigation_group' => true,
         'is_globally_searchable' => false,
         'show_model_path' => true,
@@ -23,17 +23,12 @@ return [
         'enabled' => true,
         'name' => 'super_admin',
         'define_via_gate' => false,
-        'intercept_gate' => 'before',
+        'intercept_gate' => 'before', // after
     ],
 
-    'admin' => [
+    'panel_user' => [
         'enabled' => true,
-        'name' => 'admin',
-    ],
-
-    'mentor' => [
-        'enabled' => true,
-        'name' => 'mentor',
+        'name' => 'panel_user',
     ],
 
     'permission_prefixes' => [

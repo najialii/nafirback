@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Requests\StoreCvRequest;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Models\Cv;
 
 use OpenAI\Laravel\Facades\OpenAI;
 
@@ -117,5 +119,27 @@ class CVController extends Controller
     }
 
 
+
+    public function store(StoreCvRequest $request ){
+        try {
+            $validatedData = $request->validated(); 
+
+            $cv = Cv::create($validatedData);
+
+            return response()->json([
+                'message' => 'CV reviewer created successfully',
+                'data' => $cv
+            ], 201);
+
+            // return new 
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'error'=> 'something went wrong, please try again',
+                'message'=> $th->getMessage()
+            ]);
+        }
+
+    }   
 
 }

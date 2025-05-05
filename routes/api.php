@@ -29,6 +29,7 @@ Route::post('/department', [DepartmentController::class, 'store'])->middleware('
 Route::get('/activities', [ActivityController::class, 'index']);
 Route::get('/activities/search/{keyword}', [ActivityController::class, 'searchActivity']);
 Route::get('/activities/{id}', [ActivityController::class, 'show']);
+Route::get('/activities/department/{id}', [ActivityController::class, 'departmentAct']);
 
 Route::prefix('activities')->middleware('auth:sanctum')->group(function () {
     Route::controller(ActivityController::class)->group(function () {
@@ -45,9 +46,10 @@ Route::post('/activity-requests', [ActivityReqController::class, 'store'])->midd
 Route::get('/mentorships', [MentorshipController::class, 'index']);
 Route::get('/mentorship/{id}', [MentorshipController::class, 'show']);
 Route::get('/search/mentorship/{keyword}', [MentorshipController::class, 'searchMentorships']);
+Route::post('/mentorship', [MentorshipController::class, 'store']);
 
 Route::prefix('mentorship')->middleware('auth:sanctum')->group(function () {
-    Route::post('/', [MentorshipController::class, 'store']);
+    // Route::post('/', [MentorshipController::class, 'store']);
     Route::put('/{id}', [MentorshipController::class, 'update']);
     Route::delete('/{id}', [MentorshipController::class, 'destroy']);
 });
@@ -71,6 +73,7 @@ Route::middleware('auth:sanctum')->group(function () {
 // Blogs
 Route::get('/posts', [BlogController::class, 'index']);
 Route::get('/post/{id}', [BlogController::class, 'show']);
+// Route::get('/posts/{id}', [BlogController::class], 'departmentBlogs');
 // Route::post('/post', [BlogController::class, 'store']);
 // Route::put('/post/{id}', [BlogController::class, 'update']);
 // Route::delete('/post/{id}', [BlogController::class, 'destroy']);
@@ -86,3 +89,5 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 Route::post('/rate-cv', [CVController::class, 'rate']);
+Route::post('/cv', [CVController::class, 'store']);
+// Route::post('/create-cv', [CVController::class, 'store']);

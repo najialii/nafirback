@@ -29,7 +29,7 @@ class ActivityFactory extends Factory
             'time' => $this->faker->time(),
             'type' => $this->faker->randomElement(['seminar', 'workshop', 'conference']),
             'user_id' => \App\Models\User::factory(),
-            'participants' => $this->faker->numberBetween(10, 200),
+            // 'participants' => \App\Models\User::factory(),
             'benifites' => $this->faker->text(),
             'created_at' => now(),
             'updated_at' => now(),

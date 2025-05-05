@@ -42,106 +42,106 @@ class AuthController extends Controller
             $imgPath = $img->storeAs('users/profile_imgs', $imgName, 'public');
         }
 
+    $user= User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        // 'role' => $request->role,
+        'department_id' => $request->department_id,
+        'skills' => $request->skills,
+        'phone' => $request->phone,
+        'exp_years' => $request->exp_years,
+        'country' => $request->country,
+        // 'role' => 'required|in:mentor,mentees',
+        'profile_pic'=>$imgPath,
+        'isActive' => $role === 'mentor' ? false :true,
+    ]);
+
+    $token = $user->createToken($request->name);
+
+    $user->assignRole($role);
+
+    return response()->json(['message'=> 'user registered successfully','user'=>$user , 'token' => $token->plainTextToken], 201);
+
+}
+public function login(Request $request){
+
+
+
+    Log::info($request->all());
+    $request->validate([
+        'email' => 'required|email|exists:users,email',
+        'password' => 'required',
+
+    ]);
+
+
+    $user = User::where('email', $request->email)->first();
+    if (!$user ||!Hash::check($request->password, $user->password)) {
+        return response()->json(['message' => 'invalid credentials'], 401);
+    }
+
+
+
+    $token = $user->createToken($user->name);
+
+    return response()->json(['user'=>$user , 'token' => $token->plainTextToken]);
+
+
+}
+
+public function sauth(Request $request)
+{
+try {
+    $request->validate([
+        //provider example(google, fb wa keda )
+        'provider' => 'required|string|in:google,linkedin',
+        'googele_token'=> 'required|string',
+        'email' => 'required|email',
+        'name' => 'required|string',
+        'profile_pic'=>'nullable|url',
+    ]);
+//send the provider with the request
+//validate providers with the actual service provider with a switch
+// $user  = Socialite::driver('google')->userFromToken($token);
+
+$payload = null;
+
+switch ($request->provider) {
+    case 'google':
+        $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
+        $payload = $client->verifyIdToken($request->googele_token);
+        break;
+    case 'linkedin':
+        // Handle ver
+//othercases too
+    }
+
+
+    // $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
+    // $payload = $client->verifyIdToken($request->googele_token);
+
+
+
+    if(!$payload){
+        return response()->json(['message' => 'Invalid token'], 401);
+    }
+
+
+    $user= User::where('email', $payload['email'])->first();
+
+    // $user = User::where('email', $request->email)->first();
+
+
+
+    if (!$user) {
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            // 'role' => $request->role,
-            'department_id' => $request->department_id,
-            'skills' => $request->skills,
-            'phone' => $request->phone,
-            'exp_years' => $request->exp_years,
-            'country' => $request->country,
-            'role' => 'required|in:mentor,mentees',
-            'profile_pic' => $imgPath,
-            'isActive' => $role === 'mentor' ? false : true,
-        ]);
-
-        $token = $user->createToken($request->name);
-
-        $user->assignRole($role);
-
-        return response()->json(['message' => 'user registered successfully', 'user' => $user, 'token' => $token->plainTextToken], 201);
-
-    }
-    public function login(Request $request)
-    {
-
-
-
-        Log::info($request->all());
-        $request->validate([
-            'email' => 'required|email|exists:users,email',
-            'password' => 'required',
-
-        ]);
-
-
-        $user = User::where('email', $request->email)->first();
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'invalid credentials'], 401);
-        }
-
-
-        $token = $user->createToken($user->name);
-
-        return response()->json(['user' => $user, 'token' => $token->plainTextToken]);
-
-
-    }
-
-    public function atauth(Request $request)
-    {
-        $request->validate([
-            'access_token' => 'required|string',
-            'provider' => 'required|in:google' // only google for now!
-        ]);
-
-        try {
-            $authUser = Socialite::driver('google')->stateless()->userFromToken($request->access_token);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Token verification failed',
-                'message' => $e->getMessage()
-            ], 500);
-        }
-
-        \Log::info('Google User:', [
-            'name' => $authUser->getName(),
-            'email' => $authUser->getEmail(),
-            'id' => $authUser->getId(),
-        ]);
-        $user = User::where('email', $authUser->getEmail())->first();
-
-
-        if (!$user) {
-
-            $user = User::create([
-                'name' => $authUser->getName(),
-                'email' => $authUser->getEmail(),
-                'password' => Hash::make(uniqid()),
-                'isActive' => true,
-                'profile_pic' => 'testtesttest'
-            ]);
-        }
-
-        $token = $user->createToken('google-token')->plainTextToken;
-
-        return response()->json([
-            'authToken' => $token,
-            'email' => $user->email,
-            'name' => $user->name,
-            'id' => $user->id
-        ]);
-    }
-
-    public function sauth(Request $request)
-    {
-        try {
-            $request->validate([
-                //provider example(google, fb wa keda )
-                'provider' => 'required|string|in:google,linkedin',
-                'access_token' => 'required|string',
+            'password' => Hash::make(uniqid()),
+            'isActive' => true,
+            'profile_pic' => $request->image,
+            // 'googele_token'=> 'required|string',
             ]);
 
             switch ($request->provider) {
@@ -220,10 +220,8 @@ class AuthController extends Controller
             return response()->json(['message' => 'Unauthenticated'], 401);
         }
 
-        return response()->json([
-            'message' => 'User data retrieved successfully',
-            'user' => $user
-        ], 200);
-    }
 
+       return response()->json(['message' => 'You have been logged out'], 200);
+
+}
 }

@@ -18,6 +18,8 @@ use Filament\Tables\Filters\TernaryFilter;
 
 class UserResource extends Resource
 {
+
+    // $role = User::hasrole('')
     protected static ?int $navigationSort = 0;
 
 
@@ -104,7 +106,13 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('email')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('role')->sortable(),
+                // Tables\Columns\TextColumn::make('role')->sortable(),
+                Tables\Columns\TextColumn::make('roles.name')
+    ->label('Role')
+    ->formatStateUsing(fn ($state) => is_array($state) ? implode(', ', $state) : $state)
+    ->sortable()
+    ->badge(),
+
                 Tables\Columns\TextColumn::make('department.name'),
                 Tables\Columns\TextColumn::make('country'),
                 Tables\Columns\IconColumn::make('isActive')->boolean()->sortable(),

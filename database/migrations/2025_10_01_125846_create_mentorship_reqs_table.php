@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->foreignId('mentee_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('mentor_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('mentorship_id')->constrained('mentorships')->onDelete('cascade');
-            $table->string('selecteday');
-            $table->string('selectedtime');
+            $table->string('sele_date');
+            $table->string('sele_time');
             $table->text('message')->nullable();
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->timestamps();

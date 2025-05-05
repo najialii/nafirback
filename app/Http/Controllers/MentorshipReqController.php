@@ -111,17 +111,7 @@ class MentorshipReqController extends Controller
     }
 
 
-    public function show($id)
-    {
-        // $user = User::find($id);
-
-        // if (!$user) {
-        //     return response()->json(['message' => 'User not found'], 404);
-        // }
-
-        return new mentorshipReqResource(MentorshipReq::findOrFail($id));
-
-    }
+  
 
 
     public function getMentorMentorsRequests($userId)
@@ -205,9 +195,22 @@ class MentorshipReqController extends Controller
         $mentorshipReq->reschedule($request->selecteday, $request->selectedtime);
 
         return response()->json([
-            'error' => 'Mentorship request was successfully rescheduled',
-            'mentorship request' => $mentorshipReq,
-        ], 200);
+            'error' => 'Mentorship request not found',
+        ], 404);
+    }
+
+if(auth()->id() !== $mentorshipReq->mentor_id) {
+    return  response()->json([
+        'error'=>'Unauthorized'
+    ],403);
+}
+
+$mentorshipReq->reschedule($request->date,$request->selectedtime);
+
+return response()->json([
+    'error'=>'Mentorship request was successfully rescheduled',
+    'mentorship request' => $mentorshipReq,
+],200);
 
     }
 

@@ -33,6 +33,8 @@ class ActivityStoreRequest extends FormRequest
             'type' => 'required|string|max:100',
             'user_id' => 'required|integer|exists:users,id',
             'benifites' => 'nullable|string',
+            // 'link' => 'nullable|string',
+            // 'passcode' => 'nullable|string',
         ];
     }
 }

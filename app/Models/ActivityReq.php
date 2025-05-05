@@ -19,9 +19,9 @@ class ActivityReq extends Model
     ];
 
 
-    // public function aciivity(){
-    //     return $this->belongsTo(Activity::class, 'activity_id');
-    // }
+    public function aciivity(){
+        return $this->belongsTo(Activity::class, 'activity_id');
+    }
 
 
     public function participants()
