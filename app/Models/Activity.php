@@ -20,9 +20,8 @@ class Activity extends Model
         'eventsSchedule',
         'date',
         'time',
-        'type',
+        'type', 
         'user_id',
-        'participants',
         'benifites',
 
 
@@ -36,6 +35,13 @@ class Activity extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+
+    public function activityReq()
+{
+    return $this->hasMany(ActivityReq::class);
+}
+    
 
 
 }

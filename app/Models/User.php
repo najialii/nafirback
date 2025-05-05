@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Department;
- use App\Models\Mentorship;
+ use App\Models\Metorship;
  use App\Models\Blog;
  use App\Models\MentorshipReq;
 use App\Models\Activity;
@@ -95,5 +95,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Blog::class, 'author_id');
     }
+
+    public function superAdmin()
+{
+    return $this->hasOne(SuperAdmin::class);
+}
+
 
 }

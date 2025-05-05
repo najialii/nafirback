@@ -10,6 +10,7 @@ use Filament\Clusters\Cluster;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use App\Models\Department;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -34,6 +35,7 @@ protected static ?string $cluster = MentorshipCluster::class;
 
     public static function form(Form $form): Form
     {
+        $user = auth()->user();
         return $form
             ->schema([
 
@@ -90,12 +92,12 @@ protected static ?string $cluster = MentorshipCluster::class;
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('department.name'),
-                Tables\Columns\TextColumn::make('mentor.name')->label('Mentor'),
-            ])
+                Tables\Columns\TextColumn::make('mentor.name')->label('Mentor'),                ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -118,6 +120,7 @@ protected static ?string $cluster = MentorshipCluster::class;
             'index' => Pages\ListMentorships::route('/'),
             'create' => Pages\CreateMentorship::route('/create'),
             'edit' => Pages\EditMentorship::route('/{record}/edit'),
+            'view' => Pages\ViewMentorship::route('/{record}'),
         ];
     }
 }

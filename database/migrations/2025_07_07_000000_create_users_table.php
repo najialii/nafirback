@@ -12,25 +12,27 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
+          
             $table->id();
             $table->string('name');
+            $table->string('profile_pic')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('profile_pic')->nullable();
-            // $table->enum('role', ['superadmin' ,'admin', 'mentor' , 'mentee'])->default('mentee');
-            $table->string('skills')->nullable();
-            $table->string('country')->nullable();
-            $table->integer('exp_years')->nullable();
-            $table->string('phone')->nullable();
-            $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
-            $table->rememberToken();
-            $table->json('expertise')->nullable();
-            $table->json('education')->nullable();
-            $table->json('certificates')->nullable();
-            $table->boolean('isActive')->default(false);
-            // $table->foreignId('activity_id')->nullable()->constrained('activities')->onDelete('set null');
-            $table->timestamps();
+                $table->string('password');
+                $table->unsignedBigInteger('department_id')->nullable();
+                $table->string('phone')->nullable();
+                $table->string('skills')->nullable();
+                $table->integer('exp_years')->nullable();
+                $table->string('country')->nullable();
+                $table->json('expertise')->nullable();
+                $table->json('education')->nullable();
+                $table->json('certificates')->nullable();
+                $table->boolean('isActive')->default(true);
+                $table->rememberToken();
+                $table->timestamps();
+    
+                $table->foreign('department_id')->references('id')->on('departments')->onDelete('set null');
+    
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

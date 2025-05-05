@@ -23,9 +23,9 @@ class DepartmentsStats extends BaseWidget
         ->toArray();
         $newUsersChartData = array_values($newUsersData);
 
-        $depAdminsCount = User::where('role', 'admin')->count();
-        $mentorCount = User::where('role', 'mentor')->count();
-        $menteeCount = User::where('role', 'mentee')->count();
+        $depAdminsCount = User::role('admin')->count();
+        $mentorCount = User::role('mentor')->count();
+        $menteeCount = User::role('mentee')->count();
 
         $total = $depAdminsCount + $mentorCount + $menteeCount;
 

@@ -65,6 +65,7 @@ class BlogResource extends Resource
         return $table
             ->columns([
                 //
+                // Tables\Columns\TextColumn::make('author.')->searchable(),              
                 Tables\Columns\TextColumn::make('author.name')->searchable(),
                 Tables\Columns\TextColumn::make('title')->searchable(),
                 Tables\Columns\TextColumn::make('department.name')->sortable(),
@@ -76,6 +77,8 @@ class BlogResource extends Resource
 
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
+
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -98,6 +101,9 @@ class BlogResource extends Resource
             'index' => Pages\ListBlogs::route('/'),
             'create' => Pages\CreateBlog::route('/create'),
             'edit' => Pages\EditBlog::route('/{record}/edit'),
+            'view' => Pages\ViewBlog::route('/{record}'),
         ];
     }
 }
+
+

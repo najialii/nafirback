@@ -108,17 +108,7 @@ if($isSessionBooked){
     }
 
 
-    public function show($id)
-    {
-        // $user = User::find($id);
-
-        // if (!$user) {
-        //     return response()->json(['message' => 'User not found'], 404);
-        // }
-
-    return new mentorshipReqResource(MentorshipReq::findOrFail($id));
-
-}
+  
 
 
     public function getMentorMentorsRequests($userId){
@@ -196,7 +186,7 @@ if(auth()->id() !== $mentorshipReq->mentor_id) {
     ],403);
 }
 
-$mentorshipReq->reschedule($request->selecteday,$request->selectedtime);
+$mentorshipReq->reschedule($request->date,$request->selectedtime);
 
 return response()->json([
     'error'=>'Mentorship request was successfully rescheduled',

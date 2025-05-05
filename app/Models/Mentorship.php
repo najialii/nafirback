@@ -18,17 +18,19 @@ class Mentorship extends Model
          'name',
          'mentor_id',
          'department_id',
-         'availability',
+         'date',
+         'av_time',
         ];
 
-
+        
     // public function dpeartmnet(){
     //     return $this-> belongsTo(Department::class);
     // }
 
-    public function user(){
-        return $this-> belongsTo(User::class);
+    public function mentor(){
+        return $this->belongsTo(User::class, 'mentor_id');
     }
+    
 
     public function department(){
         return $this-> belongsTo(Department::class);

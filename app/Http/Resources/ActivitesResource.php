@@ -14,6 +14,14 @@ class ActivitesResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'department_id' => $this->department_id,
+            'location' => $this->location,
+            'img' => $this->img,
+            'time' => $this->time,
+            'type' => $this->type,
+        ];
     }
 }

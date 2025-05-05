@@ -23,14 +23,7 @@ class MentorshipFactory extends Factory
             'mentor_id' => User::factory(),
             'department_id' => Department::factory(),
             'date' => $this->faker->date(),
-            'days' => json_encode($this->faker->randomElements(
-                ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-                $this->faker->numberBetween(1, 5)
-            )),
-            'available_times' => json_encode([
-                'morning' => ['08:00', '10:00'],
-                'evening' => ['18:00', '20:00']
-            ]),
+            'av_time' => json_encode([['10:00', '11:00'], ['15:00', '17:00']])
         ];
     }
 }

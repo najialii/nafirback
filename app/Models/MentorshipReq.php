@@ -14,8 +14,8 @@ class MentorshipReq extends Model
         'mentorship_id',
         'mentor_id',
         'mentee_id',
-        'selecteday',
-        'selectedtime',
+        'sele_date',
+        'av_time',
         'message',
         'status'
     ];

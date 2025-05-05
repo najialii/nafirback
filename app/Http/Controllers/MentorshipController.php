@@ -68,8 +68,8 @@ public function search ($keyword) {
     try{
         $validatedData = $request->validated();
 
-        $validatedData['days'] = json_encode($validatedData['days']);
-        $validatedData['available_times'] = json_encode($validatedData['available_times']);
+        $validatedData['date'] = json_encode($validatedData['date']);
+        $validatedData['av_time'] = json_encode($validatedData['av_times']);
         $mentorship = Mentorship::create($validatedData);
         return new MentorshipResource($mentorship);
     } catch(\Throwable $th){

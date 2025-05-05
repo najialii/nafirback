@@ -25,8 +25,8 @@ class MentorshipReqRequest extends FormRequest
             'mentorship_id'=>['required'],
             'mentor_id'=>['required'],
             'mentee_id'=>['required'],
-            'selecteday'=>['required'],
-            'selectedtime'=>['required'],
+            'sele_date'=>['required'],
+            'sele_time'=>['required'],
             'message'=>['required'],
             'status'=>['required']
         ];

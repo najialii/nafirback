@@ -6,8 +6,9 @@ use App\Models\Department;
 use App\Models\User;
 use App\Models\Activity;
 use App\Models\ActivityParticipant;
-use App\Models\Mentorship;
 use App\Models\MentorshipReq;
+use App\Models\Mentorship;
+USE App\Models\SuperAdmin;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -29,6 +30,7 @@ class DatabaseSeeder extends Seeder
             ActivitesParticpantSeeder::class,
             BlogSeeder::class,
             RoleSeeder::class,
+            SuperAdminSeeder::class,
         ]);
 
 

@@ -26,7 +26,12 @@ class MentorshipReqResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $cluster = MentorshipCluster::class;
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->hasRole('super_admin') === false;
+    }
 
+    
     public static function form(Form $form): Form
     {
         return $form
@@ -93,7 +98,7 @@ class MentorshipReqResource extends Resource
                 ->icon('heroicon-o-eye')
                 ->modalHeading('Review Mentorship Request')
                 ->visible(fn ($record) => auth()->user()->hasRole('mentor') && $record->mentor_id === auth()->id())
-                ->modalSubmitAction(false) // ما في زر submit رئيسي
+                ->modalSubmitAction(false)  
                 ->modalCancelActionLabel('Close')
                 ->form(fn ($record) => [
                     Forms\Components\Placeholder::make('mentorship_id')

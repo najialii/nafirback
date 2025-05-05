@@ -51,7 +51,7 @@ public function register(StoreUserRequest $request){
         'phone' => $request->phone,
         'exp_years' => $request->exp_years,
         'country' => $request->country,
-        'role' => 'required|in:mentor,mentees',
+        // 'role' => 'required|in:mentor,mentees',
         'profile_pic'=>$imgPath,
         'isActive' => $role === 'mentor' ? false :true,
     ]);
@@ -70,7 +70,7 @@ public function login(Request $request){
     Log::info($request->all());
     $request->validate([
         'email' => 'required|email|exists:users,email',
-'password' => 'required',
+        'password' => 'required',
 
     ]);
 
@@ -81,55 +81,12 @@ public function login(Request $request){
     }
 
 
+
     $token = $user->createToken($user->name);
 
     return response()->json(['user'=>$user , 'token' => $token->plainTextToken]);
 
 
-}
-
-public function atauth(Request $request)
-{
-    $request->validate([
-        'access_token' => 'required|string',
-        'provider' => 'required|in:google' // only google for now!
-    ]);
-
-    try {
-        $authUser = Socialite::driver('google')->stateless()->userFromToken($request->access_token);
-    } catch (\Exception $e) {
-          return response()->json([
-        'error' => 'Token verification failed',
-         'message' => $e->getMessage()], 500);
-    }
-
-    \Log::info('Google User:', [
-        'name' => $authUser->getName(),
-        'email' => $authUser->getEmail(),
-        'id' => $authUser->getId(),
-    ]);
-$user = User::where('email', $authUser->getEmail())->first();
-
-
-if (!$user){
-
-    $user = User::create([
-        'name' => $authUser->getName(),
-        'email' => $authUser->getEmail(),
-        'password' => Hash::make(uniqid()),
-        'isActive' => true,
-        'profile_pic' => 'testtesttest'
-    ]);
-}
-
-    $token = $user->createToken('google-token')->plainTextToken;
-
-    return response()->json([
-        'authToken' => $token,
-        'email' => $user->email,
-        'name' => $user->name,
-        'id' => $user-> id
-    ]);
 }
 
 public function sauth(Request $request)
@@ -138,8 +95,16 @@ try {
     $request->validate([
         //provider example(google, fb wa keda )
         'provider' => 'required|string|in:google,linkedin',
-        'access_token'=> 'required|string',
+        'googele_token'=> 'required|string',
+        'email' => 'required|email',
+        'name' => 'required|string',
+        'profile_pic'=>'nullable|url',
     ]);
+//send the provider with the request
+//validate providers with the actual service provider with a switch
+// $user  = Socialite::driver('google')->userFromToken($token);
+
+$payload = null;
 
 switch ($request->provider) {
     case 'google':
@@ -174,7 +139,8 @@ switch ($request->provider) {
             'email' => $request->email,
             'password' => Hash::make(uniqid()),
             'isActive' => true,
-            'profile_pic' => $request->image
+            'profile_pic' => $request->image,
+            // 'googele_token'=> 'required|string',
             ]);
 
     }
@@ -207,18 +173,4 @@ $request->user()->tokens()->delete();
        return response()->json(['message' => 'You have been logged out'], 200);
 
 }
-public function getMeData(Request $request)
-{
-    $user = $request->user();
-
-    if (!$user) {
-        return response()->json(['message' => 'Unauthenticated'], 401);
-    }
-
-    return response()->json([
-        'message' => 'User data retrieved successfully',
-        'user' => $user
-    ], 200);
-}
-
 }
