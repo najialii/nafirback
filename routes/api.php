@@ -26,7 +26,7 @@ Route::get('/department/{id}', [DepartmentController::class, 'show']);
 Route::post('/department', [DepartmentController::class, 'store'])->middleware('auth:sanctum');
 
 // Activities
-Route::get('/activites', [ActivityController::class, 'index']);
+Route::get('/activities', [ActivityController::class, 'index']);
 Route::get('/activities/search/{keyword}',[ActivityController::class, 'searchActivity']);
 Route::get('/activities/{id}', [ActivityController::class, 'show']);
 

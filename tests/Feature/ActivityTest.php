@@ -39,7 +39,7 @@ class ActivitiesTest extends TestCase
     {
         Activity::factory()->count(3)->create();
 
-        $response = $this->get('/api/activites');
+        $response = $this->get('/api/activities');
 
         $response->assertStatus(200);
     }
