@@ -25,7 +25,7 @@ class ActivitiesStats extends BaseWidget
 
 
 
-        $UserPartActivites = Activity::where('user_id')->get()
+        $UserPartActivities = Activity::where('user_id')->get()
             ->sum(function ($activity) {
                 return is_array($activity->participants);
             });
@@ -36,7 +36,7 @@ class ActivitiesStats extends BaseWidget
 
 
         return [
-            Stat::make('New Activites', $newActivitiesCount)->icon('heroicon-m-user-group', IconPosition::Before)
+            Stat::make('New Activities', $newActivitiesCount)->icon('heroicon-m-user-group', IconPosition::Before)
                 ->description('New users in the last 30 days')->color('primary')->chart($newUsersChartData),
 
             // Stat::make('upcoming Activities', $upcomingActivitiesCount)->icon('heroicon-m-user-group', IconPosition::Before)
@@ -45,7 +45,7 @@ class ActivitiesStats extends BaseWidget
             // ->description('New users in the last 30 days')->color('primary')->chart($newUsersChartData),
 
 
-            Stat::make('Total Activity Participants', $UserPartActivites)->description('Total participants in your activities')
+            Stat::make('Total Activity Participants', $UserPartActivities)->description('Total participants in your activities')
                 ->icon('heroicon-o-user-group')->color('warning'),
 
         ];

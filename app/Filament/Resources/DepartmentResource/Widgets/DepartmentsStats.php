@@ -30,7 +30,7 @@ class DepartmentsStats extends BaseWidget
         $total = $depAdminsCount + $mentorCount + $menteeCount;
 
 
-        $UserPartActivites = Activity::where('user_id')->get()
+        $UserPartActivities = Activity::where('user_id')->get()
             ->sum(function ($activity) {
                 return is_array($activity->participants);
             });
@@ -49,7 +49,7 @@ class DepartmentsStats extends BaseWidget
                 ->color('primary'),
 
 
-            Stat::make('Total Activity Participants', $UserPartActivites)->description('Total participants in your activities')
+            Stat::make('Total Activity Participants', $UserPartActivities)->description('Total participants in your activities')
                 ->icon('heroicon-o-user-group')->color('warning'),
         ];
     }

@@ -4,11 +4,11 @@ namespace App\Filament\Widgets;
 
 use Filament\Widgets\ChartWidget;
 
-class ActivitesChart extends ChartWidget
+class ActivitiesChart extends ChartWidget
 {
     protected static ?int $sort = 3;
 
-    protected static ?string $heading = 'Activites';
+    protected static ?string $heading = 'Activities';
 
     protected function getData(): array
     {

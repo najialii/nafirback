@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\ActivitesParticpant;
+use App\Models\ActivitiesParticpant;
 use App\Models\User;
 class ActivityReq extends Model
 {

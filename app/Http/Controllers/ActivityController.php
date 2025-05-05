@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Activity;
-use App\Http\Resources\ActivitesResource;
+use App\Http\Resources\ActivityResource;
 use App\Http\Resources\ActivityCollection;
 use App\Http\Requests\ActivityStoreRequest;
 use App\Http\Requests\ActivityUpdateRequest;
@@ -19,7 +19,7 @@ class ActivityController
     {
         try {
             $activity = Activity::paginate(10);
-            return new ActivitesResource(($activity), 200);
+            return new ActivityResource(($activity), 200);
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
@@ -66,7 +66,7 @@ class ActivityController
 
             return response()->json([
                 'message' => 'Activity created successfully',
-                'data' => new ActivitesResource($activity)
+                'data' => new ActivityResource($activity)
             ], 201);
 
         } catch (\Throwable $th) {
@@ -135,7 +135,7 @@ class ActivityController
 
         return response()->json([
             'message' => 'Activities retrieved successfully',
-            'data' => ActivitesResource::collection($activities)
+            'data' => ActivityResource::collection($activities)
         ]);
     }
     /**
@@ -143,7 +143,7 @@ class ActivityController
      */
     public function show(string $id)
     {
-        return new ActivitesResource(Activity::findOrFail($id));
+        return new ActivityResource(Activity::findOrFail($id));
 
 
     }
@@ -181,7 +181,7 @@ class ActivityController
 
             return response()->json([
                 'message' => 'Activity updated successfully',
-                'data' => new ActivitesResource($activity)
+                'data' => new ActivityResource($activity)
             ]);
         } catch (\Throwable $th) {
             return response()->json([

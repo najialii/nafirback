@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             MentorshipSeeder::class,
             MentorshipreqSeeder::class,
             ActivityReqSeeder::class,
-            ActivitesParticpantSeeder::class,
+            ActivitiesParticpantSeeder::class,
             BlogSeeder::class,
             RoleSeeder::class,
         ]);

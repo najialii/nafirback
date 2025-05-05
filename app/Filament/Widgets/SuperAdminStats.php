@@ -48,7 +48,7 @@ class SuperAdminStats extends BaseWidget
         }
 
 
-        // $successfullActivites = Activity::where('date', '>=', Carbon::now());
+        // $successfullActivities = Activity::where('date', '>=', Carbon::now());
 
         return [
 
