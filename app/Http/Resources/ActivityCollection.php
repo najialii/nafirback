@@ -16,19 +16,17 @@ class ActivityCollection extends ResourceCollection
     {
         return $this->collection->map(function ($activity) {
             return [
-                'id' => $this->id,
-                'name' => $this->name,
-                'department_id' => $this->department_id,
-                'location' => $this->location,
-                'img' => $this->img,
-                'time' => $this->time,
-                'type' => $this->type,
+                'id' => $activity->id,
+                'name' => $activity->name,
+                'department_id' => $activity->department_id,
+                'location' => $activity->location,
+                'img' => $activity->img,
+                'time' => $activity->time,
+                'type' => $activity->type,
                 'extra' => [
-
-                    'likes_count' => $this->likes_count,
-                    'liked_by_user' => $this->liked_by_user,
-                ]
-                // 'liked_user_ids' => $activity->likes->pluck('user_id'), // IDs of users who liked the activity
+                    'likes_count' => $activity->likes_count ?? $activity->likes->count(),
+                    'liked_by_user' => $activity->liked_by_user ?? false,
+                ],
             ];
         })->toArray();
     }

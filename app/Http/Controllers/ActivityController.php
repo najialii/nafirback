@@ -34,11 +34,9 @@ class ActivityController
     {
         try {
             $activities = Activity::with('likes')->paginate(10);
-
-            return response()->json([
-                'message' => 'Activities retrieved successfully',
-                'data' => ActivityCollection::collection($activities),
-            ], 200);
+    
+            return (new ActivityCollection($activities))
+                ->additional(['message' => 'Activities retrieved successfully']);
         } catch (\Throwable $th) {
             return response()->json([
                 'error' => 'Something went wrong!',
