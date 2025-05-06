@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\User;
 use App\Models\Department;
+use App\Models\ActivitiesLikes;
 
 class Activity extends Model
 {
@@ -41,7 +42,11 @@ class Activity extends Model
 {
     return $this->hasMany(ActivityReq::class);
 }
-    
+
+public function likes()
+{
+    return $this->hasMany(ActivitiesLikes::class);
+}
 
 
 }
