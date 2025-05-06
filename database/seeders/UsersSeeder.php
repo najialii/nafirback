@@ -16,5 +16,10 @@ class UsersSeeder extends Seeder
             ->count(25)
             ->hasDepartment(25)
             ->create();
+        $firstUser = User::first();
+        $firstUser->password = 'admin';
+        $firstUser->email = 'admin@nafir.sd';
+        $firstUser->save();
+
     }
 }
