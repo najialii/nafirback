@@ -16,7 +16,7 @@ class ActivitiesLikesFactory extends Factory
         return [
             'user_id' => User::inRandomOrder()->first()?->id ?? User::factory(),
             'activity_id' => Activity::inRandomOrder()->first()?->id ?? Activity::factory(),
-            'liked' => $this->faker->boolean(), 
+            'liked' => $this->faker->boolean(),
         ];
     }
 }

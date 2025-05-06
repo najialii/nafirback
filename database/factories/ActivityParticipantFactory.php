@@ -8,7 +8,7 @@ use App\Models\ActivityReq;
 
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ActivitiesParticpant>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ActivitiesParticipant>
  */
 class ActivityParticipantFactory extends Factory
 {

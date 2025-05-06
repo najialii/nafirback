@@ -8,8 +8,8 @@ use App\Models\ActivityReq;
 
 class ActivityParticipant extends Model
 {
-    
-    
+
+
     use HasFactory;
 
     protected $fillable = [

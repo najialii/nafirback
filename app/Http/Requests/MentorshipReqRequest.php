@@ -22,13 +22,13 @@ class MentorshipReqRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'mentorship_id'=>['required'],
-            'mentor_id'=>['required'],
-            'mentee_id'=>['required'],
-            'sele_date'=>['required'],
-            'sele_time'=>['required'],
-            'message'=>['required'],
-            'status'=>['required']
+            'mentorship_id' => ['required'],
+            'mentor_id' => ['required'],
+            'mentee_id' => ['required'],
+            'sele_date' => ['required'],
+            'sele_time' => ['required'],
+            'message' => ['required'],
+            'status' => ['required']
         ];
     }
 }

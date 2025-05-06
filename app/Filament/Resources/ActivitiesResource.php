@@ -122,35 +122,35 @@ class ActivitiesResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-        ->columns([
-            Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-            Tables\Columns\TextColumn::make('department.name'),
-            Tables\Columns\TextColumn::make('location'),
-            Tables\Columns\TextColumn::make('participants_count')
-                ->label('Participants')
-                ->formatStateUsing(function ($record) {
-                    return $record->activityReq->participants->count(); // Counts the participants from ActivityReq
-                }),
-            Tables\Columns\TextColumn::make('date'),
-            Tables\Columns\TextColumn::make('time'),
-        ])
-        ->filters([
-            TernaryFilter::make('email_verified_at')
-                ->label('Email verification')
-                ->nullable()
-                // ->placeholder('All users')
-                ->trueLabel('Verified users')
-                ->falseLabel('Not verified users')
-        ])
-        ->actions([
-            Tables\Actions\ViewAction::make(),
-            Tables\Actions\EditAction::make(),
-        ])
-        ->bulkActions([
-            Tables\Actions\BulkActionGroup::make([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]),
-        ]);
+            ->columns([
+                Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('department.name'),
+                Tables\Columns\TextColumn::make('location'),
+                Tables\Columns\TextColumn::make('participants_count')
+                    ->label('Participants')
+                    ->formatStateUsing(function ($record) {
+                        return $record->activityReq->participants->count(); // Counts the participants from ActivityReq
+                    }),
+                Tables\Columns\TextColumn::make('date'),
+                Tables\Columns\TextColumn::make('time'),
+            ])
+            ->filters([
+                TernaryFilter::make('email_verified_at')
+                    ->label('Email verification')
+                    ->nullable()
+                    // ->placeholder('All users')
+                    ->trueLabel('Verified users')
+                    ->falseLabel('Not verified users')
+            ])
+            ->actions([
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
     }
 
     public static function getRelations(): array
@@ -167,7 +167,7 @@ class ActivitiesResource extends Resource
             'index' => Pages\ListActivities::route('/'),
             'create' => Pages\CreateActivities::route('/create'),
             'edit' => Pages\EditActivities::route('/{record}/edit'),
-            'view' => Pages\ViewActivities::route('/{record}'), 
+            'view' => Pages\ViewActivities::route('/{record}'),
         ];
     }
 

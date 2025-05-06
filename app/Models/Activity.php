@@ -21,7 +21,7 @@ class Activity extends Model
         'eventsSchedule',
         'date',
         'time',
-        'type', 
+        'type',
         'user_id',
         'benifites',
 
@@ -41,14 +41,14 @@ class Activity extends Model
 
 
     public function activityReq()
-{
-    return $this->hasMany(ActivityReq::class);
-}
+    {
+        return $this->hasMany(ActivityReq::class);
+    }
 
-public function likes()
-{
-    return $this->hasMany(ActivitiesLikes::class);
-}
+    public function likes()
+    {
+        return $this->hasMany(ActivitiesLikes::class);
+    }
 
 
 }

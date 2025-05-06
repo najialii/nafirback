@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role; 
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
 
 /**

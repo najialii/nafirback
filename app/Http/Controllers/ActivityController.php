@@ -19,7 +19,7 @@ class ActivityController
     {
         try {
             $activity = Activity::paginate(10);
-            return  new ActivityCollection(($activity), 200);
+            return new ActivityCollection(($activity), 200);
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
@@ -192,22 +192,23 @@ class ActivityController
     }
 
 
-public function departmentAct($id){
-    try{
-        $activity = Activity::where('department_id', $id)->paginate(10);
-        if (!$activity) {
+    public function departmentAct($id)
+    {
+        try {
+            $activity = Activity::where('department_id', $id)->paginate(10);
+            if (!$activity) {
+                return response()->json([
+                    'message' => 'blogs not found'
+                ]);
+            }
+            return new ActivityCollection($activity);
+        } catch (\Throwable $th) {
             return response()->json([
-                'message' => 'blogs not found'
+                'error' => 'something went wrong!',
+                'message' => $th->getMessage()
             ]);
+
         }
-        return new ActivityCollection($activity);
-    } catch(\Throwable $th){
-        return response()->json([
-            'error' => 'something went wrong!',
-        'message' => $th->getMessage()
-        ]);
-    
-    }
     }
 
     /**

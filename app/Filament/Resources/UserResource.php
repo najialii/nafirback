@@ -108,10 +108,10 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')->searchable()->sortable(),
                 // Tables\Columns\TextColumn::make('role')->sortable(),
                 Tables\Columns\TextColumn::make('roles.name')
-    ->label('Role')
-    ->formatStateUsing(fn ($state) => is_array($state) ? implode(', ', $state) : $state)
-    ->sortable()
-    ->badge(),
+                    ->label('Role')
+                    ->formatStateUsing(fn($state) => is_array($state) ? implode(', ', $state) : $state)
+                    ->sortable()
+                    ->badge(),
 
                 Tables\Columns\TextColumn::make('department.name'),
                 Tables\Columns\TextColumn::make('country'),

@@ -120,9 +120,10 @@ class CVController extends Controller
 
 
 
-    public function store(StoreCvRequest $request ){
+    public function store(StoreCvRequest $request)
+    {
         try {
-            $validatedData = $request->validated(); 
+            $validatedData = $request->validated();
 
             $cv = Cv::create($validatedData);
 
@@ -135,11 +136,11 @@ class CVController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
-                'error'=> 'something went wrong, please try again',
-                'message'=> $th->getMessage()
+                'error' => 'something went wrong, please try again',
+                'message' => $th->getMessage()
             ]);
         }
 
-    }   
+    }
 
 }

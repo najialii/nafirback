@@ -8,7 +8,7 @@ use App\Models\Activity;
 use App\Models\ActivityParticipant;
 use App\Models\MentorshipReq;
 use App\Models\Mentorship;
-USE App\Models\SuperAdmin;
+use App\Models\SuperAdmin;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 

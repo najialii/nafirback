@@ -31,7 +31,7 @@ class MentorshipReqResource extends Resource
         return auth()->user()?->hasRole('super_admin') === false;
     }
 
-    
+
     public static function form(Form $form): Form
     {
         return $form
@@ -94,16 +94,16 @@ class MentorshipReqResource extends Resource
             ->actions([
 
                 Tables\Actions\Action::make('preview')
-                ->label('Preview')
-                ->icon('heroicon-o-eye')
-                ->modalHeading('Review Mentorship Request')
-                ->visible(fn ($record) => auth()->user()->hasRole('mentor') && $record->mentor_id === auth()->id())
-                ->modalSubmitAction(false)  
-                ->modalCancelActionLabel('Close')
-                ->form(fn ($record) => [
-                    Forms\Components\Placeholder::make('mentorship_id')
-                        ->label('Mentorship ID')
-                        ->content($record->mentorship_id),
+                    ->label('Preview')
+                    ->icon('heroicon-o-eye')
+                    ->modalHeading('Review Mentorship Request')
+                    ->visible(fn($record) => auth()->user()->hasRole('mentor') && $record->mentor_id === auth()->id())
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Close')
+                    ->form(fn($record) => [
+                        Forms\Components\Placeholder::make('mentorship_id')
+                            ->label('Mentorship ID')
+                            ->content($record->mentorship_id),
 
                         Forms\Components\Placeholder::make('mentor')
                             ->label('Mentor')

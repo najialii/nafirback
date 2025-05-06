@@ -20,12 +20,12 @@ class Cv extends Model
         'education',
         'certificates',
         'linkden_profile'
-];
+    ];
 
-protected $casts = [
-    'skills'       => 'array',
-    'expertise'    => 'array',
-    'education'    => 'array',
-    'certificates' => 'array',
-];  
+    protected $casts = [
+        'skills' => 'array',
+        'expertise' => 'array',
+        'education' => 'array',
+        'certificates' => 'array',
+    ];
 }

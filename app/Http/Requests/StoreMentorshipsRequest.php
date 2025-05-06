@@ -26,8 +26,8 @@ class StoreMentorshipsRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'mentor_id' => ['required'],
             'department_id' => ['required', 'integer', 'exists:departments,id'],
-            'sele_date'=>['required', 'array'],
-            'av_time'=>['required', 'array']
+            'sele_date' => ['required', 'array'],
+            'av_time' => ['required', 'array']
 
         ];
     }

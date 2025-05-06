@@ -13,16 +13,18 @@ class ActivitiesLikes extends Model
 
     use HasFactory;
 
-    protected $fillable = ['liked','user_id', 'activity_id'];
+    protected $fillable = ['liked', 'user_id', 'activity_id'];
 
-    public function activity() {
+    public function activity()
+    {
         return $this->belongsTo(Activity::class);
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-    
+
 
 
 

@@ -92,7 +92,8 @@ class MentorshipResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('department.name'),
-                Tables\Columns\TextColumn::make('mentor.name')->label('Mentor'),                ])
+                Tables\Columns\TextColumn::make('mentor.name')->label('Mentor'),
+            ])
             ->filters([
                 //
             ])

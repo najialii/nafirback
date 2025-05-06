@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\ActivitiesParticpant;
+use App\Models\ActivitiesParticipant;
 use App\Models\User;
 class ActivityReq extends Model
 {
@@ -19,7 +19,8 @@ class ActivityReq extends Model
     ];
 
 
-    public function aciivity(){
+    public function aciivity()
+    {
         return $this->belongsTo(Activity::class, 'activity_id');
     }
 
