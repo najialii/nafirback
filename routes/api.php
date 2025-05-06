@@ -13,7 +13,7 @@ use App\Http\Controllers\ActivitiesLikesController;
 use App\Http\Controllers\CVController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\BlogLikesController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -98,3 +98,6 @@ Route::post('/cv', [CVController::class, 'store']);
 
 // activit
 Route::post('/activities/{id}/like', [ActivitiesLikesController::class, 'toggle']);
+
+// blikes
+Route::post('/post/{blogId}/like', [BlogLikesController::class, 'toggle']);

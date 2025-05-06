@@ -15,19 +15,37 @@ class ActivityController
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        try {
-            $activity = Activity::paginate(10);
-            return  new ActivityCollection(($activity), 200);
-        } catch (\Throwable $th) {
-            //throw $th;
-            return response()->json([
-                'error' => 'Something went wrong!',
-                'message' => $th->getMessage()
-            ], 500);
-        }
+    // public function index()
+    // {
+    //     try {
+    //         $activity = Activity::paginate(10);
+    //         return  new ActivitesResource(($activity), 200);
+    //     } catch (\Throwable $th) {
+    //         //throw $th;
+    //         return response()->json([
+    //             'error' => 'Something went wrong!',
+    //             'message' => $th->getMessage()
+    //         ], 500);
+    //     }
+    // }
+
+
+public function index()
+{
+    try {
+        $activities = Activity::with('likes')->paginate(10);
+
+        return response()->json([
+            'message' => 'Activities retrieved successfully',
+            'data' => ActivityCollection::collection($activities),
+        ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'error' => 'Something went wrong!',
+            'message' => $th->getMessage(),
+        ], 500);
     }
+}
 
     /**
      * Show the form for creating a new resource.
@@ -147,16 +165,18 @@ public function search ($keyword)
 
     }
 
-    public function joinActivity(){
-        try {
 
-        } catch (\Throwable $th) {
-            return response()->json([
-                'error'=>'Something went wrong',
-                'message'=> $th->getMessage()
-            ],500);
-        }
-    }
+    // canceled 
+    // public function joinActivity(){
+    //     try {
+
+    //     } catch (\Throwable $th) {
+    //         return response()->json([
+    //             'error'=>'Something went wrong',
+    //             'message'=> $th->getMessage()
+    //         ],500);
+    //     }
+    // }
 
     /**
      * Show the form for editing the specified resource.

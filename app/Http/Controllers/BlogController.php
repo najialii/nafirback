@@ -26,11 +26,12 @@ class BlogController extends Controller
         }
 
 
-    public function show($id)
+    public function show($slug)
     {
         try{
-
-            return new BlogResource(Blog::findOrFail($id));
+        $blog =Blog::where('slug' , $slug)->first();
+        return new BlogResource($blog);
+            // return new BlogResource(Blog::findOrFail($slug));
         } catch(\Throwable $th){
             return response()->json([
                 'error' => 'Something went wrong!',
