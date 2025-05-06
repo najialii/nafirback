@@ -14,42 +14,42 @@ class BlogLikesController extends Controller
 
         try {
             //code...
-        
-        $user = Auth::user();
-        if($user === null ) {
+
+            $user = Auth::user();
+            if ($user === null) {
+                return response()->json([
+                    'error' => 'yup'
+                ]);
+            }
+
+            $blog = Blog::findOrFail($blogId);
+
+
+
+
+            $like = BlogLikes::where('user_id', $user->id)
+                ->where('blog_id', $blog->id)
+                ->first();
+
+            if ($like) {
+                $like->delete();
+                return response()->json([
+                    'liked' => false,
+                ]);
+            } else {
+                BlogLikes::create([
+                    'user_id' => $user->id,
+                    'blog_id' => $blog->id,
+                ]);
+                return response()->json([
+                    'liked' => true,
+                ]);
+            }
+        } catch (\Throwable $th) {
             return response()->json([
-                'error'=> 'yup'
-            ]);
+                'error' => 'Something went wrong!',
+                'message' => $th->getMessage(),
+            ], 500);
         }
-        
-        $blog = Blog::findOrFail($blogId);
-
-
-    
-
-        $like = BlogLikes::where('user_id', $user->id)
-            ->where('blog_id', $blog->id)
-            ->first();
-
-        if ($like) {
-            $like->delete();
-            return response()->json([
-                'liked' => false,
-            ]);
-        } else {
-            BlogLikes::create([
-                'user_id' => $user->id,
-                'blog_id' => $blog->id,
-            ]);
-            return response()->json([
-                'liked' => true,
-            ]);
     }
-} catch (\Throwable $th) {
-    return response()->json([
-        'error' => 'Something went wrong!',
-        'message' => $th->getMessage(),
-    ], 500);
-}
-}
 }

@@ -15,7 +15,7 @@ class ActivityResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-          
+
             'id' => $this->id,
             'name' => $this->name,
             'img' => $this->img,
@@ -27,10 +27,10 @@ class ActivityResource extends JsonResource
             'type' => $this->type,
             'user_id' => $this->user_id,
             'benifites' => $this->benifites,
-            'extra'=>[  
-                'likes_count' => $this->likes_count, 
-                'liked_by_user' => $this->liked_by_user,  
-                ]
+            'extra' => [
+                'likes_count' => $this->likes_count,
+                'liked_by_user' => $this->liked_by_user,
+            ]
         ];
     }
 }

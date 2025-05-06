@@ -36,7 +36,8 @@ class Blog extends Model
     }
 
 
-    public function likes(){
+    public function likes()
+    {
         return $this->hasMany(BlogLikes::class);
     }
 
@@ -47,7 +48,8 @@ class Blog extends Model
 
     public function getLikedByUserAttribute()
     {
-        if (!auth()->check()) return false;
+        if (!auth()->check())
+            return false;
 
         return $this->likes()->where('user_id', auth()->id())->exists();
     }

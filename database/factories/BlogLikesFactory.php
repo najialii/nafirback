@@ -21,7 +21,7 @@ class BlogLikesFactory extends Factory
             //
             'user_id' => User::inRandomOrder()->first()?->id ?? User::factory(),
             'blog_id' => Blog::inRandomOrder()->first()?->id ?? Blog::factory(),
-            'liked' => $this->faker->boolean(), 
+            'liked' => $this->faker->boolean(),
         ];
     }
 }

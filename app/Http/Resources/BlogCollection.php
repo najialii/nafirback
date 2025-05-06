@@ -25,13 +25,13 @@ class BlogCollection extends ResourceCollection
                     'content' => $blog->content,
                     'featured' => $blog->featured,
                     'slug' => $blog->slug,
-                    'extra'=>[  
-                        'likes_count' => $blog->likes_count, 
-                        'liked_by_user' => $blog->liked_by_user,  
-                        ]
-                    
+                    'extra' => [
+                        'likes_count' => $blog->likes_count,
+                        'liked_by_user' => $blog->liked_by_user,
+                    ]
+
                 ];
             }),
-                ];
+        ];
     }
 }

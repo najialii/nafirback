@@ -17,11 +17,13 @@ class BlogLikes extends Model
         'liked',
     ];
 
-    public function blog() {
+    public function blog()
+    {
         return $this->belongsTo(Blog::class);
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 

@@ -17,7 +17,7 @@ class Activity extends Model
         'img',
         'description',
         'department_id',
-        'eventsSchedule',   
+        'eventsSchedule',
         'date',
         'location',
         'time',
@@ -49,15 +49,16 @@ class Activity extends Model
         return $this->hasMany(ActivitiesLikes::class);
     }
 
-// todo:get the idate
-public function getLikesCountAttribute()
+    // todo:get the idate
+    public function getLikesCountAttribute()
     {
         return $this->likes()->count();
     }
 
     public function getLikedByUserAttribute()
     {
-        if (!auth()->check()) return false;
+        if (!auth()->check())
+            return false;
 
         return $this->likes()->where('user_id', auth()->id())->exists();
     }

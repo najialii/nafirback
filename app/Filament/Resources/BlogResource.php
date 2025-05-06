@@ -102,7 +102,7 @@ class BlogResource extends Resource
             'create' => Pages\CreateBlog::route('/create'),
             'edit' => Pages\EditBlog::route('/{record}/edit'),
             'view' => Pages\ViewBlog::route('/{record}'),
-             
+
         ];
     }
 }

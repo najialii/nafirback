@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,7 +12,7 @@ return new class extends Migration
     {
         Schema::create('blog_likes', function (Blueprint $table) {
             $table->id();
-            $table->boolean('liked')->default(true); 
+            $table->boolean('liked')->default(true);
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('blog_id')->constrained('blogs')->onDelete('cascade');
             $table->timestamps();
