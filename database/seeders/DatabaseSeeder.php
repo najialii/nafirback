@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             BlogSeeder::class,
             RoleSeeder::class,
             SuperAdminSeeder::class,
+            activityLikeSeeder::class,
         ]);
 
 

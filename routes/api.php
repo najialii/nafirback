@@ -9,6 +9,7 @@ use App\Http\Controllers\MentorshipController;
 use App\Http\Controllers\MentorshipReqController;
 use App\Http\Controllers\ActivityReqController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ActivitiesLikesController;
 use App\Http\Controllers\CVController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -91,3 +92,9 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/rate-cv', [CVController::class, 'rate']);
 Route::post('/cv', [CVController::class, 'store']);
 // Route::post('/create-cv', [CVController::class, 'store']);
+
+
+
+
+// activit
+Route::post('/activities/{id}/like', [ActivitiesLikesController::class, 'toggle']);
