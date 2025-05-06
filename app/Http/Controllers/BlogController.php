@@ -42,6 +42,36 @@ class BlogController extends Controller
 
 
 
+    public function filter(Request $request)
+    {
+        $query = Blog::query();
+
+        if ($request->has('department_id')) {
+            $query->where('department_id', $request->input('department_id'));
+        }
+
+        // if ($request->has('type')) {
+        //     $query->where('type', $request->input('type'));
+        // }
+
+        if ($request->has('date')) {
+            $query->whereDate('date', $request->input('date'));
+        }
+
+        if ($request->has('time')) {
+            $query->whereTime('time', $request->input('time'));
+        }
+
+        $activities = $query->paginate(10);
+
+        return response()->json([
+            'message' => 'Activities retrieved successfully',
+            'data' => BlogCollection::collection($activities)
+        ]);
+    }
+
+
+
     public function store(StoreBlogRequest $request)
     {
         try {

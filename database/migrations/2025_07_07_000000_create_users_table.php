@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->json('expertise')->nullable();
             $table->json('education')->nullable();
             $table->json('certificates')->nullable();
-            $table->boolean('isActive')->default(true);
+            $table->boolean('is_active')->default(true);
             $table->rememberToken();
             $table->timestamps();
 

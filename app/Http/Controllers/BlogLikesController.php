@@ -24,9 +24,6 @@ class BlogLikesController extends Controller
 
             $blog = Blog::findOrFail($blogId);
 
-
-
-
             $like = BlogLikes::where('user_id', $user->id)
                 ->where('blog_id', $blog->id)
                 ->first();

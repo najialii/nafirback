@@ -137,9 +137,9 @@ class ActivityController
             $query->where('department_id', $request->input('department_id'));
         }
 
-        if ($request->has('type')) {
-            $query->where('type', $request->input('type'));
-        }
+        // if ($request->has('type')) {
+        //     $query->where('type', $request->input('type'));
+        // }
 
         if ($request->has('date')) {
             $query->whereDate('date', $request->input('date'));

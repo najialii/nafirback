@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Clusters\Users;
 use Illuminate\Database\Eloquent\Factories\Relationship;
 use Filament\Tables\Filters\TernaryFilter;
-
+use Filament\Tables\Columns\ToggleColumn;
 class UserResource extends Resource
 {
 
@@ -115,7 +115,12 @@ class UserResource extends Resource
 
                 Tables\Columns\TextColumn::make('department.name'),
                 Tables\Columns\TextColumn::make('country'),
-                Tables\Columns\IconColumn::make('isActive')->boolean()->sortable(),
+                // Tables\Columns\ToggleColumn::make('isActive')->boolean()->sortable()
+                ToggleColumn::make('isActive')
+    ->label('Active')
+    ->sortable()
+    ->toggleable()
+
             ])
             ->filters([
                 //

@@ -1,43 +1,44 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\TestController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\MentorshipController;
-use App\Http\Controllers\MentorshipReqController;
-use App\Http\Controllers\ActivityReqController;
-use App\Http\Controllers\BlogController;
-use App\Http\Controllers\ActivitiesLikesController;
-use App\Http\Controllers\CVController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BlogLikesController;
+use App\Http\Controllers\{
+    AuthController,
+    UserController,
+    DepartmentController,
+    ActivityController,
+    ActivityReqController,
+    ActivitiesLikesController,
+    MentorshipController,
+    MentorshipReqController,
+    BlogController,
+    BlogLikesController,
+    CVController
+};
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-Route::middleware('auth:sanctum')->get('/user/me', [AuthController::class, 'getMeData']);
-Route::post('/sauth', [AuthController::class, 'sauth']);
-Route::post('/atauth', [AuthController::class, 'atauth']);
-// Department
-Route::get('/department', [DepartmentController::class, 'index']);
-Route::get('/department/{id}', [DepartmentController::class, 'show']);
-Route::post('/department', [DepartmentController::class, 'store'])->middleware('auth:sanctum');
+// Auth
+Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::get('/auth/me', [AuthController::class, 'getMeData'])->middleware('auth:sanctum');
+Route::post('/auth/sauth', [AuthController::class, 'sauth']);
+Route::post('/auth/atauth', [AuthController::class, 'atauth']);
+
+// Departments
+Route::get('/departments', [DepartmentController::class, 'index']);
+Route::get('/departments/{id}', [DepartmentController::class, 'show']);
+Route::post('/departments', [DepartmentController::class, 'store'])->middleware('auth:sanctum');
 
 // Activities
 Route::get('/activities', [ActivityController::class, 'index']);
 Route::get('/activities/search/{keyword}', [ActivityController::class, 'searchActivity']);
 Route::get('/activities/{id}', [ActivityController::class, 'show']);
-Route::get('/activities/department/{id}', [ActivityController::class, 'departmentAct']);
+Route::get('/departments/{id}/activities', [ActivityController::class, 'departmentAct']);
 
-Route::prefix('activities')->middleware('auth:sanctum')->group(function () {
-    Route::controller(ActivityController::class)->group(function () {
-        Route::post('/', 'store');
-        Route::put('/{id}', 'update');
-        Route::delete('/{id}', 'destroy');
-    });
+Route::middleware('auth:sanctum')->prefix('activities')->group(function () {
+    Route::post('/', [ActivityController::class, 'store']);
+    Route::put('/{id}', [ActivityController::class, 'update']);
+    Route::delete('/{id}', [ActivityController::class, 'destroy']);
+    Route::post('/{id}/like', [ActivitiesLikesController::class, 'toggle']);
 });
 
 // Activity Requests
@@ -45,59 +46,43 @@ Route::post('/activity-requests', [ActivityReqController::class, 'store'])->midd
 
 // Mentorships
 Route::get('/mentorships', [MentorshipController::class, 'index']);
-Route::get('/mentorship/{id}', [MentorshipController::class, 'show']);
-Route::get('/search/mentorship/{keyword}', [MentorshipController::class, 'searchMentorships']);
-Route::post('/mentorship', [MentorshipController::class, 'store']);
+Route::get('/mentorships/search/{keyword}', [MentorshipController::class, 'searchMentorships']);
+Route::get('/mentorships/{id}', [MentorshipController::class, 'show']);
+Route::post('/mentorships', [MentorshipController::class, 'store']);
 
-Route::prefix('mentorship')->middleware('auth:sanctum')->group(function () {
-    // Route::post('/', [MentorshipController::class, 'store']);
+Route::middleware('auth:sanctum')->prefix('mentorships')->group(function () {
     Route::put('/{id}', [MentorshipController::class, 'update']);
     Route::delete('/{id}', [MentorshipController::class, 'destroy']);
 });
 
 // Mentorship Requests
-Route::get('/mentorshiprequest', [MentorshipReqController::class, 'index']);
-Route::get('/mentorshiprequest/{id}', [MentorshipReqController::class, 'show']);
-Route::put('/mentorshiprequest/{id}/status', [MentorshipReqController::class, 'processMentorshipRequest'])->middleware('auth:sanctum');
-Route::post('/request_session', [MentorshipReqController::class, 'store'])->middleware('auth:sanctum');
+Route::get('/mentorship-requests', [MentorshipReqController::class, 'index']);
+Route::get('/mentorship-requests/{id}', [MentorshipReqController::class, 'show']);
+Route::put('/mentorship-requests/{id}/status', [MentorshipReqController::class, 'processMentorshipRequest'])->middleware('auth:sanctum');
+Route::post('/mentorship-requests', [MentorshipReqController::class, 'store'])->middleware('auth:sanctum');
 
 // Users
-Route::get('/user', [UserController::class, 'index']);
-Route::get('/user/{id}', [UserController::class, 'show']);
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/{id}', [UserController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/user', [UserController::class, 'store']);
-    Route::put('/user/{id}', [UserController::class, 'update']);
-    Route::patch('/user/{id}', [UserController::class, 'update']);
+    Route::post('/users', [UserController::class, 'store']);
+    Route::match(['put', 'patch'], '/users/{id}', [UserController::class, 'update']);
 });
 
 // Blogs
-Route::get('/posts', [BlogController::class, 'index']);
-Route::get('/post/{id}', [BlogController::class, 'show']);
-// Route::get('/posts/{id}', [BlogController::class], 'departmentBlogs');
-// Route::post('/post', [BlogController::class, 'store']);
-// Route::put('/post/{id}', [BlogController::class, 'update']);
-// Route::delete('/post/{id}', [BlogController::class, 'destroy']);
-Route::get('search/{keyword}', [BlogController::class, 'search']);
-Route::get('/posts/department/{id}', [BlogController::class, 'departmentBlogs']);
+Route::get('/blogs', [BlogController::class, 'index']);
+Route::get('/blogs/{id}', [BlogController::class, 'show']);
+Route::get('/blogs/search/{keyword}', [BlogController::class, 'search']);
+Route::get('/departments/{id}/blogs', [BlogController::class, 'departmentBlogs']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/post', [BlogController::class, 'store']);
-    Route::put('/post/{id}', [BlogController::class, 'update']);
-    Route::delete('/post/{id}', [BlogController::class, 'destroy']);
+    Route::post('/blogs', [BlogController::class, 'store']);
+    Route::put('/blogs/{id}', [BlogController::class, 'update']);
+    Route::delete('/blogs/{id}', [BlogController::class, 'destroy']);
+    Route::post('/blogs/{blogId}/like', [BlogLikesController::class, 'toggle']);
 });
 
-
-
-Route::post('/rate-cv', [CVController::class, 'rate']);
-Route::post('/cv', [CVController::class, 'store']);
-// Route::post('/create-cv', [CVController::class, 'store']);
-
-
-
-
-// activit
-Route::post('/activities/{id}/like', [ActivitiesLikesController::class, 'toggle']);
-
-// blikes
-Route::post('/post/{blogId}/like', [BlogLikesController::class, 'toggle']);
+// CVs
+Route::post('/cvs', [CVController::class, 'store']);
+Route::post('/cvs/rate', [CVController::class, 'rate']);
