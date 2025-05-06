@@ -59,23 +59,6 @@ class MentorshipController extends Controller
 
         }
 
-            return response()->json([
-            'mentorship sessions'=>  $mentorships,
-
-            ],200);
-
-
-}
-
-  public function store(StoreMentorshipsRequest $request){
-    try{
-        $validatedData = $request->validated();
-
-        $validatedData['date'] = json_encode($validatedData['date']);
-        $validatedData['av_time'] = json_encode($validatedData['av_times']);
-        $mentorship = Mentorship::create($validatedData);
-        return new MentorshipResource($mentorship);
-    } catch(\Throwable $th){
         return response()->json([
             'mentorship sessions' => $mentorships,
 

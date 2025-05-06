@@ -5,7 +5,6 @@ namespace App\Filament\Resources\ActivitiesResource\Pages;
 use App\Filament\Resources\ActivitiesResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use App\Filament\Resources\use;
 use App\Filament\Resources\ActivitiesResource\Widgets\ActivitiesStats;
 use App\Models\Activity;
 use Illuminate\Database\Eloquent\Builder;
@@ -36,7 +35,7 @@ class ListActivities extends ListRecords
 
         if ($user->hasRole('super_admin')) {
             return Activity::query();
-                }
+        }
 
         return Activity::query()->whereHas('department', function ($query) use ($user) {
             $query->where('department_id', $user->department_id);

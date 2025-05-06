@@ -111,7 +111,7 @@ class MentorshipReqController extends Controller
     }
 
 
-  
+
 
 
     public function getMentorMentorsRequests($userId)
@@ -199,19 +199,19 @@ class MentorshipReqController extends Controller
         ], 404);
     }
 
-if(auth()->id() !== $mentorshipReq->mentor_id) {
-    return  response()->json([
-        'error'=>'Unauthorized'
-    ],403);
-}
-
-$mentorshipReq->reschedule($request->date,$request->selectedtime);
-
-return response()->json([
-    'error'=>'Mentorship request was successfully rescheduled',
-    'mentorship request' => $mentorshipReq,
-],200);
-
+    /* if(auth()->id() !== $mentorshipReq->mentor_id) {
+        return  response()->json([
+            'error'=>'Unauthorized'
+        ],403);
     }
+
+    $mentorshipReq->reschedule($request->date,$request->selectedtime);
+
+    return response()->json([
+        'error'=>'Mentorship request was successfully rescheduled',
+        'mentorship request' => $mentorshipReq,
+    ],200);
+
+        } */
 
 }
