@@ -6,7 +6,7 @@ use App\Models\ActivityParticipant;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ActivitiesParticpantSeeder extends Seeder
+class ActivitiesParticipantSeeder extends Seeder
 {
     /**
      * Run the database seeds.
