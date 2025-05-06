@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Department;
+use App\Models\BlogLikes;
+
 
 class Blog extends Model
 {
@@ -19,7 +21,6 @@ class Blog extends Model
         'content',
         'slug',
         'featured'
-
     ];
 
 
@@ -33,5 +34,23 @@ class Blog extends Model
     {
         return $this->belongsTo(Department::class, 'department_id');
     }
+
+
+    public function likes(){
+        return $this->hasMany(BlogLikes::class);
+    }
+
+    public function getLikesCountAttribute()
+    {
+        return $this->likes()->count();
+    }
+
+    public function getLikedByUserAttribute()
+    {
+        if (!auth()->check()) return false;
+
+        return $this->likes()->where('user_id', auth()->id())->exists();
+    }
+
 
 }
