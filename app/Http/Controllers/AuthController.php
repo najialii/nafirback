@@ -79,12 +79,7 @@ class AuthController extends Controller
         switch ($provider) {
             case 'google':
                 $access_token = $request->access_token;
-                $response = file_get_contents("https://www.googleapis.com/oauth2/v3/tokeninfo?access_token={$access_token}");
-                $data = json_decode($response, true);
 
-                if (!isset($data['aud']) || $data['aud'] !== config('services.google.client_id')) {
-                    abort(401, 'Invalid token audience.');
-                }
                 try {
                     $authUser = Socialite::driver('google')->stateless()->userFromToken($access_token);
                 } catch (\Exception $e) {
