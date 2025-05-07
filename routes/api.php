@@ -95,7 +95,7 @@ Route::post('/cv', [CVController::class, 'store']);
 
 
 // activit
-Route::post('/activities/{id}/like', [ActivitiesLikesController::class, 'toggle']);
+Route::post('/activities/{id}/like', [ActivitiesLikesController::class, 'toggle'])->middleware('auth:sanctum');;
 
 // blikes
-Route::post('/post/{blogId}/like', [BlogLikesController::class, 'toggle']);
+Route::post('/post/{blogId}/like', [BlogLikesController::class, 'toggle'])->middleware('auth:sanctum');;

@@ -33,7 +33,7 @@ class StoreUserRequest extends FormRequest
             'skills' => ['required'],
             'exp_years' => ['required', 'integer'],
             'country' => ['required'],
-            'isActive' => ['nullable', 'boolean'],
+            'is_active' => ['nullable', 'boolean'],
 
         ];
     }

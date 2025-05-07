@@ -22,6 +22,9 @@ return new class extends Migration {
             $table->string('time');
             $table->string('type', 100)->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('pass_code')->nullable();
+            $table->string('link')->nullable();
+            $table->text('instructions')->nullable();
             $table->text('benifites')->nullable();
             $table->timestamps();
         });

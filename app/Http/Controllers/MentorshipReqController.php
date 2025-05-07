@@ -37,6 +37,8 @@ class MentorshipReqController extends Controller
 
     public function store(MentorshipReqRequest $request)
     {
+
+        $user = auth()->user();
         try {
 
             $validatedData = $request->validated();
@@ -50,8 +52,8 @@ class MentorshipReqController extends Controller
                 ], 404);
             }
 
-            $isSessionBooked = MentorshipReq::where('mentorship_id', $validatedData['mentorship_id'])->exists();
-            if ($isSessionBooked) {
+            $isBooked = MentorshipReq::where('mentorship_id', $validatedData['mentorship_id'])->exists();
+            if ($isBooked) {
                 return response()->json([
                     'error' => 'Mentorship session already booked',
                     'message' => 'The selected mentorship session is already booked'

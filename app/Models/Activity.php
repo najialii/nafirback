@@ -24,6 +24,9 @@ class Activity extends Model
         'type',
         'user_id',
         'benifites',
+        'link',
+        'passcode',
+        'instructions',
 
     ];
 

@@ -36,6 +36,7 @@ class BlogsResource extends Resource
                 //
             ])
             ->actions([
+                // Tables\Actions\
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

@@ -11,6 +11,7 @@ class ActivitiesLikesController extends Controller
 {
     public function toggle($activityId)
     {
+        
         $user = Auth::user();
         $activity = Activity::findOrFail($activityId);
 

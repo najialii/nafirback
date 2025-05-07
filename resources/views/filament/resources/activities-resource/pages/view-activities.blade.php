@@ -1,5 +1,4 @@
-<x-filament::page>
-    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6 space-y-6">
+<x-filament::page>    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6 space-y-6">
         <div class="flex justify-between items-start flex-col md:flex-row md:items-center">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-1">{{ $record->name }}</h1>
