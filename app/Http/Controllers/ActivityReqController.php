@@ -24,15 +24,17 @@ class ActivityReqController extends Controller
     public function store(Request $request)
     {
 
+        $user = auth()->user();
+
+
         try {
             $validatedData = $request->validate([
-                'participant_id' => 'required|exists:users,id',
                 'activity_id' => 'required|exists:activities,id',
                 'note' => 'nullable|string',
             ]);
 
             $activityreq = ActivityReq::create([
-                'participant_id' => $validatedData['participant_id'],
+                'participant_id' => $user->id,
                 'activity_id' => $validatedData['activity_id'],
                 'note' => $validatedData['note'] ?? null,
             ]);
