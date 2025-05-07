@@ -8,9 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Department;
- use App\Models\Metorship;
- use App\Models\Blog;
- use App\Models\MentorshipReq;
+use App\Models\Metorship;
+use App\Models\Blog;
+use App\Models\MentorshipReq;
 use App\Models\Activity;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\Role;
@@ -18,7 +18,7 @@ use App\Models\Role;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable , HasApiTokens , HasRoles;
+    use HasFactory, Notifiable, HasApiTokens, HasRoles;
 
 
 
@@ -42,7 +42,7 @@ class User extends Authenticatable
         'expertise',
         'education',
         'certificates',
-        'isActive',
+        'is_active',
     ];
 
 
@@ -97,9 +97,9 @@ class User extends Authenticatable
     }
 
     public function superAdmin()
-{
-    return $this->hasOne(SuperAdmin::class);
-}
+    {
+        return $this->hasOne(SuperAdmin::class);
+    }
 
 
 }
