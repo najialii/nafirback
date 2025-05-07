@@ -111,13 +111,11 @@ class AuthController extends Controller
 
                 return response()->json([
                     'authToken' => $token,
-                    'user' => [
-                        'id' => $user->id,
-                        'email' => $user->email,
-                        'name' => $user->name,
-                        'profile_pic' => $user->profile_pic,
-                        'is_active' => $user->is_active,
-                    ],
+                    'id' => $user->id,
+                    'email' => $user->email,
+                    'name' => $user->name,
+                    'profile_pic' => $user->profile_pic,
+                    'is_active' => $user->is_active,
                 ]);
 
             case 'credentials':
@@ -131,13 +129,11 @@ class AuthController extends Controller
 
                 return response()->json([
                     'authToken' => $token,
-                    'user' => [
-                        'id' => $user->id,
-                        'email' => $user->email,
-                        'name' => $user->name,
-                        'is_active' => $user->is_active,
-                        'profile_pic' => $user->profile_pic,
-                    ],
+                    'id' => $user->id,
+                    'email' => $user->email,
+                    'name' => $user->name,
+                    'is_active' => $user->is_active,
+                    'profile_pic' => $user->profile_pic,
                 ]);
 
             default:
