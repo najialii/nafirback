@@ -19,11 +19,9 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::middleware('auth:sanctum')->get('/user/me', [AuthController::class, 'getMeData']);
-Route::post('/sauth', [AuthController::class, 'sauth']);
-Route::post('/atauth', [AuthController::class, 'atauth']);
 // Department
-Route::get('/department', [DepartmentController::class, 'index']);
 Route::get('/department/{id}', [DepartmentController::class, 'show']);
+Route::get('/department', [DepartmentController::class, 'index']);
 Route::post('/department', [DepartmentController::class, 'store'])->middleware('auth:sanctum');
 
 // Activities

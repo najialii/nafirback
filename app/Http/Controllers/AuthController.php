@@ -62,191 +62,105 @@ class AuthController extends Controller
   return response()->json(['message' => 'user registered successfully', 'user' => $user, 'token' => $token->plainTextToken], 201);
 
  }
- public function login(Request $request)
- {
 
-  Log::info($request->all());
-  $request->validate([
-   'email'    => 'required|email|exists:users,email',
-   'password' => 'required',
 
-  ]);
+public function login(Request $request)
+{
+    $provider = $request->provider;
 
-  $user = User::where('email', $request->email)->first();
-  if (! $user || ! Hash::check($request->password, $user->password)) {
-   return response()->json(['message' => 'invalid credentials'], 401);
-  }
+    $request->validate([
+        'access_token' => 'required_if:provider,google|string',
+        'email' => 'required_if:provider,credentials|email',
+        'password' => 'required_if:provider,credentials|string',
+        'provider' => 'required|string|in:google,credentials',
+    ]);
 
-  if (! $user->isActive === false && $user->hasRole('mentor')) {
-    return response()->json(['message' => 'Account is waiting for approval approval'], 403);
-}
-
-  $token = $user->createToken($user->name);
-
-  return response()->json(['user' => $user, 'token' => $token->plainTextToken]);
-
- }
- /*
-    public function sauth(Request $request)
-    {
-    try {
-        $request->validate([
-            //provider example(google, fb wa keda )
-            'provider' => 'required|string|in:google,linkedin',
-            'googele_token'=> 'required|string',
-            'email' => 'required|email',
-            'name' => 'required|string',
-            'profile_pic'=>'nullable|url',
-        ]);
-    //send the provider with the request
-    //validate providers with the actual service provider with a switch
-    // $user  = Socialite::driver('google')->userFromToken($token);
-
-    $payload = null;
-
-    switch ($request->provider) {
+    switch ($provider) {
         case 'google':
-            $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
-            $payload = $client->verifyIdToken($request->googele_token);
-            break;
-        case 'linkedin':
-            // Handle ver
-    //othercases too
-        }
-
-        // $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
-        // $payload = $client->verifyIdToken($request->googele_token);
-
-        if(!$payload){
-            return response()->json(['message' => 'Invalid token'], 401);
-        }
-
-        $user= User::where('email', $payload['email'])->first();
-
-        // $user = User::where('email', $request->email)->first();
-
-        if (!$user) {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make(uniqid()),
-                'isActive' => true,
-                'profile_pic' => $request->image,
-                // 'googele_token'=> 'required|string',
-                ]);
-
-                switch ($request->provider) {
-                    case 'google':
-                        $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
-                        $payload = $client->verifyIdToken($request->googele_token);
-                        break;
-                    case 'linkedin':
-                    // Handle ver
-    //othercases too
-                }
-
-                // $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
-                // $payload = $client->verifyIdToken($request->googele_token);
-
-                if (!$payload) {
-                    return response()->json(['message' => 'Invalid token'], 401);
-                }
-
-                $user = User::where('email', $payload['email'])->first();
-
-                // $user = User::where('email', $request->email)->first();
-
-                if (!$user) {
-                    $user = User::create([
-                        'name' => $request->name,
-                        'email' => $request->email,
-                        'password' => Hash::make(uniqid()),
-                        'isActive' => true,
-                        'profile_pic' => $request->image
-                    ]);
-
-                }
-
-                $token = $user->createToken($user->name)->plainTextToken;
-
-                return response()->json([
-                    'message' => 'user was successfully authenticated',
-                    'user' => $user,
-                    'token' => $token,
-                ], 200);
+            try {
+                $authUser = Socialite::driver('google')->stateless()->userFromToken($request->access_token);
             } catch (\Exception $e) {
                 return response()->json([
                     'error' => 'Token verification failed',
-                    'message' => $e->getMessage()
+                    'message' => $e->getMessage(),
                 ], 500);
             }
-        }
 
-     */
+            try {
+                $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
+                $payload = $client->verifyIdToken($request->access_token);
 
-//     public function sauth(Request $request)
-//     {
-//         try {
-//             $request->validate([
-//                 //provider example(google, fb wa keda )
-//                 'provider'      => 'required|string|in:google,linkedin',
-//                 'googele_token' => 'required|string',
-//                 'email'         => 'required|email',
-//                 'name'          => 'required|string',
-//                 'profile_pic'   => 'nullable|url',
-//             ]);
-// //send the provider with the request
-// //validate providers with the actual service provider with a switch
-// // $user  = Socialite::driver('google')->userFromToken($token);
+                if (!$payload || $payload['aud'] !== config('services.google.client_id')) {
+                    return response()->json(['error' => 'Invalid audience'], 401);
+                }
+            } catch (\Exception $e) {
+                return response()->json([
+                    'error' => 'Failed to verify audience',
+                    'message' => $e->getMessage(),
+                ], 500);
+            }
 
-//             $payload = null;
+            \Log::info('Google User:', [
+                'name' => $authUser->getName(),
+                'email' => $authUser->getEmail(),
+                'id' => $authUser->getId(),
+            ]);
 
-//             switch ($request->provider) {
-//                 case 'google':
-//                     $client  = new \Google_Client(['client_id' => config('services.google.client_id')]);
-//                     $payload = $client->verifyIdToken($request->googele_token);
-//                     break;
-//                 case 'linkedin':
-//                     // Handle ver
-// //othercases too
-//             }
+            $user = User::where('email', $authUser->getEmail())->first();
 
-//             // $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
-//             // $payload = $client->verifyIdToken($request->googele_token);
+            if (!$user) {
+                $user = User::create([
+                    'name' => $authUser->getName(),
+                    'email' => $authUser->getEmail(),
+                    'password' => Hash::make(Str::random(40)),
+                    'isActive' => true,
+                    'profile_pic' => $authUser->getAvatar() ?? null,
+                ]);
+            }
 
-//             if (! $payload) {
-//                 return response()->json(['message' => 'Invalid token'], 401);
-//             }
+            if (!$user->isActive) {
+                return response()->json(['message' => 'Account is pending approval'], 403);
+            }
 
-//             $user = User::where('email', $payload['email'])->first();
+            $token = $user->createToken('google-token')->plainTextToken;
 
-//             // $user = User::where('email', $request->email)->first();
+            return response()->json([
+                'authToken' => $token,
+                'user' => [
+                    'id' => $user->id,
+                    'email' => $user->email,
+                    'name' => $user->name,
+                    'profile_pic' => $user->profile_pic,
+                ],
+            ]);
 
-//             if (! $user) {
-//                 $user = User::create([
-//                     'name'        => $request->name,
-//                     'email'       => $request->email,
-//                     'password'    => Hash::make(uniqid()),
-//                     'isActive'    => true,
-//                     'profile_pic' => $request->image,
-//                     // 'googele_token'=> 'required|string',
-//                 ]);
+        case 'credentials':
+            $user = User::where('email', $request->email)->first();
 
-//             }
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response()->json(['message' => 'Invalid credentials'], 401);
+            }
 
-//             $token = $user->createToken($user->name)->plainTextToken;
+            if (!$user->isActive) {
+                return response()->json(['message' => 'Account is pending approval'], 403);
+            }
 
-//             return response()->json([
-//                 'message' => 'user was successfully authenticated',
-//                 'user'    => $user,
-//                 'token'   => $token,
-//             ], 200);
-//         } catch (\Exception $e) {
-//             return response()->json([
-//                 'error'   => 'Token verification failed',
-//                 'message' => $e->getMessage()], 500);
-//         }
-//     }
+            $token = $user->createToken('credentials-token')->plainTextToken;
+
+            return response()->json([
+                'authToken' => $token,
+                'user' => [
+                    'id' => $user->id,
+                    'email' => $user->email,
+                    'name' => $user->name,
+                    'profile_pic' => $user->profile_pic,
+                ],
+            ]);
+
+        default:
+            return response()->json(['error' => 'Invalid provider'], 400);
+    }
+}
 
  public function logout(Request $request)
  {
@@ -261,69 +175,4 @@ class AuthController extends Controller
   return response()->json(['message' => 'You have been logged out'], 200);
 
  }
-
- public function atauth(Request $request)
- {
-  $request->validate([
-   'access_token' => 'required|string',
-   'provider'     => 'required|in:google',
-  ]);
-
-  try {
-   $authUser = Socialite::driver('google')->stateless()->userFromToken($request->access_token);
-  } catch (\Exception $e) {
-   return response()->json([
-    'error'   => 'Token verification failed',
-    'message' => $e->getMessage(),
-   ], 500);
-  }
-
-  try {
-   $client  = new \Google_Client(['client_id' => config('services.google.client_id')]);
-   $payload = $client->verifyIdToken($request->access_token);
-
-   if (! $payload || $payload['aud'] !== config('services.google.client_id')) {
-    return response()->json(['error' => 'Invalid audience'], 401);
-   }
-  } catch (\Exception $e) {
-   return response()->json([
-    'error'   => 'Failed to verify audience',
-    'message' => $e->getMessage(),
-   ], 500);
-  }
-
-  \Log::info('Google User:', [
-   'name'  => $authUser->getName(),
-   'email' => $authUser->getEmail(),
-   'id'    => $authUser->getId(),
-  ]);
-
-  $user = User::where('email', $authUser->getEmail())->first();
- 
-  if (! $user->isActive) {
-    return response()->json(['message' => 'Account is pending approval'], 403);
-}
-  if (! $user) {
-   $user = User::create([
-    'name'        => $authUser->getName(),
-    'email'       => $authUser->getEmail(),
-    'password'    => Hash::make(Str::random(40)),
-    'isActive'    => true,
-    'profile_pic' => $authUser->getAvatar() ?? null,
-   ]);
-  }
-
-  $token = $user->createToken('google-token')->plainTextToken;
-
-  return response()->json([
-   'authToken' => $token,
-   'user'      => [
-    'id'          => $user->id,
-    'email'       => $user->email,
-    'name'        => $user->name,
-    'profile_pic' => $user->profile_pic,
-   ],
-  ]);
- }
-
 }
