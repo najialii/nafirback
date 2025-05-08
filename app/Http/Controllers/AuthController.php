@@ -43,13 +43,13 @@ class AuthController extends Controller
             'name'          => $request->name,
             'email'         => $request->email,
             'password'      => Hash::make($request->password),
-            'department_id' => $request->department_id,
-            'skills'        => $request->skills,
-            'phone'         => $request->phone,
-            'exp_years'     => $request->exp_years,
-            'country'       => $request->country,
-            'profile_pic'   => $imgPath,
-            'isActive'      => $role === 'mentor' ? false : true,
+            // 'department_id' => $request->department_id,
+            // 'skills'        => $request->skills,
+            // 'phone'         => $request->phone,
+            // 'exp_years'     => $request->exp_years,
+            // 'country'       => $request->country,
+            // 'profile_pic'   => $imgPath,
+            // 'isActive'      => $role === 'mentor' ? false : true,
         ]);
 
         $token = $user->createToken($request->name);
@@ -108,6 +108,7 @@ class AuthController extends Controller
                         'password'    => Hash::make('testtesttest'),
                         'is_active'   => false,
                         'profile_pic' => $authUser->getAvatar() ?? null,
+                        // 'role' => $auth->user->role? 'incompleted'
                     ]);
                 }
 

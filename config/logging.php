@@ -1,4 +1,4 @@
-x`<?php
+<?php
 
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
@@ -19,7 +19,7 @@ return [
     */
 
     // 'default' => env('LOG_CHANNEL', 'stack'),
-    'default' => env('LOG_CHANNEL', 'stderr'),
+    'default' => env('LOG_CHANNEL', 'stack'),
 
     /*
     |--------------------------------------------------------------------------

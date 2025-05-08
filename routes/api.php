@@ -20,6 +20,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::middleware('auth:sanctum')->get('/user/me', [AuthController::class, 'getMeData']);
+Route::get('/user/{id}' ,[AuthController::class, 'show'])->middleware('auth:sanctum');
 // Department
 Route::get('/department/{id}', [DepartmentController::class, 'show']);
 Route::get('/department', [DepartmentController::class, 'index']);
@@ -62,7 +63,7 @@ Route::post('/request_session', [MentorshipReqController::class, 'store'])->midd
 
 // Users
 Route::get('/user', [UserController::class, 'index']);
-Route::get('/user/{id}', [UserController::class, 'show']);
+// Route::get('/user/{id}', [UserController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user', [UserController::class, 'store']);

@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -22,31 +21,18 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        // Get the HTTP method for the request (PUT or PATCH)
-        $method = $this->method();
-
-        if ($method === 'PUT') {
-            return [
-                'name' => ['required'],
-                'email' => ['required', 'email'],
-                'password' => ['sometimes', 'required'],
-                'phone' => ['required'],
-                'skills' => ['required'],
-                'exp_years' => ['required', 'integer'],
-                'country' => ['required'],
-            ];
-        } elseif ($method === 'PATCH') {
-            return [
-                'name' => ['sometimes', 'required'],
-                'email' => ['sometimes', 'required', 'email'],
-                'password' => ['sometimes', 'required'],
-                'phone' => ['sometimes', 'required'],
-                'skills' => ['sometimes', 'required'],
-                'exp_years' => ['sometimes', 'required', 'integer'],
-                'country' => ['sometimes', 'required'],
-            ];
-        }
-
-        return [];
+        return [
+            'name'           => ['sometimes', 'required', 'string'],
+            'email'          => ['sometimes', 'required', 'email'],
+            'phone'          => ['sometimes', 'required', 'string'],
+            'skills'         => ['sometimes', 'required', 'string'],
+            'exp_years'      => ['sometimes', 'required', 'integer'],
+            'country'        => ['sometimes', 'required', 'string'],
+            'profile_pic'    => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Optional profile picture
+            'department_id'  => ['sometimes', 'required', 'integer'],
+            'expertise'      => ['sometimes', 'required', 'string'],
+            'education'      => ['sometimes', 'required', 'string'],
+            'certificates'   => ['sometimes', 'required', 'string'],
+        ];
     }
 }

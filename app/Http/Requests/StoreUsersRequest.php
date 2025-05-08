@@ -27,12 +27,12 @@ class StoreUserRequest extends FormRequest
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required'],
-            'department_id' => ['required'],
-            'phone' => ['required'],
-            'skills' => ['required'],
-            'exp_years' => ['required', 'integer'],
-            'country' => ['required'],
-            'isActive' => ['required', 'boolean'],
+            // 'department_id' => ['required'],
+            // 'phone' => ['required'],
+            // 'skills' => ['nullable'],
+            // 'exp_years' => ['required', 'integer'],
+            // 'country' => ['required'],
+            // 'isActive' => ['required', 'boolean'],
 
         ];
     }

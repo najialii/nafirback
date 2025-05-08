@@ -48,6 +48,8 @@ class User extends Authenticatable
 
 
 
+
+
     public function department()
     {
         return $this->belongsTo(Department::class);
@@ -103,4 +105,29 @@ class User extends Authenticatable
     }
 
 
+
+    public function isProfileComplete(): bool
+{
+    $onboardingFields = [
+        'name',
+        'email',
+        'phone',
+        'skills',
+        'exp_years',
+        'country',
+        'profile_pic',
+        'department_id',
+        'expertise',
+        'education',
+        'certificates',
+    ];
+       
+    foreach ($onboardingFields as $field) {
+        if (empty($this->{$field})) {
+            return false;
+        }
+    }
+
+    return true; 
+}
 }

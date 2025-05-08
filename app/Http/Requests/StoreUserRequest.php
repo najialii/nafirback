@@ -27,13 +27,12 @@ class StoreUserRequest extends FormRequest
             'name' => ['required'],
             'email' => ['required', 'email'],
             'password' => ['required'],
-            // 'role' => ['required', Rule::in(['mentor', 'admin', 'mentee'])],
-            // 'department_id' => ['required'],
-            'phone' => ['required'],
-            'skills' => ['required'],
-            'exp_years' => ['required', 'integer'],
-            'country' => ['required'],
-            'is_active' => ['nullable', 'boolean'],
+         
+            // 'phone' => ['required'],
+            // 'skills' => ['required'],
+            // 'exp_years' => ['required', 'integer'],
+            // 'country' => ['required'],
+            // 'is_active' => ['nullable', 'boolean'],
 
         ];
     }
