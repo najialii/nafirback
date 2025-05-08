@@ -10,19 +10,26 @@ use App\Models\Blog;
 use Illuminate\Http\Request;
 class BlogController extends Controller
 {
+    // public function index()
+    // {
+    //     try {
+
+    //         $blogs = Blog::paginate(10);
+    //         return new BlogCollection($blogs);
+    //     } catch (\Throwable $th) {
+    //         return response()->json([
+    //             'error' => 'Something went wrong!',
+    //             'message' => $th->getMessage()
+    //         ], 500);
+    //     }
+
+    // }
+
     public function index()
     {
-        try {
+        $blogs = Blog::with('likes')->get();
 
-            $blogs = Blog::paginate(10);
-            return new BlogCollection($blogs);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'error' => 'Something went wrong!',
-                'message' => $th->getMessage()
-            ], 500);
-        }
-
+        return new BlogCollection($blogs);
     }
 
 

@@ -11,6 +11,7 @@ use App\Http\Controllers\ActivityReqController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ActivitiesLikesController;
 use App\Http\Controllers\CVController;
+use App\Http\Middleware\AuthOpt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogLikesController;
@@ -25,7 +26,7 @@ Route::get('/department', [DepartmentController::class, 'index']);
 Route::post('/department', [DepartmentController::class, 'store'])->middleware('auth:sanctum');
 
 // Activities
-Route::get('/activities', [ActivityController::class, 'index']);
+Route::get('/activities', [ActivityController::class, 'index'])->middleware(AuthOpt::class);
 Route::get('/activities/search/{keyword}', [ActivityController::class, 'searchActivity']);
 Route::get('/activities/{id}', [ActivityController::class, 'show']);
 Route::get('/activities/department/{id}', [ActivityController::class, 'departmentAct']);
@@ -70,12 +71,10 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // Blogs
-Route::get('/posts', [BlogController::class, 'index']);
+
+Route::get('/posts', [BlogController::class, 'index'])->middleware(AuthOpt::class);
 Route::get('/post/{id}', [BlogController::class, 'show']);
-// Route::get('/posts/{id}', [BlogController::class], 'departmentBlogs');
-// Route::post('/post', [BlogController::class, 'store']);
-// Route::put('/post/{id}', [BlogController::class, 'update']);
-// Route::delete('/post/{id}', [BlogController::class, 'destroy']);
+
 Route::get('search/{keyword}', [BlogController::class, 'search']);
 Route::get('/posts/department/{id}', [BlogController::class, 'departmentBlogs']);
 
@@ -95,7 +94,7 @@ Route::post('/cv', [CVController::class, 'store']);
 
 
 // activit
-Route::post('/activities/{id}/like', [ActivitiesLikesController::class, 'toggle'])->middleware('auth:sanctum');;
+Route::post('/activities/{id}/like', [ActivitiesLikesController::class, 'toggle'])->middleware('auth:sanctum');
 
 // blikes
-Route::post('/post/{blogId}/like', [BlogLikesController::class, 'toggle'])->middleware('auth:sanctum');;
+Route::post('/post/{blogId}/like', [BlogLikesController::class, 'toggle'])->middleware('auth:sanctum');

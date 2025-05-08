@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Department;
 use App\Models\BlogLikes;
 
@@ -48,11 +49,17 @@ class Blog extends Model
 
     public function getLikedByUserAttribute()
     {
-        if (!auth()->check())
-            return false;
+        if (!Auth::user()) {
+            return false; 
+        }
 
-        return $this->likes()->where('user_id', auth()->id())->exists();
+        $user = Auth::user();
+    
+        $isLiked = $this->likes()->where('user_id', $user->id)->exists();
+    
+        return $isLiked;
     }
+    
 
 
 }

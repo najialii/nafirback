@@ -16,11 +16,9 @@ class BlogLikesController extends Controller
             //code...
 
             $user = Auth::user();
-            if ($user === null) {
-                return response()->json([
-                    'error' => 'yup'
-                ]);
-            }
+            if ($user === null) 
+                return null;
+            
 
             $blog = Blog::findOrFail($blogId);
 

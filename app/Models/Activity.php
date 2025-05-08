@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\User;
 use App\Models\Department;
+use Illuminate\Support\Facades\Log;
+
 use App\Models\ActivitiesLikes;
 
 class Activity extends Model
@@ -52,7 +55,7 @@ class Activity extends Model
         return $this->hasMany(ActivitiesLikes::class);
     }
 
-    // todo:get the idate
+    
     public function getLikesCountAttribute()
     {
         return $this->likes()->count();
@@ -60,10 +63,15 @@ class Activity extends Model
 
     public function getLikedByUserAttribute()
     {
-        if (!auth()->check())
-            return false;
+        if (!Auth::user()) {
+            return false; 
+        }
 
-        return $this->likes()->where('user_id', auth()->id())->exists();
+        $user = Auth::user();
+    
+        $isLiked = $this->likes()->where('user_id', $user->id)->exists();
+    
+        return $isLiked;
     }
 
 
