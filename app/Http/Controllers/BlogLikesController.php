@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,37 +8,42 @@ use Illuminate\Support\Facades\Auth;
 
 class BlogLikesController extends Controller
 {
-    public function toggle($blogId)
+    public function toggle(Request $request, $blogId)
     {
-
         try {
-            //code...
-
             $user = Auth::user();
-            if ($user === null) 
-                return null;
-            
+            if (!$user) {
+                return response()->json(['error' => 'Unauthenticated'], 401);
+            }
+
+            $request->validate([
+                'newStatus' => 'required|boolean',
+            ]);
 
             $blog = Blog::findOrFail($blogId);
+
 
             $like = BlogLikes::where('user_id', $user->id)
                 ->where('blog_id', $blog->id)
                 ->first();
 
-            if ($like) {
-                $like->delete();
-                return response()->json([
-                    'liked' => false,
-                ]);
+            if ($request->newStatus) {
+   
+                if (!$like) {
+                    BlogLikes::create([
+                        'user_id' => $user->id,
+                        'blog_id' => $blog->id,
+                    ]);
+                }
             } else {
-                BlogLikes::create([
-                    'user_id' => $user->id,
-                    'blog_id' => $blog->id,
-                ]);
-                return response()->json([
-                    'liked' => true,
-                ]);
+                if ($like) {
+                    $like->delete();
+                }
             }
+
+            return response()->json([
+                'liked' => $request->newStatus,
+            ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'error' => 'Something went wrong!',
