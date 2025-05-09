@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             SuperAdminSeeder::class,
             activityLikeSeeder::class,
             BlogLikesSeeder::class,
+            ActinstrSeeder::class,
         ]);
 
 

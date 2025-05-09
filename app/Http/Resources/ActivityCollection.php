@@ -23,6 +23,7 @@ class ActivityCollection extends ResourceCollection
                 'img' => $activity->img,
                 'time' => $activity->time,
                 'type' => $activity->type,
+                
                 'extra' => [
                     'likes_count' => $activity->likes_count ?? $activity->likes->count(),
                     'liked_by_user' => $activity->liked_by_user ?? false,

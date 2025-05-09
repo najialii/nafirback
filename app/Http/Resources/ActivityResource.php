@@ -27,6 +27,13 @@ class ActivityResource extends JsonResource
             'type' => $this->type,
             'user_id' => $this->user_id,
             'benifites' => $this->benifites,
+            'instructors' => $this->instructors->map(function ($instructor) {
+                return [
+                    'id' => $instructor->user->id,
+                    'name' => $instructor->user->name,
+                    'img' => $instructor->user->profile_pic, // Assuming `profile_pic` is the image field in the `users` table
+                ];
+            }),
             'extra' => [
                 'likes_count' => $this->likes_count,
                 'liked_by_user' => $this->liked_by_user,

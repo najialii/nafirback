@@ -83,6 +83,33 @@ class UserController
 
     }
 
+    public function update(UpdateUserRequest $request, User $user)
+{
+    // Merge existing user data with the new data
+    $data = array_merge($user->toArray(), $request->validated());
+
+    // Handle profile picture upload if provided
+    if ($request->hasFile('profile_pic')) {
+        $img = $request->file('profile_pic');
+        $imgName = time() . '_' . $img->getClientOriginalName();
+        $data['profile_pic'] = $img->storeAs('users/profile_imgs', $imgName, 'public');
+    }
+
+    // Update the user
+    $user->update($data);
+
+    // Check if the profile is now complete
+    $role = $user->isProfileComplete() ? 'completed' : 'incompleted';
+    $user->syncRoles([$role]);
+
+    return response()->json([
+        'message' => 'User updated successfully.',
+        'user'    => new UserResource($user),
+        'profile_complete' => $user->isProfileComplete(),
+        'role'    => $user->getRoleNames(),
+    ], 200);
+}
+
 
 }
 

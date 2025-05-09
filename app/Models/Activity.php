@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\User;
 use App\Models\Department;
+use App\Models\Activity_instructor;
 use Illuminate\Support\Facades\Log;
 
 use App\Models\ActivitiesLikes;
@@ -18,6 +19,7 @@ class Activity extends Model
 
         'name',
         'img',
+        'instructors',
         'description',
         'department_id',
         'eventsSchedule',
@@ -55,7 +57,10 @@ class Activity extends Model
         return $this->hasMany(ActivitiesLikes::class);
     }
 
-    
+    public function instructors()
+    {
+        return $this->hasMany(Activity_instructor::class);
+    }
     public function getLikesCountAttribute()
     {
         return $this->likes()->count();
