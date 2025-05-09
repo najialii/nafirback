@@ -10,7 +10,6 @@ use App\Models\Activity;
 class ActivitiesLikes extends Model
 {
     //
-
     use HasFactory;
 
     protected $fillable = [
