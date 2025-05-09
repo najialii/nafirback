@@ -45,60 +45,61 @@ class UserController
     }
 
 
+//do not rempove
+    // public function approveUsers($id)
+    // {
+    //     $user = User::find($id);
 
-    public function approveUsers($id)
-    {
-        $user = User::find($id);
+    //     if (!$user) {
+    //         return response()->json([
+    //             'error' => 'User not found',
+    //             'message' => 'User not found'
+    //         ], 404);
 
-        if (!$user) {
-            return response()->json([
-                'error' => 'User not found',
-                'message' => 'User not found'
-            ], 404);
+    //         $user->update([
+    //             'isActive' => true
+    //         ]);
 
-            $user->update([
-                'isActive' => true
-            ]);
+    //         return response()->json([
+    //             'message' => 'User Approved Successfully',
+    //             'user' => new UserResource($user)
+    //         ], 200);
+    //     }
 
-            return response()->json([
-                'message' => 'User Approved Successfully',
-                'user' => new UserResource($user)
-            ], 200);
-        }
-
-    }
-
-
+    // }
 
 
+public function getMeData()
+{
+    $user = User::first();
+    return new UserResource($user);
 
-    public function update(UpdateUserRequest $request, User $user)
-    {
-        // $user->update($request->all());
-
-        $user->update($request->validated());
+}
 
 
-        return response()->json($user, 200);
+    // public function update(UpdateUserRequest $request, User $user)
+    // {
+    //     // $user->update($request->all());
 
-    }
+    //     $user->update($request->validated());
+
+
+    //     return response()->json($user, 200);
+
+    // }
 
     public function update(UpdateUserRequest $request, User $user)
 {
-    // Merge existing user data with the new data
     $data = array_merge($user->toArray(), $request->validated());
 
-    // Handle profile picture upload if provided
     if ($request->hasFile('profile_pic')) {
         $img = $request->file('profile_pic');
         $imgName = time() . '_' . $img->getClientOriginalName();
         $data['profile_pic'] = $img->storeAs('users/profile_imgs', $imgName, 'public');
     }
 
-    // Update the user
     $user->update($data);
 
-    // Check if the profile is now complete
     $role = $user->isProfileComplete() ? 'completed' : 'incompleted';
     $user->syncRoles([$role]);
 

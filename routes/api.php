@@ -19,7 +19,7 @@ use App\Http\Controllers\BlogLikesController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-Route::middleware('auth:sanctum')->get('/user/me', [AuthController::class, 'getMeData']);
+Route::middleware('auth:sanctum')->get('/user/me', [UserController::class, 'getMeData']);
 Route::get('/user/{id}' ,[AuthController::class, 'show'])->middleware('auth:sanctum');
 // Department
 Route::get('/department/{id}', [DepartmentController::class, 'show']);

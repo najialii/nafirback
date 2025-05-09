@@ -28,6 +28,7 @@ class UserResource extends JsonResource
             'expertise' => $this->expertise,
             'education' => $this->education,
             'certificates' => $this->certificates,
+            'profile_completion' => $this->profileComplePercentage(),
             'isActive' => $this->isActive,
         ];
     }

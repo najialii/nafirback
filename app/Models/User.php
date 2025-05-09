@@ -106,6 +106,36 @@ class User extends Authenticatable
 
 
 
+    public function profileComplePercentage(): int
+{
+    $fields = [
+        'name',
+        'profile_pic',
+        'email',
+        'password',
+        'department_id',
+        'phone',
+        'activity_id',
+        'skills',
+        'exp_years',
+        'country',
+        'expertise',
+        'education',
+        'certificates',
+    ];
+
+    $filled = 0;
+
+    foreach ($fields as $field) {
+        if (!empty($this->{$field})) {
+            $filled++;
+        }
+    }
+
+    return intval(($filled / count($fields)) * 100);
+}
+
+
     public function isProfileComplete(): bool
 {
     $onboardingFields = [
