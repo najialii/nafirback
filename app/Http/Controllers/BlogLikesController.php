@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class BlogLikesController extends Controller
 {
-    public function toggle(Request $request, $blogId)
+    public function fav_blog(Request $request, $blogId)
     {
         try {
             $user = Auth::user();
@@ -50,5 +50,34 @@ class BlogLikesController extends Controller
                 'message' => $th->getMessage(),
             ], 500);
         }
+    }
+
+
+
+    public function getfav_blogs(Request $request)
+    {
+        $user = Auth::user();
+    
+        $fav = BlogLikes::where('user_id', $user->id)
+            ->where('liked', true)
+            ->with('blog')
+            ->get()
+            ->map(function ($fav) {
+                if ($fav->blog) { 
+                    return [
+                        'id' => $fav->blog->id,
+                        'name' => $fav->blog->name,
+                        'img' => $fav->blog->img,
+                        'description' => $fav->blog->description,
+                    ];
+                }
+                return null; 
+            })
+            ->filter(); 
+    
+        return response()->json([
+            'message' => 'Favorite blog retrieved',
+            'favorite' => $fav->toArray(),
+        ]);
     }
 }

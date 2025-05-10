@@ -17,14 +17,17 @@ class BlogResource extends JsonResource
         return [
             'id' => $this->id,
             'img' => $this->img,
-            'author_id' => $this->author_id,
+            'author' => $this->author = [
+                'img'  => $this->author->profile_pic,
+                'id'   => $this->author->id,
+                'name' => $this->author->name,
+            ],
             'title' => $this->title,
             'department_id' => $this->department_id,
             'content' => $this->content,
             'featured' => $this->featured,
             'slug' => $this->slug,
             'extra' => [
-                'likes_count' => $this->likes_count,
                 'liked_by_user' => $this->liked_by_user,
             ],
         ];

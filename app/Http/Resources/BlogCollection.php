@@ -19,14 +19,17 @@ class BlogCollection extends ResourceCollection
                 return [
                     'id' => $blog->id,
                     'img' => $blog->img,
-                    'author_id' => $blog->author_id,
+                    'author' => $blog->author = [
+                        'img'  => $blog->author->profile_pic,
+                        'id'   => $blog->author->id,
+                        'name' => $blog->author->name,
+                    ],
                     'title' => $blog->title,
                     'department_id' => $blog->department_id,
                     'content' => $blog->content,
                     'featured' => $blog->featured,
                     'slug' => $blog->slug,
                     'extra' => [
-                        'likes_count' => $blog->likes_count,
                         'liked_by_user' => $blog->liked_by_user,
                     ]
 

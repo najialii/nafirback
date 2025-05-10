@@ -74,7 +74,7 @@ Route::middleware('auth:sanctum')->group(function () {
 // Blogs
 
 Route::get('/posts', [BlogController::class, 'index'])->middleware(AuthOpt::class);
-Route::get('/post/{id}', [BlogController::class, 'show']);
+Route::get('/post/{id}', [BlogController::class, 'show'])->middleware('auth:sanctum');
 
 Route::get('search/{keyword}', [BlogController::class, 'search']);
 Route::get('/posts/department/{id}', [BlogController::class, 'departmentBlogs']);
@@ -96,6 +96,7 @@ Route::post('/cv', [CVController::class, 'store']);
 
 // activit
 Route::post('/activities/{id}/like', [ActivitiesLikesController::class, 'fav_activity'])->middleware('auth:sanctum');
-Route::get('/favorite/activites', [ActivitiesLikesController::class, 'getfav_activites'])->middleware('auth:sanctum');;
+Route::get('/favorite/activities', [ActivitiesLikesController::class, 'getfav_activites'])->middleware('auth:sanctum');;
 // blikes
-Route::post('/post/{blogId}/like', [BlogLikesController::class, 'toggle'])->middleware('auth:sanctum');
+Route::post('/post/{blogId}/like', [BlogLikesController::class, 'fav_blog'])->middleware('auth:sanctum');
+Route::get('/favorite/blogs', [BlogLikesController::class, 'getfav_blogs'])->middleware('auth:sanctum');;
