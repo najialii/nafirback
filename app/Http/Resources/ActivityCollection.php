@@ -20,14 +20,19 @@ class ActivityCollection extends ResourceCollection
     'department_id' => $activity->department_id,
     'location'      => $activity->location,
     'img'           => $activity->img,
-    'Presentors'    => $activity->instructors->map(function ($instructor) {
+    'description' => $activity->description,
+    'presentors'    => $activity->instructors->map(function ($instructor) {
      return [
       'id'   => $instructor->user->id,
       'name' => $instructor->user->name,
       'img'  => $instructor->user->profile_pic,
      ];
     }),
-
+    'user'  => $activity->user = [
+     'img'  => $activity->user->profile_pic,
+     'id'   => $activity->user->id,
+     'name' => $activity->user->name,
+    ],
     'time'          => $activity->time,
     'type'          => $activity->type,
 

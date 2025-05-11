@@ -28,20 +28,21 @@ Route::post('/department', [DepartmentController::class, 'store'])->middleware('
 
 // Activities
 Route::get('/activities', [ActivityController::class, 'index'])->middleware(AuthOpt::class);
-Route::get('/activities/search/{keyword}', [ActivityController::class, 'searchActivity']);
-Route::get('/activities/{id}', [ActivityController::class, 'show']);
-Route::get('/activities/department/{id}', [ActivityController::class, 'departmentAct']);
+// Route::get('/activities/search/{keyword}', [ActivityController::class, 'searchActivity']);
+// Route::get('/activities/{id}', [ActivityController::class, 'show']);
+// Route::get('/activities/department/{id}', [ActivityController::class, 'departmentAct']);
 
 Route::prefix('activities')->middleware('auth:sanctum')->group(function () {
     Route::controller(ActivityController::class)->group(function () {
         Route::post('/', 'store');
+        Route::get('/{id}', 'show');
         Route::put('/{id}', 'update');
         Route::delete('/{id}', 'destroy');
     });
 });
 
 // Activity Requests
-Route::post('/activity-requests', [ActivityReqController::class, 'store'])->middleware('auth:sanctum');
+Route::post('/activity/requests', [ActivityReqController::class, 'store'])->middleware('auth:sanctum');
 
 // Mentorships
 Route::get('/mentorships', [MentorshipController::class, 'index']);
@@ -56,12 +57,12 @@ Route::prefix('mentorship')->middleware('auth:sanctum')->group(function () {
 });
 
 // Mentorship Requests
-Route::get('/mentorshiprequest', [MentorshipReqController::class, 'index']);
-Route::get('/mentorshiprequest/{id}', [MentorshipReqController::class, 'show']);
-Route::put('/mentorshiprequest/{id}/status', [MentorshipReqController::class, 'processMentorshipRequest'])->middleware('auth:sanctum');
-Route::post('/request_session', [MentorshipReqController::class, 'store'])->middleware('auth:sanctum');
+Route::get('/mentorship/request', [MentorshipReqController::class, 'index']);
+Route::get('/mentorship/request/{id}', [MentorshipReqController::class, 'show']);
+Route::put('/mentorship/request/{id}/status', [MentorshipReqController::class, 'processMentorshipRequest'])->middleware('auth:sanctum');
+Route::post('/mentorship/{id}/request', [MentorshipReqController::class, 'store'])->middleware('auth:sanctum');
 
-// Users
+// Users/mentorship/{id}/request/{request_id}
 Route::get('/user', [UserController::class, 'index']);
 Route::get('/user/{id}', [UserController::class, 'show']);
 

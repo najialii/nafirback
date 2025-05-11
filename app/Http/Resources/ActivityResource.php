@@ -24,13 +24,13 @@ class ActivityResource extends JsonResource
    'location'      => $this->location,
    'time'          => $this->time,
    'type'          => $this->type,
-   'user'          => $this->user = [
+   'user'  => $this->user = [
     'img'  => $this->user->profile_pic,
     'id'   => $this->user->id,
     'name' => $this->user->name,
    ],
    'benefits'      => $this->benifites,
-   'Presentors'    => $this->instructors->map(function ($instructor) {
+   'presentors'    => $this->instructors->map(function ($instructor) {
     return [
      'id'   => $instructor->user->id,
      'name' => $instructor->user->name,
