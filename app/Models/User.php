@@ -2,54 +2,44 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Department;
-use App\Models\Metorship;
-use App\Models\Blog;
-use App\Models\MentorshipReq;
-use App\Models\Activity;
 use Spatie\Permission\Traits\HasRoles;
-use App\Models\Role;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens, HasRoles;
 
-
-
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
-    'name',
+        'name',
         'email',
         'profile_pic',
         'phone',
-        'title', 
-        'skills', 
-        'education', 
-        'experience', 
-        'location', 
-        'cv_file', 
-        'targeted_locations', 
-        'targeted_industries', 
-        'targeted_titles', 
-        'career_tasks', 
-        'completion_percentage', 
-
+        'title',
+        'skills',
+        'education',
+        'experience',
+        'location',
+        'cv_file',
+        'targeted_locations',
+        'targeted_industries',
+        'targeted_titles',
+        'career_tasks',
+        'completion_percentage',
     ];
 
-
-
-
+    protected $casts = [
+        'skills' => 'array',
+        'education' => 'array',
+        'experience' => 'array',
+        'location' => 'array',
+        'targeted_locations' => 'array',
+        'targeted_industries' => 'array',
+        'targeted_titles' => 'array',
+        'email_verified_at' => 'datetime',
+    ];
 
     public function department()
     {
@@ -61,38 +51,9 @@ class User extends Authenticatable
         return $this->hasMany(Activity::class);
     }
 
-    public function Mentorship()
+    public function mentorships()
     {
         return $this->hasMany(Mentorship::class);
-    }
-
-    // public function mentorshipRequests()
-    // {
-    //     return $this->hasMany(MentorshipReq::class, 'mentee_id');
-    // }
-
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
     }
 
     public function blogs()
@@ -100,28 +61,17 @@ class User extends Authenticatable
         return $this->hasMany(Blog::class, 'author_id');
     }
 
-    public function superAdmin()
+    public function profileCompletionPercentage(): int
     {
-        return $this->hasOne(SuperAdmin::class);
-    }
+        $fillableFields = $this->fillable;
+        $filled = 0;
 
-
-
-    public function profileComplePercentage(): int
-{
-    $fillableFields = $this->fillable;
-
-    $filled = 0;
-
-    foreach ($fillableFields as $field) {
-        if (!empty($this->{$field})) {
-            $filled++;
+        foreach ($fillableFields as $field) {
+            if (!empty($this->{$field})) {
+                $filled++;
+            }
         }
+
+        return intval(($filled / count($fillableFields)) * 100);
     }
-
-    return intval(($filled / count($fillableFields)) * 100);
-}
-
-
-
 }

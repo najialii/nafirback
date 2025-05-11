@@ -63,12 +63,12 @@ Route::post('/request_session', [MentorshipReqController::class, 'store'])->midd
 
 // Users
 Route::get('/user', [UserController::class, 'index']);
-// Route::get('/user/{id}', [UserController::class, 'show']);
+Route::get('/user/{id}', [UserController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user', [UserController::class, 'store']);
     Route::put('/user/{id}', [UserController::class, 'update']);
-    Route::patch('/user/{id}', [UserController::class, 'update']);
+    // Route::patch('/user/{id}', [UserController::class, 'update']);
 });
 
 // Blogs
