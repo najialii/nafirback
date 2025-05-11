@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Facades\Hash;
+
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
@@ -17,7 +19,7 @@ class UsersSeeder extends Seeder
             ->hasDepartment(25)
             ->create();
         $firstUser = User::first();
-        $firstUser->password = 'admin';
+        $firstUser->password = Hash::make('admin');
         $firstUser->email = 'admin@nafir.sd';
         $firstUser->save();
 
