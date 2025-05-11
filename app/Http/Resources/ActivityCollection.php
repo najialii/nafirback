@@ -35,7 +35,9 @@ class ActivityCollection extends ResourceCollection
     ],
     'time'          => $activity->time,
     'type'          => $activity->type,
-
+    'extra' => [
+        'liked_by_user' => $activity->liked_by_user,
+    ],
    ];
   })->toArray();
  }

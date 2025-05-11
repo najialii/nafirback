@@ -37,7 +37,9 @@ class ActivityResource extends JsonResource
      'img'  => $instructor->user->profile_pic,
     ];
    }),
-
+   'extra' => [
+    'liked_by_user' => $this->liked_by_user,
+],
   ];
  }
 }
