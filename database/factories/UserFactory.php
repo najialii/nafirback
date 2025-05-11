@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
 
 /**
@@ -25,56 +24,49 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
             'profile_pic' => $this->faker->imageUrl(300, 300, 'people', true, 'User'),
-            'email' => fake()->unique()->safeEmail(),
+            'phone' => $this->faker->phoneNumber(),
+            'title' => $this->faker->jobTitle(), 
+            'skills' => json_encode($this->faker->words(5)), 
+            'education' => json_encode([
+                [
+                    'university' => $this->faker->company(),
+                    'certificate' => $this->faker->word() . ' Degree',
+                    'degree' => $this->faker->word(),
+                    'period' => [
+                        'start' => $this->faker->year(),
+                        'end' => $this->faker->year(),
+                    ],
+                    'description' => $this->faker->sentence(),
+                ],
+            ]), 
+            'experience' => json_encode([
+                [
+                    'title' => $this->faker->jobTitle(),
+                    'company' => $this->faker->company(),
+                    'period' => [
+                        'start' => $this->faker->year(),
+                        'end' => $this->faker->optional()->year(),
+                    ],
+                    'description' => $this->faker->sentence(),
+                ],
+            ]), 
+            'location' => json_encode([
+                'country' => $this->faker->country(),
+                'city' => $this->faker->city(),
+            ]), 
+            'cv_file' => $this->faker->url(), 
+            'targeted_locations' => json_encode($this->faker->words(3)), 
+            'targeted_industries' => json_encode($this->faker->words(3)), 
+            'targeted_titles' => json_encode($this->faker->words(3)), 
+            'career_tasks' => $this->faker->paragraph(), 
+            'completion_percentage' => $this->faker->numberBetween(0, 100), 
+            'department_id' => \App\Models\Department::inRandomOrder()->first()?->id ?? null,
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
-            // 'role' => $this->faker->randomElement(['admin', 'mentor', 'mentee']),
-            'department_id' => \App\Models\Department::inRandomOrder()->first()?->id ?? null,
-            'phone' => $this->faker->phoneNumber,
-            'country' => $this->faker->country(),
-            'skills' => $this->faker->words(3, true),
-            'exp_years' => $this->faker->numberBetween(1, 10),
-            'expertise' => json_encode([
-                [
-                    'name' => $this->faker->jobTitle(),
-                    'description' => $this->faker->sentence(),
-                    'start_date' => $this->faker->date(),
-                    'end_date' => $this->faker->optional()->date(),
-                ],
-                [
-                    'name' => $this->faker->jobTitle(),
-                    'description' => $this->faker->sentence(),
-                    'start_date' => $this->faker->date(),
-                    'end_date' => $this->faker->optional()->date(),
-                ]
-            ]),
-
-            'education' => json_encode([
-                [
-                    'name' => $this->faker->word() . ' Degree',
-                    'institution' => $this->faker->company(),
-                    'start_date' => $this->faker->date(),
-                    'end_date' => $this->faker->date(),
-                ]
-            ]),
-
-            'certificates' => json_encode([
-                [
-                    'name' => $this->faker->word() . ' Certification',
-                    'issued_by' => $this->faker->company(),
-                    'issue_date' => $this->faker->date(),
-                ],
-                [
-                    'name' => $this->faker->word() . ' Professional Certificate',
-                    'issued_by' => $this->faker->company(),
-                    'issue_date' => $this->faker->date(),
-                ]
-            ]),
-
-
         ];
     }
 

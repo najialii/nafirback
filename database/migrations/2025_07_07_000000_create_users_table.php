@@ -11,27 +11,30 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-
             $table->id();
             $table->string('name');
-            $table->string('profile_pic')->nullable();
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->unsignedBigInteger('department_id')->nullable();
+            $table->string('profile_pic')->nullable();
             $table->string('phone')->nullable();
-            $table->string('skills')->nullable();
-            $table->integer('exp_years')->nullable();
-            $table->string('country')->nullable();
-            $table->json('expertise')->nullable();
-            $table->json('education')->nullable();
-            $table->json('certificates')->nullable();
+            $table->string('title')->nullable(); 
+            $table->json('skills')->nullable(); 
+            $table->json('education')->nullable(); 
+            $table->json('experience')->nullable(); 
+            $table->json('location')->nullable(); 
+            $table->string('cv_file')->nullable(); 
+            $table->json('targeted_locations')->nullable(); 
+            $table->json('targeted_industries')->nullable(); 
+            $table->json('targeted_titles')->nullable(); 
+            $table->text('career_tasks')->nullable(); 
+            $table->integer('completion_percentage')->default(0); 
+            $table->unsignedBigInteger('department_id')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->string('password');
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
 
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('set null');
-
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

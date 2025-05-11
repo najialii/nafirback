@@ -14,22 +14,25 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // return parent::toArray($request);
         return [
             'id' => $this->id,
             'profile_pic' => $this->profile_pic,
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
-            'departmnet_id' => $this->department_id,
-            'role' => $this->role,
+            'department_id' => $this->department_id,
+            'role' => $this->roles->pluck('name'),
             'skills' => $this->skills,
-            'country' => $this->country,
-            'expertise' => $this->expertise,
+            'location' => $this->location,
+            'experience' => $this->experience,
             'education' => $this->education,
-            'certificates' => $this->certificates,
+            'cv_file' => $this->cv_file,
+            'targeted_locations' => $this->targeted_locations,
+            'targeted_industries' => $this->targeted_industries,
+            'targeted_titles' => $this->targeted_titles,
+            'career_tasks' => $this->career_tasks,
             'completionPercentage' => $this->profileComplePercentage(),
-            'isActive' => $this->isActive,
+            'isActive' => $this->is_active,
         ];
     }
 }
