@@ -17,13 +17,15 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'profileImage' => $this->profile_pic,
-            'basicInfo' => ['name' => $this->name,
-            'email' => $this->email],
+            'basicInfo' => [
+                'name' => $this->name,
+                'email' => $this->email
+            ],
             'phoneNumber' => $this->phone,
             'departmentId' => $this->department_id,
             'role' => $this->roles->pluck('name'),
             'skills' => $this->skills,
-            'location' => $this->location,
+            'location' => json_encode($this->location),
             'experiences' => $this->experience,
             'educations' => $this->education,
             'cvFile' => $this->cv_file,
