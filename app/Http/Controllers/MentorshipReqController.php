@@ -230,7 +230,11 @@ class MentorshipReqController extends Controller
         try {
             $mentorshipReq = MentorshipReq::with(['mentee', 'mentor', 'mentorship'])
                 ->select('id', 'mentorship_id', 'mentor_id', 'mentee_id', 'sele_date', 'sele_time', 'message', 'status', 'created_at', 'updated_at')
-                ->findOrFail($id);
+                ->find($id);
+
+            if (!$mentorshipReq) {
+                return response()->json(['status' => 'unbooked'], 404);
+            }
 
             return response()->json([
                 'id' => $mentorshipReq->id,
