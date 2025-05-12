@@ -20,7 +20,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::middleware('auth:sanctum')->get('/user/me', [UserController::class, 'getMeData']);
-Route::get('/user/{id}' ,[AuthController::class, 'show'])->middleware('auth:sanctum');
+Route::get('/user/{id}', [AuthController::class, 'show'])->middleware('auth:sanctum');
 // Department
 Route::get('/department/{id}', [DepartmentController::class, 'show']);
 Route::get('/department', [DepartmentController::class, 'index']);
@@ -57,10 +57,12 @@ Route::prefix('mentorship')->middleware('auth:sanctum')->group(function () {
 });
 
 // Mentorship Requests
-Route::get('/mentorship/request', [MentorshipReqController::class, 'index']);
-Route::get('/mentorship/request/{id}', [MentorshipReqController::class, 'show']);
-Route::put('/mentorship/request/{id}/status', [MentorshipReqController::class, 'processMentorshipRequest'])->middleware('auth:sanctum');
+//Route::get('/mentorship/request', [MentorshipReqController::class, 'index']);
+Route::get('/mentorship/{id}/request', [MentorshipReqController::class, 'show']);
 Route::post('/mentorship/{id}/request', [MentorshipReqController::class, 'store'])->middleware('auth:sanctum');
+Route::delete('/mentorship/{id}/request', [MentorshipReqController::class, 'destroy'])->middleware('auth:sanctum');
+
+//Route::put('/mentorship/request/{id}/status', [MentorshipReqController::class, 'processMentorshipRequest'])->middleware('auth:sanctum');
 
 // Users/mentorship/{id}/request/{request_id}
 Route::get('/user', [UserController::class, 'index']);
@@ -97,7 +99,9 @@ Route::post('/cv', [CVController::class, 'store']);
 
 // activit
 Route::post('/activities/{id}/like', [ActivitiesLikesController::class, 'fav_activity'])->middleware('auth:sanctum');
-Route::get('/favorite/activities', [ActivitiesLikesController::class, 'getfav_activites'])->middleware('auth:sanctum');;
+Route::get('/favorite/activities', [ActivitiesLikesController::class, 'getfav_activites'])->middleware('auth:sanctum');
+;
 // blikes
 Route::post('/post/{blogId}/like', [BlogLikesController::class, 'fav_blog'])->middleware('auth:sanctum');
-Route::get('/favorite/blogs', [BlogLikesController::class, 'getfav_blogs'])->middleware('auth:sanctum');;
+Route::get('/favorite/blogs', [BlogLikesController::class, 'getfav_blogs'])->middleware('auth:sanctum');
+;
