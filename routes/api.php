@@ -42,7 +42,7 @@ Route::prefix('activities')->middleware('auth:sanctum')->group(function () {
 });
 
 // Activity Requests
-Route::post('/activity/requests', [ActivityReqController::class, 'store'])->middleware('auth:sanctum');
+Route::post('/activity/{id}/request', [ActivityReqController::class, 'store'])->middleware('auth:sanctum');
 
 // Mentorships
 Route::get('/mentorships', [MentorshipController::class, 'index']);
