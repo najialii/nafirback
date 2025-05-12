@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Helpers\ImageHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,7 +17,7 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'profileImage' => $this->profile_pic,
+            'profileImage' => $this->profile_pic ?? ImageHelper::generateImageUrl('person', ['name' => $this->name]),
             'basicInfo' => [
                 'name' => $this->name,
                 'email' => $this->email

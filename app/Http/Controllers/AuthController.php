@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Helpers\ImageHelper;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -51,7 +52,7 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password), // Ensure password is hashed
-              ]);
+            ]);
 
             $token = $user->createToken($request->name);
             $user->assignRole($role);
@@ -125,7 +126,7 @@ class AuthController extends Controller
                     'id' => $user->id,
                     'email' => $user->email,
                     'name' => $user->name,
-                    'profile_pic' => $user->profile_pic,
+                    'image' => $user->profile_pic ?? ImageHelper::generateImageUrl('person', ['name' => $user->name]),
                     'is_active' => $user->is_active,
                     'role' => $user->getRoleNames()->first() ?? 'user',
                     'completionPercentage' => $user->profileCompletionPercentage(),
@@ -145,7 +146,7 @@ class AuthController extends Controller
                     'email' => $user->email,
                     'name' => $user->name,
                     'is_active' => $user->is_active,
-                    'profile_pic' => $user->profile_pic,
+                    'image' => $user->profile_pic ?? ImageHelper::generateImageUrl('person', ['name' => $user->name]),
                     'role' => $user->getRoleNames()->first() ?? 'user',
                     'completionPercentage' => $user->profileCompletionPercentage(),
                     'authToken' => $token,

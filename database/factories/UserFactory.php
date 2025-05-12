@@ -1,6 +1,7 @@
 <?php
 namespace Database\Factories;
 
+use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -17,7 +18,7 @@ class UserFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'profile_pic' => 'https://picsum.photos/seed/' . $this->faker->uuid . '/300/300',
+            'profile_pic' => ImageHelper::generateImageUrl('generic'),
             'phone' => $this->faker->phoneNumber(),
             'title' => $this->faker->jobTitle(),
             'skills' => $this->faker->words(5),
