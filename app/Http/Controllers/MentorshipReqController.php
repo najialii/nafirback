@@ -37,67 +37,191 @@ class MentorshipReqController extends Controller
     }
 
 
-    public function destroy($id)
+
+    
+ 
+public function store(Request $request, $id)
+{
+    $user = auth()->user();
+    public function getAllMentorReq()
     {
-        return ['message' => 'Not implemented'];
+        // mjdmd
+        $user = auth()->user();
+        try {
+    
+            $mentorshipReq = MentorshipReq::where('mentor_id', $user->id)
+                ->with(['mentee', 'mentorship'])
+                ->select('id', 'mentorship_id', 'mentee_id', 'sele_date', 'sele_time', 'message', 'status', 'created_at', 'updated_at')
+                ->get();
+    
+                return response()->json([
+                    'status' => $mentorshipReq->status,
+                    'body'  => [
+                        'id' => $mentorshipReq->id,
+                        'mentorship_id' => $mentorshipReq->mentorship_id,
+                        'mentee' => [
+                            'id' => $mentorshipReq->mentee->id,
+                            'name' => $mentorshipReq->mentee->name,
+                            'profile_pic' => $mentorshipReq->mentee->profile_pic,
+                        ],
+                        'sele_date' => $mentorshipReq->sele_date,
+                        'sele_time' => $mentorshipReq->sele_time,
+                        'message' => $mentorshipReq->message,
+                        'created_at' => $mentorshipReq->created_at,
+                        'updated_at' => $mentorshipReq->updated_at,
+                    ],
+                    
+                ], 200);
+
+        } catch (\Throwable $th) {   
+            return response()->json([
+                'error' => 'Something went wrong',
+                'message' => $th->getMessage(),
+            ], 500);
+        }
     }
 
-
-    public function store(Request $request, $id)
+    public function getoneMentorReq($mentorshipId)
     {
-        $user = auth()->user();
-
         try {
-            $validatedData = $request->validate([
-                'message' => 'nullable|string',
-                'sele_date' => 'required|date',
-                'sele_time' => 'required|date_format:H:i',
-            ]);
-
-            $mentorship = Mentorship::find($id);
-            if (!$mentorship) {
+            $user = auth()->user();
+    
+            $mentorshipReq = MentorshipReq::where('mentorship_id', $mentorshipId)
+                ->where('mentor_id', $user->id)
+                ->with(['mentee', 'mentorship'])
+                ->select('id', 'mentorship_id', 'mentee_id', 'sele_date', 'sele_time', 'message', 'status', 'created_at', 'updated_at')
+                ->first();
+    
+            if (!$mentorshipReq) {
                 return response()->json([
-                    'error' => 'Invalid mentorship session',
-                    'message' => 'The mentorship session does not exist',
+                    'error' => 'Mentorship request not found',
+                    'message' => 'No mentorship request found for the given mentorship ID',
                 ], 404);
             }
-            // TODO: Do this at the Model level
-            $isBooked = MentorshipReq::where('mentorship_id', $id)
-                ->where('mentee_id', $user->id)
-                ->exists();
-
-            if ($isBooked) {
-                return response()->json([
-                    'error' => 'Mentorship session already booked',
-                    'message' => 'You have already booked this mentorship session',
-                ], 400);
-            }
-
-            $mentorshipReq = MentorshipReq::create([
-                'mentorship_id' => $id,
-                'mentor_id' => $mentorship->mentor_id,
-                'mentee_id' => $user->id,
-                'message' => $validatedData['message'] ?? null,
-                'sele_date' => $validatedData['sele_date'],
-                'sele_time' => $validatedData['sele_time'],
-            ]);
-
-            $mentorshipReq->load(['mentee', 'mentor', 'mentorship']);
-
+    
             return response()->json([
-                'id' => $mentorshipReq->id,
-                'mentorship_id' => $mentorshipReq->mentorship_id,
-                'sele_date' => $mentorshipReq->sele_date,
-                'sele_time' => $mentorshipReq->sele_time,
-                'message' => $mentorshipReq->message,
-                'status' => $mentorshipReq->status
-            ], 201);
+                'status' => $mentorshipReq->status,
+                'body'  => [
+                    'id' => $mentorshipReq->id,
+                    'mentorship_id' => $mentorshipReq->mentorship_id,
+                    'mentee' => [
+                        'id' => $mentorshipReq->mentee->id,
+                        'name' => $mentorshipReq->mentee->name,
+                        'profile_pic' => $mentorshipReq->mentee->profile_pic,
+                    ],
+                    'sele_date' => $mentorshipReq->sele_date,
+                    'sele_time' => $mentorshipReq->sele_time,
+                    'message' => $mentorshipReq->message,
+                    'created_at' => $mentorshipReq->created_at,
+                    'updated_at' => $mentorshipReq->updated_at,
+                ],
+                
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'error' => 'Something went wrong',
                 'message' => $th->getMessage(),
             ], 500);
         }
+    }
+    public function destroy($id)
+    {
+        try {
+            $mentorshipReq = MentorshipReq::find($id);
+    
+            if (!$mentorshipReq) {
+                return response()->json([
+                    'error' => 'Mentorship request not found',
+                    'message' => 'The specified mentorship request does not exist',
+                ], 404);
+            }
+    
+            if (auth()->id() !== $mentorshipReq->mentee_id && auth()->id() !== $mentorshipReq->mentor_id) {
+                return response()->json([
+                    'error' => 'Unauthorized',
+                    'message' => 'You are not authorized to delete this mentorship request',
+                ], 403);
+            }
+    
+            $mentorshipReq->delete();
+    
+            return response()->json([
+                'message' => 'Mentorship request deleted successfully',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => 'Something went wrong',
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function store(Request $request, $id)
+    {
+        $user = auth()->user();
+
+    try {
+        $validatedData = $request->validate([
+            'message' => 'nullable|string',
+            'sele_date' => 'required|date',
+            'sele_time' => 'required|date_format:H:i',
+        ]);
+
+        $mentorship = Mentorship::find($id);
+        if (!$mentorship) {
+            return response()->json([
+                'error' => 'Invalid mentorship session',
+                'message' => 'The mentorship session does not exist',
+            ], 404);
+        }
+
+        $isBooked = MentorshipReq::where('mentorship_id', $id)
+            ->where('mentee_id', $user->id)
+            ->exists();
+
+        if ($isBooked) {
+            return response()->json([
+                'error' => 'Mentorship session already booked',
+                'message' => 'You have already booked this mentorship session',
+            ], 400);
+        }
+
+        $mentorshipReq = MentorshipReq::create([
+            'mentorship_id' => $id,
+            'mentor_id' => $mentorship->mentor_id,
+            'mentee_id' => $user->id,
+            'message' => $validatedData['message'] ?? null,
+            'sele_date' => $validatedData['sele_date'],
+            'sele_time' => $validatedData['sele_time'],
+        ]);
+
+        $mentorshipReq->load(['mentee', 'mentor', 'mentorship']);
+
+        return response()->json([
+            'id' => $mentorshipReq->id,
+            'mentorship_id' => $mentorshipReq->mentorship_id,
+            'sele_date' => $mentorshipReq->sele_date,
+            'sele_time' => $mentorshipReq->sele_time,
+            'message' => $mentorshipReq->message,
+            'status' => $mentorshipReq->status,
+            'created_at' => $mentorshipReq->created_at,
+            'updated_at' => $mentorshipReq->updated_at,
+            'mentee' => [
+                'id' => $mentorshipReq->mentee->id,
+                'name' => $mentorshipReq->mentee->name,
+                'profile_pic' => $mentorshipReq->mentee->profile_pic,
+            ],
+            'mentor' => [
+                'id' => $mentorshipReq->mentor->id,
+                'name' => $mentorshipReq->mentor->name,
+                'profile_pic' => $mentorshipReq->mentor->profile_pic,
+            ],
+        ], 201);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'error' => 'Something went wrong',
+            'message' => $th->getMessage(),
+        ], 500);
     }
 
     public function getMentorRequests($userId)
