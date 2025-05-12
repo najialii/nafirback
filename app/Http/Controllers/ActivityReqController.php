@@ -24,12 +24,15 @@ class ActivityReqController extends Controller
             $validatedData = $request->validate([
                 'note' => 'nullable|string',
             ]);
-
-            $activityReq = ActivityReq::create([
-                'participant_id' => $user->id,
-                'activity_id' => $id,
-                'note' => $validatedData['note'] ?? null,
-            ]);
+            $activityReq = ActivityReq::firstOrCreate(
+                [
+                    'participant_id' => $user->id,
+                    'activity_id' => $id,
+                ],
+                [
+                    'note' => $validatedData['note'] ?? null,
+                ]
+            );
 
             $activityReq->load('activity');
 
