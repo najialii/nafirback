@@ -49,8 +49,9 @@ Route::post('/activity/{id}/request', [ActivityReqController::class, 'store'])->
 Route::get('/mentorships', [MentorshipController::class, 'index']);
 Route::get('/mentorship/{id}', [MentorshipController::class, 'show']);
 Route::get('/search/mentorship/{keyword}', [MentorshipController::class, 'searchMentorships']);
-// Route::post('/mentorship', [MentorshipController::class, 'store'])->middleware('auth:sanctum');
 
+//Qu: Why store route is not protected?
+Route::post('/mentorship', [MentorshipController::class, 'store']);
 
 Route::prefix('mentorship')->middleware('auth:sanctum')->group(function () {
     Route::post('/', [MentorshipController::class, 'store']); 

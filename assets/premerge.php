@@ -26,7 +26,7 @@ class MentorshipReqController extends Controller
             $mentorshipRequests = MentorshipReq::with(['mentee', 'mentor', 'mentorship'])
                 ->select('id', 'mentorship_id', 'mentor_id', 'mentee_id', 'sele_date', 'sele_time', 'message', 'status', 'created_at', 'updated_at')
                 ->paginate(10);
-    
+
             return response()->json($mentorshipRequests, 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -38,8 +38,8 @@ class MentorshipReqController extends Controller
 
 
 
-    
- 
+
+
 public function store(Request $request, $id)
 {
     $user = auth()->user();
@@ -48,12 +48,12 @@ public function store(Request $request, $id)
         // mjdmd
         $user = auth()->user();
         try {
-    
+
             $mentorshipReq = MentorshipReq::where('mentor_id', $user->id)
                 ->with(['mentee', 'mentorship'])
                 ->select('id', 'mentorship_id', 'mentee_id', 'sele_date', 'sele_time', 'message', 'status', 'created_at', 'updated_at')
                 ->get();
-    
+
                 return response()->json([
                     'status' => $mentorshipReq->status,
                     'body'  => [
@@ -70,10 +70,10 @@ public function store(Request $request, $id)
                         'created_at' => $mentorshipReq->created_at,
                         'updated_at' => $mentorshipReq->updated_at,
                     ],
-                    
+
                 ], 200);
 
-        } catch (\Throwable $th) {   
+        } catch (\Throwable $th) {
             return response()->json([
                 'error' => 'Something went wrong',
                 'message' => $th->getMessage(),
@@ -85,20 +85,20 @@ public function store(Request $request, $id)
     {
         try {
             $user = auth()->user();
-    
+
             $mentorshipReq = MentorshipReq::where('mentorship_id', $mentorshipId)
                 ->where('mentor_id', $user->id)
                 ->with(['mentee', 'mentorship'])
                 ->select('id', 'mentorship_id', 'mentee_id', 'sele_date', 'sele_time', 'message', 'status', 'created_at', 'updated_at')
                 ->first();
-    
+
             if (!$mentorshipReq) {
                 return response()->json([
                     'error' => 'Mentorship request not found',
                     'message' => 'No mentorship request found for the given mentorship ID',
                 ], 404);
             }
-    
+
             return response()->json([
                 'status' => $mentorshipReq->status,
                 'body'  => [
@@ -115,7 +115,7 @@ public function store(Request $request, $id)
                     'created_at' => $mentorshipReq->created_at,
                     'updated_at' => $mentorshipReq->updated_at,
                 ],
-                
+
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -128,23 +128,23 @@ public function store(Request $request, $id)
     {
         try {
             $mentorshipReq = MentorshipReq::find($id);
-    
+
             if (!$mentorshipReq) {
                 return response()->json([
                     'error' => 'Mentorship request not found',
                     'message' => 'The specified mentorship request does not exist',
                 ], 404);
             }
-    
+
             if (auth()->id() !== $mentorshipReq->mentee_id && auth()->id() !== $mentorshipReq->mentor_id) {
                 return response()->json([
                     'error' => 'Unauthorized',
                     'message' => 'You are not authorized to delete this mentorship request',
                 ], 403);
             }
-    
+
             $mentorshipReq->delete();
-    
+
             return response()->json([
                 'message' => 'Mentorship request deleted successfully',
             ], 200);
@@ -243,7 +243,7 @@ public function store(Request $request, $id)
     }
 
 
- 
+
     public function getMenteeRequests($userId)
     {
         try {
@@ -252,7 +252,7 @@ public function store(Request $request, $id)
                 ->with(['mentee', 'mentor', 'mentorship'])
                 ->select('id', 'mentorship_id', 'mentor_id', 'mentee_id', 'sele_date', 'sele_time', 'message', 'status', 'created_at', 'updated_at')
                 ->get();
-    
+
             return response()->json($requests, 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -356,7 +356,7 @@ public function store(Request $request, $id)
             $mentorshipReq = MentorshipReq::with(['mentee', 'mentor', 'mentorship'])
                 ->select('id', 'mentorship_id', 'mentor_id', 'mentee_id', 'sele_date', 'sele_time', 'message', 'status', 'created_at', 'updated_at')
                 ->findOrFail($id);
-    
+
             return response()->json([
                 'id' => $mentorshipReq->id,
                 'mentorship_id' => $mentorshipReq->mentorship_id,
@@ -383,7 +383,7 @@ public function store(Request $request, $id)
                 //     'sele_time' => $mentorshipReq->mentorship->sele_time,
                 // ],
             ], 200);
-    
+
         } catch (\Throwable $th) {
             return response()->json([
                 'error' => 'Something went wrong',
@@ -391,5 +391,5 @@ public function store(Request $request, $id)
             ], 500);
         }
     }
-    
+
 }
