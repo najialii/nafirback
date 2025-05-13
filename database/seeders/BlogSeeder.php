@@ -14,7 +14,7 @@ class BlogSeeder extends Seeder
     public function run(): void
     {
         Blog::factory()
-            ->count(10)
+            ->count(50)
             ->create();
     }
 }
