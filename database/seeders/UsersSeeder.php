@@ -17,6 +17,14 @@ class UsersSeeder extends Seeder
         $userRole = Role::firstOrCreate(['name' => 'user']);
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $mentorRole = Role::firstOrCreate(['name' => 'mentor']);
+        User::factory()
+            ->count(25)
+            ->hasDepartment(25)
+            ->create();
+        $firstUser = User::first();
+        $firstUser->password = Hash::make('admin');
+        $firstUser->email = 'admin@nafir.net';
+        $firstUser->save();
 
         $commonPassword = Hash::make('password');
 

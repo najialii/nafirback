@@ -1,0 +1,11 @@
+{
+    "name": "Zoom",
+    "alias": "zoom",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Zoom\\Providers\\ZoomServiceProvider"
+    ],
+    "files": []
+}
