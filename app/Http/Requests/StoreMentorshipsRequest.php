@@ -28,12 +28,10 @@ class StoreMentorshipsRequest extends FormRequest
             'description' => ['required', 'string'],
             'department_id' => ['required', 'integer', 'exists:departments,id'],
             'benefits' => ['nullable', 'string'],
-            // MentorshipEntry fields provided by the user
             'session_date' => ['required', 'date'],
             'duration' => ['required', 'integer', 'min:1'],
             'link' => ['nullable', 'string', 'url'],
-            // You might also need to handle 'accepted_request_id' and 'status'
-            // depending on your workflow.
+         
         ];
     }
 }

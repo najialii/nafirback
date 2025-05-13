@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Resources\MenteeEntryResource;
+use App\Http\Resources\MentorshipEntryResource;
 use App\Models\Mentorship;
 use App\Models\MentorshipEntry;
 use App\Models\MentorshipReq;
@@ -473,13 +475,10 @@ class MentorshipReqController extends Controller
  {
   try {
 
-   // $requests = MentorshipReq::where('mentor_Id' , $mentorId)->with(['mentee_id', 'mentorship_id'])->get();
    $requests = MentorshipReq::where('mentor_id', $userId)->with(['user', 'mentor', 'mentorship'])->get();
 
-   // return dd($mentorId);
    return response()->json($requests);
 
-   //code...
   } catch (\Throwable $th) {
 
    return response()->json([
@@ -551,25 +550,30 @@ class MentorshipReqController extends Controller
 
 
  public function getAllMentorEntries()
-{
-    $mentorId = auth()->id();
+ {
+     $mentorId = auth()->id();
+ 
+     try {
+         $mentorshipEntries = MentorshipEntry::whereHas('mentorship', function ($query) use ($mentorId) {
+             $query->where('mentor_id', $mentorId);
+         })->with(['mentorship', 'mentorship.mentor', 'requests'])->get();
+ 
+         $entriesResource = $mentorshipEntries->map(function ($entry) {
+             return new MentorshipEntryResource($entry, 'mentor');
+         });
+ 
+         return response()->json([
+             'message' => 'Mentorship entries retrieved successfully.',
+             'data' => $entriesResource,
+         ], 200);
+     } catch (\Throwable $th) {
+         return response()->json([
+             'error' => 'Something went wrong.',
+             'message' => $th->getMessage(),
+         ], 500);
+     }
+ }
 
-    try {
-        $mentorshipEntries = MentorshipEntry::whereHas('mentorship', function ($query) use ($mentorId) {
-            $query->where('mentor_id', $mentorId);
-        })->with(['mentorship', 'mentorship.mentor', 'mentorship.requests'])->get();
-
-        return response()->json([
-            'message' => 'Mentorship entries retrieved successfully.',
-            'data' => $mentorshipEntries,
-        ], 200);
-    } catch (\Throwable $th) {
-        return response()->json([
-            'error' => 'Something went wrong.',
-            'message' => $th->getMessage(),
-        ], 500);
-    }
-}
 
 public function getOneMentorEntryBy($id)
 {
@@ -582,8 +586,9 @@ public function getOneMentorEntryBy($id)
 
         return response()->json([
             'message' => 'Mentorship entry retrieved successfully.',
-            'data' => $mentorshipEntry,
+            'data' => new MentorshipEntryResource($mentorshipEntry, 'mentor'),
         ], 200);
+
     } catch (\Throwable $th) {
         return response()->json([
             'error' => 'Something went wrong.',
@@ -593,18 +598,23 @@ public function getOneMentorEntryBy($id)
 }
 
 
+
 public function getAllMenteeEntries()
 {
     $menteeId = auth()->id();
 
     try {
-        $mentorshipEntries = MentorshipEntry::whereHas('mentorship', function ($query) use ($menteeId) {
+        $mentorshipEntries = MentorshipEntry::whereHas('request', function ($query) use ($menteeId) {
             $query->where('mentee_id', $menteeId);
         })->with(['mentorship', 'mentorship.mentor', 'requests.mentee'])->get(); 
 
+        $entriesResource = $mentorshipEntries->map(function ($entry) {
+            return new MenteeEntryResource($entry);
+        });
+
         return response()->json([
-            'message' => 'Mentorship entries retrieved successfully.',
-            'data' => $mentorshipEntries,
+            'message' => 'mentee Mentorship entries retrieved successfully.',
+            'data' => $entriesResource,
         ], 200);
     } catch (\Throwable $th) {
         return response()->json([
@@ -623,14 +633,24 @@ public function getOneMenteeEntry($id)
     $menteeId = auth()->id();
 
     try {
-        $mentorshipEntry = MentorshipEntry::whereHas('requests', function ($query) use ($menteeId) {
+        $mentorshipEntry = MentorshipEntry::whereHas('request', function ($query) use ($menteeId) {
             $query->where('mentee_id', $menteeId);
-        })->with(['mentorship', 'mentorship.mentor', 'requests'])->findOrFail($id);
+        })
+        ->with(['mentorship', 'mentorship.mentor', 'requests'])
+        ->find($id);  
+
+        if (!$mentorshipEntry) {
+            return response()->json([
+                'error' => 'Mentorship entry not found.',
+                'message' => 'No mentorship entry found with the given ID.',
+            ], 404);
+        }
 
         return response()->json([
             'message' => 'Mentorship entry retrieved successfully.',
-            'data' => $mentorshipEntry,
+            'data' => new MenteeEntryResource($mentorshipEntry),
         ], 200);
+
     } catch (\Throwable $th) {
         return response()->json([
             'error' => 'Something went wrong.',

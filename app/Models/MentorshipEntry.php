@@ -4,6 +4,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\MentorshipReq;
+use App\Models\Mentorship;
 class MentorshipEntry extends Model
 {
     use HasFactory;
@@ -31,8 +33,9 @@ class MentorshipEntry extends Model
 
     public function request()
     {
-        return $this->hasOne(MentorshipReq::class, 'accepted_request_id');
+        return $this->hasOne(MentorshipReq::class, 'id', 'accepted_request_id');
     }
+    
     // public function Booked_by()
     // {
     //     return $this->belongsTo(User::class,'mentee_id');

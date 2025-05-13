@@ -64,7 +64,9 @@ Route::get('/mentee/mentorship', [MentorshipReqController::class, 'getMenteeRequ
 Route::get('/mentorship/request/user/{id}', [MentorshipReqController::class, 'getOneMenteeRequest'])->middleware('auth:sanctum');
 Route::post('/req/{id}', [MentorshipReqController::class, 'reqSession'])->middleware('auth:sanctum');
 Route::get('/mentee/entries', [MentorshipReqController::class, 'getAllMenteeEntries'])->middleware('auth:sanctum');
+Route::get('/mentee/entries/{id}', [MentorshipReqController::class, 'getOneMenteeEntry'])->middleware('auth:sanctum');
 
+Route::get('/mentor/entries/{id}', [MentorshipReqController::class, 'getOneMentorEntryBy'])->middleware('auth:sanctum');
 
 //mentor
 Route::get('/mentorship/request/{id}', [MentorshipReqController::class, 'getoneMentorReq'])->middleware('auth:sanctum');

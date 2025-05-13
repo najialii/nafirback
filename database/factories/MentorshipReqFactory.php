@@ -11,19 +11,20 @@ use App\Models\User;
  */
 class MentorshipReqFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
-    {
-        return [
-            'mentorship_entry_id' => MentorshipEntry::factory(), 
-            'mentee_id' => User::factory(),
-            // 'mentor_id'=> User::factory(), 
-            'message' => $this->faker->sentence(), 
-            'status' => $this->faker->randomElement(['pending', 'accepted', 'rejected']), 
-        ];
-    }
+/**
+ * Define the model's default state.
+ *
+ * @return array<string, mixed>
+ */
+public function definition(): array
+{
+    return [
+     'mentorship_entry_id' => MentorshipEntry::inRandomOrder()->first()->id ?? MentorshipEntry::factory(),
+'mentee_id' => User::role('user')->inRandomOrder()->first()->id ?? User::factory(),
+
+        // 'mentor_id'=> User::factory(), 
+        'message' => $this->faker->sentence(), 
+        'status' => $this->faker->randomElement(['pending', 'accepted', 'rejected']), 
+    ];
+}
 }
