@@ -662,7 +662,74 @@ public function getOneMenteeEntry($id)
 
 
 
+public function getMentorMentorshipStatuses()
+{
+    $userId = auth()->id();
 
+    try {
+        $asMentor = Mentorship::with(['entries.request.mentee'])
+            ->where('mentor_id', $userId)
+            ->get()
+            ->map(function ($mentorship) {
+                $entry = $mentorship->entries->whereNotNull('accepted_request_id')->first();
+                $mentee = optional($entry?->request?->mentee);
+
+                return [
+                    'status' => $entry?->status ?? 'no entry',
+                    'other_user' => $mentee ? [
+                        'id' => $mentee->id,
+                        'name' => $mentee->name,
+                        'email' => $mentee->email,
+                    ] : null,
+                ];
+            })->filter(fn($entry) => $entry['other_user']);
+
+        return response()->json([
+            'message' => 'Mentorship statuses as mentor retrieved successfully.',
+            'data' => $asMentor->values(),
+        ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'error' => 'Failed to retrieve mentor statuses.',
+            'message' => $th->getMessage(),
+        ], 500);
+    }
+}
+
+public function getMenteeMentorshipStatuses()
+{
+    $userId = auth()->id();
+
+    try {
+        $asMentee = MentorshipReq::with(['mentorship_entry.mentorship.mentor'])
+            ->where('mentee_id', $userId)
+            ->whereNotNull('mentorship_entry_id')
+            ->get()
+            ->map(function ($req) {
+                $entry = $req->mentorship_entry;
+                $mentor = optional($entry?->mentorship?->mentor);
+
+                return [
+                    'status' => $entry?->status ?? 'no entry',
+                    'other_user' => $mentor ? [
+                        'id' => $mentor->id,
+                        'name' => $mentor->name,
+                        'email' => $mentor->email,
+                    ] : null,
+                ];
+            })->filter(fn($entry) => $entry['other_user']);
+
+        return response()->json([
+            'message' => 'Mentorship statuses as mentee retrieved successfully.',
+            'data' => $asMentee->values(),
+        ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'error' => 'Failed to retrieve mentee statuses.',
+            'message' => $th->getMessage(),
+        ], 500);
+    }
+}
 
 
 
