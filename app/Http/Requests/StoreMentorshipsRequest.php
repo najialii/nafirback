@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreMentorshipsRequest extends FormRequest
 {
@@ -17,18 +18,22 @@ class StoreMentorshipsRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            //
             'name' => ['required', 'string', 'max:255'],
-            'mentor_id' => ['required'],
+            'img' => ['nullable', 'string', 'url'],
+            'description' => ['required', 'string'],
             'department_id' => ['required', 'integer', 'exists:departments,id'],
-            'sele_date' => ['required', 'array'],
-            'av_time' => ['required', 'array']
-
+            'benefits' => ['nullable', 'string'],
+            // MentorshipEntry fields provided by the user
+            'session_date' => ['required', 'date'],
+            'duration' => ['required', 'integer', 'min:1'],
+            'link' => ['nullable', 'string', 'url'],
+            // You might also need to handle 'accepted_request_id' and 'status'
+            // depending on your workflow.
         ];
     }
 }

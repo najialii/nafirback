@@ -10,13 +10,10 @@ class MentorshipReq extends Model
 
     use HasFactory;
     protected $fillable = [
-        //'mentorship_id',
         'mentorship_entry_id', 
-        //'mentor_id',
         'mentee_id',
         'message',
-        //'link',
-        'status'
+        'status' 
     ];
     
     // public function mentorship()
@@ -24,15 +21,16 @@ class MentorshipReq extends Model
     //     return $this->belongsTo(Mentorship::class);
     // }
     
-    public function mentorshipEntry()
+    public function mentorship_entry()
     {
         return $this->belongsTo(MentorshipEntry::class, 'mentorship_entry_id');
     }
     
-public function mentee_id()
+public function mentee()
 {
-    return $this->belongsTo(User::class,'user');
+    return $this->belongsTo(User::class,'mentee_id');
 }
+
 
 }
 

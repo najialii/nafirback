@@ -1,10 +1,9 @@
 <?php
-
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\User;
 use App\Models\Mentorship;
+use App\Models\MentorshipReq;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\MentorshipEntry>
@@ -19,10 +18,13 @@ class MentorshipEntryFactory extends Factory
     public function definition(): array
     {
         return [
-            'date' => $this->faker->dateTimeBetween('now', '+1 year'), 
-            'duration' => $this->faker->numberBetween(30, 120), 
-            'bookedBy' => User::factory(), 
-            'mentorship_id' =>Mentorship::factory(),
+            'session_date'        => $this->faker->dateTimeBetween('now', '+1 year'),                    
+            'duration'            => $this->faker->numberBetween(30, 60),                               
+            'mentorship_id'       => Mentorship::factory(),                                              
+            // 'accepted_request_id' => MentorshipReq::factory(),
+            // 'accepted_request_id' => null,                                           
+            'link'                => $this->faker->url(),                                                
+            'status'              => $this->faker->randomElement(['pending', 'completed', 'cancelled']), 
         ];
     }
 }

@@ -25,7 +25,6 @@ class DatabaseSeeder extends Seeder
             UsersSeeder::class,
             ActivitySeeder::class,
             MentorshipSeeder::class,
-            MentorshipreqSeeder::class,
             ActivityReqSeeder::class,
             ActivitiesParticipantSeeder::class,
             BlogSeeder::class,
@@ -35,6 +34,7 @@ class DatabaseSeeder extends Seeder
             BlogLikesSeeder::class,
             ActinstrSeeder::class,
             MentorshipEntriesSeeder::class,
+            MentorshipreqSeeder::class,
         ]);
 
 

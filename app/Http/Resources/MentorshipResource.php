@@ -23,8 +23,7 @@ class MentorshipResource extends JsonResource
     'name' => $this->mentor->name,
    ],
    'department_id' => $this->department_id,
-   'date'          => $this->date,
-   'av_time'       => $this->av_time,
+   'benefits'          => $this->benefits,
    'created_at'    => $this->created_at,
    'updated_at'    => $this->updated_at,
   ];

@@ -13,11 +13,14 @@ return new class extends Migration {
     {
         Schema::create('mentorships', function (Blueprint $table) {
             $table->id();
+            $table->string('img')->nullable();
             $table->string('name');
             $table->foreignId('mentor_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');
             // $table->foreignId('entries')->constrained('mentorship_entries')->onDelete('cascade');
             // $table->json('days');
+            $table->text('benefits')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

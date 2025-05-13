@@ -24,8 +24,7 @@ class MentorshipCollection extends ResourceCollection
       'name' => $mentorship->mentor->name,
      ],
      'department_id' => $mentorship->department_id,
-     'date'          => $mentorship->date,
-     'av_time'       => $mentorship->av_time,
+     'benefits'          => $mentorship->benefits,
      'created_at'    => $mentorship->created_at,
      'updated_at'    => $mentorship->updated_at,
     ];

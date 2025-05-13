@@ -1,13 +1,14 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Mentorship;
+use App\Http\Requests\MentorshipUpdateRequest;
+use App\Http\Requests\StoreMentorshipsRequest;
 use App\Http\Resources\MentorshipCollection;
 use App\Http\Resources\MentorshipResource;
-use App\Http\Requests\StoreMentorshipsRequest;
-use App\Http\Requests\MentorshipUpdateRequest;
+use App\Models\Mentorship;
+use App\Models\MentorshipEntry;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MentorshipController extends Controller
 {
@@ -21,23 +22,21 @@ class MentorshipController extends Controller
 
         } catch (\Throwable $th) {
             return response()->json([
-                'error' => 'Something went wrong!',
-                'message' => $th->getMessage()
+                'error'   => 'Something went wrong!',
+                'message' => $th->getMessage(),
             ], 500);
         }
     }
-
 
     public function show($id)
     {
         try {
             return new MentorshipResource(Mentorship::findOrFail($id));
 
-
         } catch (\Throwable $th) {
             return response()->json([
-                'error' => 'Something went wrong!',
-                'message' => $th->getMessage()
+                'error'   => 'Something went wrong!',
+                'message' => $th->getMessage(),
             ], 500);
         }
     }
@@ -48,13 +47,13 @@ class MentorshipController extends Controller
             [
 
                 "name",
-                "id"
+                "id",
             ]
         )->where('name', 'like', '%' . $keyword . '%')->get();
 
-        if (!$mentorships) {
+        if (! $mentorships) {
             return response()->json([
-                'message' => 'mentorship not found'
+                'message' => 'mentorship not found',
             ]);
 
         }
@@ -64,24 +63,48 @@ class MentorshipController extends Controller
 
         ], 200);
 
-
     }
-
     public function store(StoreMentorshipsRequest $request)
     {
+        $user = Auth()->user();
         try {
+
             $validatedData = $request->validated();
 
-            $validatedData['days'] = json_encode($validatedData['days']);
-            $validatedData['available_times'] = json_encode($validatedData['available_times']);
+            if (! $user) {
+                return response()->json([
+                    'error' => 'Unauthenticated',
+                ], 401);
+            }
+
+            $validatedData['mentor_id'] = $user->id;
+
+            if ($request->hasFile('img')) {
+                $path                 = $request->file('img')->store('mentorships', 'public');
+                $validatedData['img'] = '/storage/' . $path;
+            }
+
             $mentorship = Mentorship::create($validatedData);
-            return new MentorshipResource($mentorship);
+
+            $mentorshipEntryData = [
+                'mentorship_id' => $mentorship->id,
+                'session_date'  => $validatedData['session_date'],
+                'duration'      => $validatedData['duration'],
+                'link'          => $validatedData['link'] ?? null,
+                'status'        => 'pending',
+            ];
+
+            $mentorshipEntry = MentorshipEntry::create($mentorshipEntryData);
+
+            return (new MentorshipResource($mentorship))->additional(['mentorship_entry' => $mentorshipEntry]);
+
         } catch (\Throwable $th) {
             return response()->json([
-                'error' => 'something went wrong!',
-                'message' => $th->getMessage()
+                'error'   => 'Something went wrong!',
+                'message' => $th->getMessage(),
             ], 500);
         }
+
     }
 
     public function update(MentorshipUpdateRequest $request, string $id)
@@ -95,17 +118,16 @@ class MentorshipController extends Controller
 
             return response()->json([
                 'message' => 'Mentorship updated successfully',
-                'data' => new MentorshipResource($mentorship)
+                'data'    => new MentorshipResource($mentorship),
             ]);
 
         } catch (\Throwable $th) {
             return response()->json([
-                'error' => 'Something went wrong',
-                'message' => $th->getMessage()
+                'error'   => 'Something went wrong',
+                'message' => $th->getMessage(),
             ], 500);
         }
     }
-
 
     public function filter(Request $request)
     {
@@ -131,10 +153,9 @@ class MentorshipController extends Controller
 
         return response()->json([
             'message' => 'Activities retrieved successfully',
-            'data' => MentorshipCollection::collection($activities)
+            'data'    => MentorshipCollection::collection($activities),
         ]);
     }
-
 
     public function searchMentorships($keyword)
     {
@@ -145,9 +166,9 @@ class MentorshipController extends Controller
             ]
         );
         $mentorships = $mentorships->where('name', 'like', '%' . $keyword . '%')->get();
-        if (!$mentorships) {
+        if (! $mentorships) {
             return response()->json([
-                'message' => 'mentorships not found'
+                'message' => 'mentorships not found',
             ]);
         }
         return response()->json([
@@ -163,12 +184,12 @@ class MentorshipController extends Controller
             $mentorship->delete();
 
             return response()->json([
-                'message' => 'Activity deleted successfully'
+                'message' => 'Activity deleted successfully',
             ]);
         } catch (\Throwable $th) {
             return response()->json([
-                'error' => 'Delete failed',
-                'message' => $th->getMessage()
+                'error'   => 'Delete failed',
+                'message' => $th->getMessage(),
             ], 500);
         }
     }

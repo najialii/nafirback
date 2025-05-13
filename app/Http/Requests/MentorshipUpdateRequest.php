@@ -22,12 +22,12 @@ class MentorshipUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|required|string|max:255',
-            'mentor_id' => 'sometimes|required|integer|exists:users,id',
-            'department_id' => 'sometimes|required|integer|exists:departments,id',
-            'date' => 'nullable|date',
-            'days' => 'sometimes|required|array',
-            'available_times' => 'nullable|array',
+            'name' => ['required', 'string', 'max:255'], 
+            'img' => ['nullable', 'string', 'url'], 
+            'description' => ['required', 'string'], 
+            'mentor_id' => ['required', 'integer', 'exists:users,id'], 
+            'department_id' => ['required', 'integer', 'exists:departments,id'], 
+            'benefits' => ['nullable', 'string'], 
         ];
     }
 }

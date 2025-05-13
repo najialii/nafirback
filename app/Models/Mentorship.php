@@ -21,7 +21,10 @@ class Mentorship extends Model
         'description',
         'mentor_id',
         'department_id',
-        // 'benefits'
+        'benefits'
+        //strDate start_date
+        //endDate end_Date 
+        
     ];
 
 

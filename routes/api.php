@@ -48,12 +48,13 @@ Route::post('/activity/{id}/request', [ActivityReqController::class, 'store'])->
 Route::get('/mentorships', [MentorshipController::class, 'index']);
 Route::get('/mentorship/{id}', [MentorshipController::class, 'show']);
 Route::get('/search/mentorship/{keyword}', [MentorshipController::class, 'searchMentorships']);
-Route::post('/mentorship', [MentorshipController::class, 'store']);
+// Route::post('/mentorship', [MentorshipController::class, 'store'])->middleware('auth:sanctum');
+
 
 Route::prefix('mentorship')->middleware('auth:sanctum')->group(function () {
-    // Route::post('/', [MentorshipController::class, 'store']);
-    Route::put('/{id}', [MentorshipController::class, 'update']);
-    Route::delete('/{id}', [MentorshipController::class, 'destroy']);
+    Route::post('/', [MentorshipController::class, 'store']); 
+    Route::put('/{id}', [MentorshipController::class, 'update']); 
+    Route::delete('/{id}', [MentorshipController::class, 'destroy']); 
 });
 
 // Mentorship Requests

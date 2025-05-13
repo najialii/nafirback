@@ -22,7 +22,9 @@ class MentorshipFactory extends Factory
             'name' => $this->faker->sentence(3),
             'mentor_id' => User::factory(),
             'department_id' => Department::factory(),
-        ];
+            'description' => $this->faker->sentence(),
+            'benefits'=> $this->faker->sentence(4)
+        ];  
     }
 
     /**

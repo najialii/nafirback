@@ -9,13 +9,9 @@ class MentorshipEntry extends Model
     use HasFactory;
 
     protected $fillable = [
-        'date', // timestamp
+        'session_date', // timestamp
         'duration', // unsigned integer - duration in minutes
-        //'mentor_id',
         'mentorship_id',
-        // 'booked_by', // this refers to the user who was ACCEPTED
-        // but the user was only accepted because they made a REQUEST
-        // we can instead reference the request and not the user.
         'accepted_request_id',
         'link',
         'status',

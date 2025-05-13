@@ -11,17 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mentorship_entries', function (Blueprint $table) {
-            $table->id();
-            $table->dateTime('date'); 
-            $table->integer('duration'); 
-            $table->unsignedBigInteger('bookedBy'); 
-            $table->unsignedBigInteger('mentorship_id');  
-            $table->timestamps();
+      Schema::create('mentorship_entries', function (Blueprint $table) {
+    $table->id(); 
+    $table->dateTime('session_date');
+    $table->integer('duration');
+    $table->unsignedBigInteger('mentorship_id')->nullable();
+    $table->unsignedBigInteger('accepted_request_id')->nullable(); 
+    $table->string('link')->nullable();
+    $table->enum('status', ['pending', 'completed', 'cancelled'])->default('pending');
+    $table->timestamps();
+});
 
-            $table->foreign('bookedBy')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('mentorship_id')->references('id')->on('mentorships')->onDelete('cascade');
-        });
+Schema::table('mentorship_entries', function (Blueprint $table) {
+    $table->foreign('mentorship_id')->references('id')->on('mentorships')->onDelete('cascade');
+});
+
     }
 
     /**

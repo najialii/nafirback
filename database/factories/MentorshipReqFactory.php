@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Mentorship;
 use App\Models\MentorshipEntry;
 use App\Models\User;
 
@@ -20,8 +19,7 @@ class MentorshipReqFactory extends Factory
     public function definition(): array
     {
         return [
-            'mentorship_id' => Mentorship::factory(), 
-            'mentor_id' => User::factory(), 
+            'mentorship_entry_id' => MentorshipEntry::factory(), 
             'mentee_id' => User::factory(), 
             'message' => $this->faker->sentence(), 
             'status' => $this->faker->randomElement(['pending', 'accepted', 'rejected']), 
