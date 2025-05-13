@@ -17,15 +17,15 @@ class MentorshipResource extends JsonResource
   return [
    'id'            => $this->id,
    'name'          => $this->name,
-   'mentor'        => $this->mentor = [
-    'img'  => $this->mentor->profile_pic,
-    'id'   => $this->mentor->id,
-    'name' => $this->mentor->name,
-   ],
+   'start_date'    => $this->start_date,
+   'end_date'      => $this->end_date,
+
+   'mentor'        => new BriefUserResource($this->whenLoaded('mentor')),
    'department_id' => $this->department_id,
    'benefits'          => $this->benefits,
    'created_at'    => $this->created_at,
    'updated_at'    => $this->updated_at,
+   'entries'       => MentorshipEntryResource::collection($this->whenLoaded('mentorship_entry')),
   ];
  }
 }
