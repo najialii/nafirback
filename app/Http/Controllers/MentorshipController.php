@@ -29,6 +29,22 @@ class MentorshipController extends Controller
    ], 500);
   }
  }
+    public function paginated_index(Request $request)
+    {
+        // TODO: Decide on which to add
+        try {
+            $query = Mentorship::query();
+            \App\Filters\BasicSearchFilter::apply($query, $request->all(), ['name']);
+            $mentorships = $query->paginate($request->input('per_page', 10));
+            return (new MentorshipCollection($mentorships))
+                ->additional(['message' => 'Mentorships retrieved successfully']);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => 'Something went wrong!',
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
 
  public function show($id)
  {

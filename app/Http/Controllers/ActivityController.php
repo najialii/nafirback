@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\BasicSearchFilter;
 use Illuminate\Http\Request;
 use App\Models\Activity;
 use App\Http\Resources\ActivityResource;
@@ -30,10 +31,12 @@ class ActivityController
     // }
 
 
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $activities = Activity::with('likes')->paginate(10);
+            $activities = Activity::with('likes');
+            BasicSearchFilter::apply($activities, $request->all(), ['description', 'name', 'benifites' ]);
+            $activities = $activities->paginate($request->input('per_page', 10));
     
             return (new ActivityCollection($activities))
                 ->additional(['message' => 'Activities retrieved successfully']);

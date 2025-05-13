@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\BasicSearchFilter;
 use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateBlogRequest;
 use App\Http\Resources\BlogCollection;
@@ -25,12 +26,13 @@ class BlogController extends Controller
 
     // }
 
-    public function index()
-    {
-        $blogs = Blog::with('likes')->get();
+    public function index(Request $request)
+{
+    $query = Blog::with('likes');
+    BasicSearchFilter::apply($query, $request->all(), ['title', 'content']);
 
-        return new BlogCollection($blogs);
-    }
+    return response()->json($query->paginate($request->input('per_page', 10)));
+}
 
 
     public function show($slug)
