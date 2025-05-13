@@ -14,6 +14,16 @@ class MentorshipReqController extends Controller
 {
  //
 
+
+
+ private function bookedRecently($menteeId, $days = 30): bool
+ {
+     return MentorshipReq::where('mentee_id', $menteeId)
+         ->where('status', 'accepted') // Only check for accepted sessions
+         ->where('created_at', '>=', now()->subDays($days)) // Within the last X days
+         ->exists();
+ }
+
  public function index()
  {
   try {
@@ -135,6 +145,14 @@ class MentorshipReqController extends Controller
         
          ]);
 
+         if ($this->bookedRecently($user->id)) {
+            return response()->json([
+                'error' => 'You cannot book a session.',
+                'message' => 'You have already booked a session in the last 30 days.',
+            ], 400);
+        }
+
+
          $mentorshipEntry = DB::transaction(function () use ($mentorshipEntryId, $user, $validatedData) {
              $mentorshipEntry = MentorshipEntry::find($mentorshipEntryId);
 
@@ -147,13 +165,13 @@ class MentorshipReqController extends Controller
                  throw new \Exception('The associated mentorship does not exist');
              }
 
-             $isBooked = MentorshipReq::where('mentorship_entry_id', $mentorshipEntryId)
-                 ->where('mentee_id', $user->id)
-                 ->exists();
+            //  $isBooked = MentorshipReq::where('mentorship_entry_id', $mentorshipEntryId)
+            //      ->where('mentee_id', $user->id)
+            //      ->exists();
 
-             if ($isBooked) {
-                 throw new \Exception('You have already booked this mentorship session');
-             }
+            //  if ($isBooked) {
+            //      throw new \Exception('You have already booked this mentorship session');
+            //  }
 
              if ($mentorship->mentor_id === $user->id) {
                   throw new \Exception('Mentors cannot book their own sessions.');
@@ -529,5 +547,103 @@ class MentorshipReqController extends Controller
    ], 500);
   }
  }
+
+
+
+ public function getAllMentorEntries()
+{
+    $mentorId = auth()->id();
+
+    try {
+        $mentorshipEntries = MentorshipEntry::whereHas('mentorship', function ($query) use ($mentorId) {
+            $query->where('mentor_id', $mentorId);
+        })->with(['mentorship', 'mentorship.mentor', 'mentorship.requests'])->get();
+
+        return response()->json([
+            'message' => 'Mentorship entries retrieved successfully.',
+            'data' => $mentorshipEntries,
+        ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'error' => 'Something went wrong.',
+            'message' => $th->getMessage(),
+        ], 500);
+    }
+}
+
+public function getOneMentorEntryBy($id)
+{
+    $mentorId = auth()->id();
+
+    try {
+        $mentorshipEntry = MentorshipEntry::whereHas('mentorship', function ($query) use ($mentorId) {
+            $query->where('mentor_id', $mentorId);
+        })->with(['mentorship', 'mentorship.mentor', 'requests'])->findOrFail($id);
+
+        return response()->json([
+            'message' => 'Mentorship entry retrieved successfully.',
+            'data' => $mentorshipEntry,
+        ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'error' => 'Something went wrong.',
+            'message' => $th->getMessage(),
+        ], 500);
+    }
+}
+
+
+public function getAllMenteeEntries()
+{
+    $menteeId = auth()->id();
+
+    try {
+        $mentorshipEntries = MentorshipEntry::whereHas('mentorship', function ($query) use ($menteeId) {
+            $query->where('mentee_id', $menteeId);
+        })->with(['mentorship', 'mentorship.mentor', 'requests.mentee'])->get(); 
+
+        return response()->json([
+            'message' => 'Mentorship entries retrieved successfully.',
+            'data' => $mentorshipEntries,
+        ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'error' => 'Something went wrong.',
+            'message' => $th->getMessage(),
+        ], 500);
+    }
+}
+
+
+
+
+
+public function getOneMenteeEntry($id)
+{
+    $menteeId = auth()->id();
+
+    try {
+        $mentorshipEntry = MentorshipEntry::whereHas('requests', function ($query) use ($menteeId) {
+            $query->where('mentee_id', $menteeId);
+        })->with(['mentorship', 'mentorship.mentor', 'requests'])->findOrFail($id);
+
+        return response()->json([
+            'message' => 'Mentorship entry retrieved successfully.',
+            'data' => $mentorshipEntry,
+        ], 200);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'error' => 'Something went wrong.',
+            'message' => $th->getMessage(),
+        ], 500);
+    }
+}
+
+
+
+
+
+
+
 
 }

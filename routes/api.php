@@ -14,6 +14,7 @@ use App\Http\Controllers\CVController;
 use App\Http\Middleware\AuthOpt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\BlogLikesController;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -62,13 +63,18 @@ Route::prefix('mentorship')->middleware('auth:sanctum')->group(function () {
 Route::get('/mentee/mentorship', [MentorshipReqController::class, 'getMenteeRequests'])->middleware('auth:sanctum');
 Route::get('/mentorship/request/user/{id}', [MentorshipReqController::class, 'getOneMenteeRequest'])->middleware('auth:sanctum');
 Route::post('/req/{id}', [MentorshipReqController::class, 'reqSession'])->middleware('auth:sanctum');
+Route::get('/mentee/entries', [MentorshipReqController::class, 'getAllMenteeEntries'])->middleware('auth:sanctum');
 
 
 //mentor
 Route::get('/mentorship/request/{id}', [MentorshipReqController::class, 'getoneMentorReq'])->middleware('auth:sanctum');
 Route::get('/mentorship/request/mentor', [MentorshipReqController::class, 'getAllMentorReq'])->middleware('auth:sanctum');
-Route::put('/mentorship/request/{id}/process', [MentorshipReqController::class, 'processMentorshipRequest'])->middleware('auth:sanctum');
+Route::put('/mentorship/request/{id}/process', [MentorshipReqController::class, 'processMentorshipReq'])->middleware('auth:sanctum');
 Route::delete('/mentorship/request/{id}', [MentorshipReqController::class, 'destroy'])->middleware('auth:sanctum');Route::get('/mentorship/{id}/mentor', [MentorshipReqController::class, 'getMentorRequests'])->middleware('auth:sanctum');
+
+
+Route::get('/mentor/entries', [MentorshipReqController::class, 'getAllMentorEntries'])->middleware('auth:sanctum');
+Route::get('/mentor/entries/{id}', [MentorshipReqController::class, 'getAllMentorEntries'])->middleware('auth:sanctum');
 
 
 // Route::get('/mentorship/{id}/request', [MentorshipReqController::class, 'getMenteeRequests'])->middleware('auth:sanctum');
@@ -117,4 +123,29 @@ Route::get('/favorite/activities', [ActivitiesLikesController::class, 'getfav_ac
 // blikes
 Route::post('/post/{blogId}/like', [BlogLikesController::class, 'fav_blog'])->middleware('auth:sanctum');
 Route::get('/favorite/blogs', [BlogLikesController::class, 'getfav_blogs'])->middleware('auth:sanctum');
-;
+
+
+
+
+
+
+
+
+Route::middleware('auth:sanctum')->group(function () {
+ Route::post('/email/verification-notification', function (Request $request) {
+  if ($request->user()->hasVerifiedEmail()) {
+   return response()->json(['message' => 'Already verified']);
+  }
+
+  $request->user()->sendEmailVerificationNotification();
+
+  return response()->json(['message' => 'Verification link sent!']);
+ });
+
+ Route::get('/verify-email/{id}/{hash}', function (EmailVerificationRequest $request) {
+  $request->fulfill();
+
+  return response()->json(['message' => 'Email verified!']);
+ })->middleware(['signed'])->name('verification.verify');
+});
+

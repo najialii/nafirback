@@ -9,7 +9,7 @@ class MentorshipEntry extends Model
     use HasFactory;
 
     protected $fillable = [
-        'session_date', // timestamp
+        'date', // timestamp
         'duration', // unsigned integer - duration in minutes
         'mentorship_id',
         'accepted_request_id',

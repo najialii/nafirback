@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use Spatie\Permission\Models\Role;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -24,6 +25,7 @@ class AuthController extends Controller
         }
 
         $role = $request->role;
+
 
         if (!in_array($role, ['mentor', 'user'])) {
             return response()->json([
@@ -57,16 +59,19 @@ class AuthController extends Controller
             $token = $user->createToken($request->name);
             $user->assignRole($role);
 
+            event(new Registered($user));
+
+
             return response()->json([
                 'user' => [
-                    'message' => 'User registered successfully',
-                    'id' => $user->id,
-                    'email' => $user->email,
-                    'name' => $user->name,
-                    'profile_pic' => $user->profile_pic,
-                    'role' => $user->getRoleNames()->first() ?? 'user',
-                    'completionPercentage' => $user->profileCompletionPercentage(),
-                    'authToken' => $token->plainTextToken,
+                    'message' => 'User registered successfully. Please check your email to verify your account',
+                    // 'id' => $user->id,
+                    // 'email' => $user->email,
+                    // 'name' => $user->name,
+                    // 'profile_pic' => $user->profile_pic,
+                    // 'role' => $user->getRoleNames()->first() ?? 'user',
+                    // 'completionPercentage' => $user->profileCompletionPercentage(),
+                    // 'authToken' => $token->plainTextToken,
                 ],
             ], 201);
         } catch (\Exception $e) {
