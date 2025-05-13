@@ -20,7 +20,8 @@ class MentorshipReqFactory extends Factory
     {
         return [
             'mentorship_entry_id' => MentorshipEntry::factory(), 
-            'mentee_id' => User::factory(), 
+            'mentee_id' => User::factory(),
+            // 'mentor_id'=> User::factory(), 
             'message' => $this->faker->sentence(), 
             'status' => $this->faker->randomElement(['pending', 'accepted', 'rejected']), 
         ];

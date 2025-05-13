@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('mentorship_reqs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('mentee_id')->constrained('users')->onDelete('cascade'); 
+            // $table->foreignId('mentor_id')->constrained('users')->onDelete('cascade');             
             $table->text('message')->nullable(); 
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending'); 
             $table->foreignId('mentorship_entry_id')->nullable()->constrained('mentorship_entries')->nullOnDelete();

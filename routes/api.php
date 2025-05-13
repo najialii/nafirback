@@ -59,8 +59,9 @@ Route::prefix('mentorship')->middleware('auth:sanctum')->group(function () {
 
 // Mentorship Requests
 // mentee 
-Route::get('/mentorship/request/user', [MentorshipReqController::class, 'getOneMenteeRequest'])->middleware('auth:sanctum');
+Route::get('/mentee/mentorship', [MentorshipReqController::class, 'getMenteeRequests'])->middleware('auth:sanctum');
 Route::get('/mentorship/request/user/{id}', [MentorshipReqController::class, 'getOneMenteeRequest'])->middleware('auth:sanctum');
+Route::post('/req/{id}', [MentorshipReqController::class, 'reqSession'])->middleware('auth:sanctum');
 
 
 //mentor

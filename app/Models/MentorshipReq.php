@@ -32,5 +32,10 @@ public function mentee()
 }
 
 
+public function mentor() 
+{
+    return $this->belongsTo(User::class, 'mentor_id');
+}
+
 }
 
