@@ -20,7 +20,7 @@ class UsersSeeder extends Seeder
             ->create();
         $firstUser = User::first();
         $firstUser->password = Hash::make('admin');
-        $firstUser->email = 'admin@nafir.sd';
+        $firstUser->email = 'admin@nafir.net';
         $firstUser->save();
 
     }

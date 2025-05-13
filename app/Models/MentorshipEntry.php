@@ -1,15 +1,26 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MentorshipEntry extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+    use \Modules\Zoom\Traits\HasZoomMeeting;
+
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_PROCESSING = 'in_progress';
+    public const STATUS_COMPLETED = 'completed';
+    public const STATUS_CANCELLED = 'cancelled';
+    public const STATUS_SCHEDULED = 'scheduled';
+    public const STATUSES = [self::STATUS_PENDING, self::STATUS_SCHEDULED, self::STATUS_PROCESSING, self::STATUS_COMPLETED, self::STATUS_CANCELLED];
 
     protected $fillable = [
-        'date', // timestamp
+        'start_at', // timestamp
         'duration', // unsigned integer - duration in minutes
         //'mentor_id',
         'mentorship_id',
@@ -22,7 +33,7 @@ class MentorshipEntry extends Model
     ];
 
 
-    
+
     // public function mentor()
     // {
     //     return $this->belongsTo(User::class, 'mentor_id');
@@ -44,8 +55,8 @@ class MentorshipEntry extends Model
 }
 
 
-// mentee can book ono session 
+// mentee can book ono session
 // mentee CANNOT book a session if there is a mentorship entry (with status = completed) in the last 30 days
-// that references a request that they made 
+// that references a request that they made
 
 // at most 5 REQUESTS per one mentorship entry
