@@ -9,34 +9,30 @@ class MentorshipReq extends Model
 {
 
     use HasFactory;
-
     protected $fillable = [
-        'mentorship_id',
-        'mentor_id',
+        //'mentorship_id',
+        'mentorship_entry_id', 
+        //'mentor_id',
         'mentee_id',
-        'sele_date',
-        'sele_time',
         'message',
+        //'link',
         'status'
     ];
-
-
-    public function mentee()
+    
+    // public function mentorship()
+    // {
+    //     return $this->belongsTo(Mentorship::class);
+    // }
+    
+    public function mentorshipEntry()
     {
-        return $this->belongsTo(User::class, 'mentee_id');
+        return $this->belongsTo(MentorshipEntry::class, 'mentorship_entry_id');
     }
-
-    public function mentor()
-    {
-        return $this->belongsTo(User::class, 'mentor_id');
-    }
-
-
-    public function mentorship()
-    {
-        return $this->belongsTo(Mentorship::class);
-    }
-
+    
+public function mentee_id()
+{
+    return $this->belongsTo(User::class,'user');
+}
 
 }
 

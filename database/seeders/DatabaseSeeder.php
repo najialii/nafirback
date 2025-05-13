@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             activityLikeSeeder::class,
             BlogLikesSeeder::class,
             ActinstrSeeder::class,
+            MentorshipEntriesSeeder::class,
         ]);
 
 

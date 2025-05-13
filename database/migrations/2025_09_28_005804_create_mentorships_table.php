@@ -16,9 +16,8 @@ return new class extends Migration {
             $table->string('name');
             $table->foreignId('mentor_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');
-            $table->date('date')->nullable();
+            // $table->foreignId('entries')->constrained('mentorship_entries')->onDelete('cascade');
             // $table->json('days');
-            $table->json('av_time')->nullable();
             $table->timestamps();
         });
     }

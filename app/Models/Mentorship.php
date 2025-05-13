@@ -7,19 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Department;
 use App\Models\User;
 use App\Models\MentorshipReq;
+use App\Models\MentorshipEntry;
 
 class Mentorship extends Model
-{
+{ 
     /** @use HasFactory<\Database\Factories\MentorshipFactory> */
     use HasFactory;
 
 
     protected $fillable = [
         'name',
+        'img',
+        'description',
         'mentor_id',
         'department_id',
-        'date',
-        'av_time',
+        // 'benefits'
     ];
 
 
@@ -38,13 +40,10 @@ class Mentorship extends Model
         return $this->belongsTo(Department::class);
     }
 
-    // public function mentorshipreqs(){
-    //     return $this-> hasMany(MentorshipReq::class);
-    // }
 
-    // public function mentorshipreq(){
-    //     return $this-> hasMany(MentorshipReq::class);
-    // }
-
+    public function entries()
+    {
+        return $this->hasMany(MentorshipEntry::class);
+    }
 
 }

@@ -57,11 +57,22 @@ Route::prefix('mentorship')->middleware('auth:sanctum')->group(function () {
 });
 
 // Mentorship Requests
-//Route::get('/mentorship/request', [MentorshipReqController::class, 'index']);
-Route::get('/mentorship/{id}/request', [MentorshipReqController::class, 'show']);
-Route::post('/mentorship/{id}/request', [MentorshipReqController::class, 'store'])->middleware('auth:sanctum');
-Route::delete('/mentorship/{id}/request', [MentorshipReqController::class, 'destroy'])->middleware('auth:sanctum');
+// mentee 
+Route::get('/mentorship/request/user', [MentorshipReqController::class, 'getOneMenteeRequest'])->middleware('auth:sanctum');
+Route::get('/mentorship/request/user/{id}', [MentorshipReqController::class, 'getOneMenteeRequest'])->middleware('auth:sanctum');
 
+
+//mentor
+Route::get('/mentorship/request/{id}', [MentorshipReqController::class, 'getoneMentorReq'])->middleware('auth:sanctum');
+Route::get('/mentorship/request/mentor', [MentorshipReqController::class, 'getAllMentorReq'])->middleware('auth:sanctum');
+Route::put('/mentorship/request/{id}/process', [MentorshipReqController::class, 'processMentorshipRequest'])->middleware('auth:sanctum');
+Route::delete('/mentorship/request/{id}', [MentorshipReqController::class, 'destroy'])->middleware('auth:sanctum');Route::get('/mentorship/{id}/mentor', [MentorshipReqController::class, 'getMentorRequests'])->middleware('auth:sanctum');
+
+
+// Route::get('/mentorship/{id}/request', [MentorshipReqController::class, 'getMenteeRequests'])->middleware('auth:sanctum');
+// Route::post('/mentorship/{id}/request', [MentorshipReqController::class, 'store'])->middleware('auth:sanctum');
+// Route::delete('/mentorship/{id}/request', [MentorshipReqController::class, 'destroy'])->middleware('auth:sanctum');
+// Route::patch('mentorship/{id}/request', [MentorshipController::class, 'processMentorshipRequest'])
 //Route::put('/mentorship/request/{id}/status', [MentorshipReqController::class, 'processMentorshipRequest'])->middleware('auth:sanctum');
 
 // Users/mentorship/{id}/request/{request_id}
