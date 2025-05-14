@@ -19,6 +19,9 @@ return new class extends Migration {
             $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');
             // $table->foreignId('entries')->constrained('mentorship_entries')->onDelete('cascade');
             // $table->json('days');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            
             $table->text('benefits')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();

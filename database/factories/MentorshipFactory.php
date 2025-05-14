@@ -23,7 +23,9 @@ class MentorshipFactory extends Factory
             'mentor_id' => User::factory(),
             'department_id' => Department::factory(),
             'description' => $this->faker->sentence(),
-            'benefits'=> $this->faker->sentence(4)
+            'benefits'=> $this->faker->sentence(4),
+            'start_date' => $this->faker->dateTimeBetween('now', '+1 year')->format('Y-m-d'),
+            'end_date' => $this->faker->dateTimeBetween('+1 year', '+2 years')->format('Y-m-d'),
         ];  
     }
 
