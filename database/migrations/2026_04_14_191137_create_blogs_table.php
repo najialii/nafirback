@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->text('content');
             $table->boolean('featured')->default(false);
             $table->string('slug');
-            $table->softDeletes();
+            //$table->softDeletes();
             $table->timestamps();
         });
     }

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MentorshipEntry extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;//, SoftDeletes;
     use \Modules\Zoom\Traits\HasZoomMeeting;
 
     public const STATUS_PENDING = 'pending';
@@ -20,7 +20,7 @@ class MentorshipEntry extends Model
     public const STATUSES = [self::STATUS_PENDING, self::STATUS_SCHEDULED, self::STATUS_PROCESSING, self::STATUS_COMPLETED, self::STATUS_CANCELLED];
 
     protected $fillable = [
-        'start_at', // timestamp
+        'start_date', // timestamp
         'duration', // unsigned integer - duration in minutes
         //'mentor_id',
         'mentorship_id',

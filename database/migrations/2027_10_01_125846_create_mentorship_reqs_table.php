@@ -11,6 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('mentorship_reqs', function (Blueprint $table) {
+            //$table->softDeletes();
             $table->id();
             $table->foreignId('mentee_id')->constrained('users')->onDelete('cascade'); 
             // $table->foreignId('mentor_id')->constrained('users')->onDelete('cascade');             
