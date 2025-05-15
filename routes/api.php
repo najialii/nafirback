@@ -82,29 +82,36 @@ Route::prefix('mentorship')->middleware('auth:sanctum')->group(function () {
 // Route::get('/mentor/entries/{id}', [MentorshipReqController::class, 'getAllMentorEntries'])->middleware('auth:sanctum');
 
 
+//mentee status gets all teh user date includubng [mentorship sesssionns , ]
+Route::get('/mentee/status', [MentorshipReqController::class, 'getUserStatus']);
+Route::get('/mentee/mentorship/{id}/status', [MentorshipReqController::class, 'getUserMentorshipStatus']);
 
-
-
+// mentee mentorship
+//
+Route::get('/mentee/mentorship', [MentorshipController::class, 'getMentorshipsByMentee']);
+Route::get('/mentee/mentorship/{id}', [MentorshipController::class, 'getOneMentorshipForMentee'])->middleware('auth:sanctum');
 
 // Mentee - Mentorship Requests
 Route::get('/mentee/requests', [MentorshipReqController::class, 'getMenteeRequests'])->middleware('auth:sanctum'); // List mentee's requests
 Route::get('/mentee/requests/{id}', [MentorshipReqController::class, 'getOneMenteeRequest'])->middleware('auth:sanctum'); // View single mentee request
-Route::post('/mentee/requests', [MentorshipReqController::class, 'reqSession'])->middleware('auth:sanctum'); // Create new request
+Route::post('/mentorship/entry/{id}/request', [MentorshipReqController::class, 'reqSession'])->middleware('auth:sanctum'); // Create new request
 
 // Mentee - Session Entries
 Route::get('/mentee/sessions', [MentorshipReqController::class, 'getAllMenteeEntries'])->middleware('auth:sanctum'); // All sessions available to mentee
-Route::get('/mentee/sessions/{id}', [MentorshipReqController::class, 'getOneMenteeEntry'])->middleware('auth:sanctum'); // Single session detail
+Route::get('/mentee/session/{id}', [MentorshipReqController::class, 'getOneMenteeEntry'])->middleware('auth:sanctum'); // Single session detail
 
 // Mentee - Status overview (e.g. sessions booked, completed)
-Route::get('/mentee/mentorship/status', [MentorshipReqController::class, 'getMentorMentorshipStatuses'])->middleware('auth:sanctum'); 
+Route::get('/mentee/mentorship/status', [MentorshipReqController::class, 'getMenteeMentorshipStatuses'])->middleware('auth:sanctum'); 
 
 
 
-
+//mentor mentorship
+Route::get('/mentorships/mentor', [MentorshipController::class, 'getMentorshipsByMentor'])->middleware('auth:sanctum');
+Route::get('/mentorships/mentor/{id}', [MentorshipController::class, 'getOneMentorshipForMentor'])->middleware('auth:sanctum');
 
 // Mentor - Requests
-Route::get('/mentor/requests', [MentorshipReqController::class, 'getAllMentorReq'])->middleware('auth:sanctum'); // List all requests to mentor
-Route::get('/mentor/requests/{id}', [MentorshipReqController::class, 'getoneMentorReq'])->middleware('auth:sanctum'); // View a specific mentorship request
+Route::get('/mentor/requests', [MentorshipReqController::class, 'getMentorshipRequests'])->middleware('auth:sanctum'); // List all requests to mentor
+Route::get('/mentor/requests/{id}', [MentorshipReqController::class, 'getMentorshipRequestById'])->middleware('auth:sanctum'); // View a specific mentorship request
 Route::put('/mentor/requests/{id}/status', [MentorshipReqController::class, 'processMentorshipReq'])->middleware('auth:sanctum'); // Process (accept/reject)
 Route::delete('/mentor/requests/{id}', [MentorshipReqController::class, 'destroy'])->middleware('auth:sanctum'); // Cancel/delete a request
 

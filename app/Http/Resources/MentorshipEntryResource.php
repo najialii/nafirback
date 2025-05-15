@@ -28,7 +28,7 @@ class MentorshipEntryResource extends JsonResource
             'start_date' => $this->date,
             'duration' => $this->duration,
             'status' => $this->status,
-            'mentorship_id' => $this->mentorship_id,
+            // 'mentorship_id' => $this->mentorship_id,
             'available' => $this->status !== 'booked-out',
         ];
         if ($this->role === 'mentor' && $this->accepted_request_id) {

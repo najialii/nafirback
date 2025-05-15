@@ -42,44 +42,185 @@ class MentorshipReqController extends Controller
    ], 500);
   }
  }
-
  public function getAllMentorReq()
- {
-  // mjdmd
-  $user = auth()->user();
-  try {
+{
+    $user = auth()->user();
 
-   $mentorshipReq = MentorshipReq::where('mentor_id', $user->id)
-    ->with(['mentee', 'mentorship'])
-    ->select('id', 'mentorship_id', 'mentee_id', 'sele_date', 'sele_time', 'message', 'status', 'created_at', 'updated_at')
-    ->get();
+    try {
+        $mentorshipReqs = MentorshipReq::whereHas('mentorship_entry.mentorship', function ($query) use ($user) {
+                $query->where('mentor_id', $user->id); // only requests to mentor's mentorships
+            })
+            ->with(['mentee', 'mentorship_entry.mentorship']) // load relationships
+            ->select('id', 'mentee_id', 'mentorship_entry_id', 'message', 'status', 'created_at', 'updated_at')
+            ->get();
 
-   return response()->json([
-    'status' => $mentorshipReq->status,
-    'body'   => [
-     'id'            => $mentorshipReq->id,
-     'mentorship_id' => $mentorshipReq->mentorship_id,
-     'mentee'        => [
-      'id'          => $mentorshipReq->mentee->id,
-      'name'        => $mentorshipReq->mentee->name,
-      'profile_pic' => $mentorshipReq->mentee->profile_pic,
-     ],
-     'sele_date'     => $mentorshipReq->sele_date,
-     'sele_time'     => $mentorshipReq->sele_time,
-     'message'       => $mentorshipReq->message,
-     'created_at'    => $mentorshipReq->created_at,
-     'updated_at'    => $mentorshipReq->updated_at,
-    ],
+        $formatted = $mentorshipReqs->map(function ($req) {
+            return [
+                'id' => $req->id,
+                'mentorship_entry_id' => $req->mentorship_entry_id,
+                'status' => $req->status,
+                'mentee' => [
+                    'id' => $req->mentee->id,
+                    'img' => $req->mentee->profile_pic,
+                    'name' => $req->mentee->name,
+                ],
+                'mentorship' => [
+                    'id' => $req->mentorship_entry->mentorship->id,
+                    'name' => $req->mentorship_entry->mentorship->name ?? null,
+                ],
+                'message' => $req->message,
+                'created_at' => $req->created_at,
+                'updated_at' => $req->updated_at,
+            ];
+        });
 
-   ], 200);
+        return response()->json([
+            'status' => 'success',
+            'data' => $formatted,
+        ], 200);
 
-  } catch (\Throwable $th) {
-   return response()->json([
-    'error'   => 'Something went wrong',
-    'message' => $th->getMessage(),
-   ], 500);
-  }
- }
+    } catch (\Throwable $th) {
+        return response()->json([
+            'error' => 'Something went wrong',
+            'message' => $th->getMessage(),
+        ], 500);
+    }
+}
+
+
+
+
+public function getMentorshipRequests()
+{
+    $user = auth()->user(); 
+
+    try {
+        $mentorshipRequests = MentorshipReq::whereHas('mentorship_entry.mentorship', function ($query) use ($user) {
+            $query->where('mentor_id', $user->id);
+        })
+        ->with([
+            'mentee:id,name,profile_pic', 
+            'mentorship_entry.mentorship:id,name,mentor_id',
+        ])
+        ->get();
+
+        $mappedRequests = $mentorshipRequests->map(function ($request) {
+            return [
+                'id' => (string) $request->id,
+                'mentee' => [
+                    'id' => $request->mentee->id,
+                    'name' => $request->mentee->name,
+                    'img' => $request->mentee->profile_pic,
+                ],
+                'status' => $request->status,
+                'requested_entry' => [
+                    'id' => $request->mentorship_entry_id,
+                    'start_date' => $request->mentorship_entry->start_date,
+                    'duration' => $request->mentorship_entry->duration,
+                    'mentorship' => [
+                        'id' => $request->mentorship_entry->mentorship->id,
+                        'name' => $request->mentorship_entry->mentorship->name,
+                    ],
+                    'available' => $request->mentorship_entry->status !== 'booked-out', 
+                ],
+                'message' => $request->message,
+                'created_at' => $request->created_at->toIso8601String(),
+                'updated_at' => $request->updated_at->toIso8601String(),
+            ];
+        });
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $mappedRequests,
+        ], 200);
+
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $th->getMessage(),
+        ], 500);
+    }
+}
+
+
+
+public function getMentorshipRequestById($id)
+{
+    $user = auth()->user(); 
+
+    try {
+        $mentorshipRequest = MentorshipReq::where('id', $id)
+            ->whereHas('mentorship_entry.mentorship', function ($query) use ($user) {
+                $query->where('mentor_id', $user->id);
+            })
+            ->with([
+                'mentee:id,name,profile_pic',
+                'mentorship_entry.mentorship:id,name,mentor_id',
+            ])
+            ->firstOrFail(); 
+
+        $data = [
+            'id' => (string) $mentorshipRequest->id,
+            'mentee' => [
+                'id' => $mentorshipRequest->mentee->id,
+                'name' => $mentorshipRequest->mentee->name,
+                'img' => $mentorshipRequest->mentee->profile_pic,
+            ],
+            'status' => $mentorshipRequest->status,
+            'requested_entry' => [
+                'id' => $mentorshipRequest->mentorship_entry_id,
+                'start_date' => $mentorshipRequest->mentorship_entry->start_date,
+                'duration' => $mentorshipRequest->mentorship_entry->duration,
+                'mentorship' => [
+                    'id' => $mentorshipRequest->mentorship_entry->mentorship->id,
+                    'name' => $mentorshipRequest->mentorship_entry->mentorship->name,
+                ],
+                'available' => $mentorshipRequest->mentorship_entry->status !== 'booked-out',
+            ],
+            'message' => $mentorshipRequest->message,
+            'created_at' => $mentorshipRequest->created_at->toIso8601String(),
+            'updated_at' => $mentorshipRequest->updated_at->toIso8601String(),
+        ];
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $data,
+        ], 200);
+
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Mentorship request not found or access denied.',
+        ], 404);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $th->getMessage(),
+        ], 500);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -118,15 +259,28 @@ class MentorshipReqController extends Controller
              $query->where('mentor_id', $mentorId);
          })->with('mentorship.mentor')->get(); 
  
+         if ($mentorshipEntries->isEmpty()) {
+             return response()->json([
+                 'message' => 'No mentorship entries found for this mentee.',
+             ], 404);
+         }
+ 
          $requests = MentorshipReq::whereIn('mentorship_entry_id', $mentorshipEntries->pluck('id'))
-             ->with(['mentee', 'mentorship_entry'])  
+             ->with(['mentee', 'mentorship_entry'])
              ->get();
+ 
+         if ($requests->isEmpty()) {
+             return response()->json([
+                 'message' => 'No mentorship requests found.',
+             ], 404);
+         }
  
          $filteredRequests = $requests->filter(function ($request) use ($mentorId) {
              return $request->mentorship_entry->mentorship->mentor->id === $mentorId;
          });
  
          return response()->json($filteredRequests->values(), 200); 
+ 
      } catch (\Throwable $th) {
          return response()->json([
              'error'   => 'Something went wrong',
@@ -134,17 +288,24 @@ class MentorshipReqController extends Controller
          ], 500);
      }
  }
+ 
 
 
- public function reqSession(Request $request)
+ public function reqSession(Request $request, $mentorship_entry_id)
  {
      $user = Auth::user();
  
      try {
-         $validatedData = $request->validate([
-             'mentorship_entry_id' => 'required|integer|exists:mentorship_entries,id',
-             'message'             => 'nullable|string',
-         ]);
+         $validatedData = [
+             'mentorship_entry_id' => $mentorship_entry_id,
+             'message' => $request->input('message'), 
+         ];
+ 
+         $mentorshipEntry = MentorshipEntry::find($validatedData['mentorship_entry_id']);
+ 
+         if (!$mentorshipEntry) {
+             throw new \Exception('The mentorship entry does not exist');
+         }
  
          if ($this->bookedRecently($user->id)) {
              return response()->json([
@@ -153,113 +314,107 @@ class MentorshipReqController extends Controller
              ], 400);
          }
  
-         $mentorshipEntry = MentorshipEntry::find($validatedData['mentorship_entry_id']);
- 
-         if (!$mentorshipEntry) {
-             throw new \Exception('The mentorship entry does not exist');
-         }
- 
          if ($mentorshipEntry->mentorship->mentor_id === $user->id) {
              throw new \Exception('Mentors cannot book their own sessions.');
          }
  
          $mentorshipReq = MentorshipReq::create([
              'mentorship_entry_id' => $validatedData['mentorship_entry_id'],
-             'mentor_id'           => $mentorshipEntry->mentorship->mentor_id,
-             'mentee_id'           => $user->id,
-             'message'             => $validatedData['message'] ?? null,
-             'status'              => 'pending',
-             'session_date'        => $mentorshipEntry->session_date,
+             'mentor_id' => $mentorshipEntry->mentorship->mentor_id,
+             'mentee_id' => $user->id,
+             'message' => $validatedData['message'] ?? null,
+             'status' => 'pending',
+             'session_date' => $mentorshipEntry->session_date,
          ]);
  
          $mentorshipReq->load(['mentee', 'mentorship_entry.mentorship.mentor']);
  
          return response()->json([
              'message' => 'Mentorship request created successfully.',
-            //  'data'    => [
-            //      'id'                  => $mentorshipReq->id,
-            //      'mentorship_entry_id' => $mentorshipReq->mentorship_entry_id,
-            //      'mentee'              => [
-            //          'id'   => $mentorshipReq->mentee->id,
-            //          'name' => $mentorshipReq->mentee->name,
-            //      ],
-            //      'mentor' => [
-            //          'id'           => $mentorshipReq->mentorship_entry->mentorship->mentor->id,
-            //          'name'         => $mentorshipReq->mentorship_entry->mentorship->mentor->name,
-            //          'session_date' => $mentorshipReq->session_date,
-            //      ],
-            //      'message' => $mentorshipReq->message,
-            //      'status'  => $mentorshipReq->status,
-            //  ],
+             'data' => [
+                //  'id' => $mentorshipReq->id,
+                //  'mentorship_entry_id' => $mentorshipReq->mentorship_entry_id,
+                //  'mentee' => [
+                //      'id' => $mentorshipReq->mentee->id,
+                //      'name' => $mentorshipReq->mentee->name,
+                //  ],
+                //  'mentor' => [
+                //      'id' => $mentorshipReq->mentorship_entry->mentorship->mentor->id,
+                //      'name' => $mentorshipReq->mentorship_entry->mentorship->mentor->name,
+                //      'session_date' => $mentorshipReq->session_date,
+                //  ],
+                //  'message' => $mentorshipReq->message,
+                 'status' => $mentorshipReq->status,
+             ],
          ], 201);
  
      } catch (\Exception $e) {
          return response()->json([
-             'error'   => 'Failed to create mentorship request.',
+             'error' => 'Failed to create mentorship request.',
              'message' => $e->getMessage(),
          ], 400);
      }
  }
+  
+ public function processMentorshipReq(Request $request, $id)
+ {
+     $user = Auth::user();
  
-    public function processMentorshipReq(Request $request, $id)
-    {
-        $user = Auth::user();
-
-        try {
-            $validatedData = $request->validate([
-                'status' => ['required', 'string', 'in:pending,accepted,rejected,completed'],
-            ]);
-
-            $mentorshipRequest = DB::transaction(function () use ($id, $user, $validatedData) {
-                $mentorshipRequest = MentorshipReq::find($id);
-
-                if (!$mentorshipRequest) {
-                    throw new \Exception('Mentorship request not found.');
-                }
-
-                $mentorshipEntry = $mentorshipRequest->mentorship_entry;
-                if (!$mentorshipEntry)
-                {
-                     throw new \Exception('Mentorship Entry not found.');
-                }
-                if ($mentorshipEntry->mentorship->mentor_id !== $user->id) {
-                    throw new \Exception('You are not authorized to process this request.');
-                }
-
-                $mentorshipRequest->status = $validatedData['status'];
-                $mentorshipRequest->save();
-
-                if ($validatedData['status'] === 'accepted' || $validatedData['status'] === 'completed') {
-                    $mentorshipEntry->status = $validatedData['status'];
-                    $mentorshipEntry->save();
-                }
-                return $mentorshipRequest;
-            });
-             $mentorshipRequest->load(['mentee', 'mentorship_entry.mentorship.mentor']);
-
-            return response()->json([
-                'message' => 'Your mentorship session has been accepted! You will receive further details soon.',
-                'data' => [
-                    'id'                  => $mentorshipRequest->id,
-                    'mentorship_entry_id' => $mentorshipRequest->mentorship_entry_id,
-                    'mentee'              => [
-                        'id'   => $mentorshipRequest->mentee->id,
-                        'name' => $mentorshipRequest->mentee->name,
-                    ],
-                    'mentor' => [
-                        'id' => $mentorshipRequest->mentorship_entry->mentorship->mentor->id,
-                        'name' => $mentorshipRequest->mentorship_entry->mentorship->mentor->name,
-                    ],
-                    // 'status'              => $mentorshipRequest->status,
-                ]
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error'   => 'Failed to process mentorship request.',
-                'message' => $e->getMessage(),
-            ], 400); 
-        }
-    }
+     $validatedData = $request->validate([
+         'status' => ['required', 'string', 'in:pending,accepted,rejected'],
+     ]);
+ 
+     $mentorshipRequest = MentorshipReq::with(['mentee', 'mentorship_entry.mentorship.mentor'])->find($id);
+ 
+     if (!$mentorshipRequest) {
+         return response()->json(['error' => 'Mentorship request not found.'], 404);
+     }
+ 
+     $mentorshipEntry = $mentorshipRequest->mentorship_entry;
+     if (!$mentorshipEntry) {
+         return response()->json(['error' => 'Mentorship entry not found.'], 404);
+     }
+ 
+     if ($mentorshipEntry->mentorship->mentor_id !== $user->id) {
+         return response()->json(['error' => 'Unauthorized to process this request.'], 403);
+     }
+ 
+     try {
+         DB::transaction(function () use ($mentorshipRequest, $mentorshipEntry, $validatedData) {
+             $mentorshipRequest->status = $validatedData['status'];
+             $mentorshipRequest->save();
+ 
+             if (in_array($validatedData['status'], ['accepted', 'rejected'])) {
+                 $mentorshipEntry->status = $validatedData['status'];
+                 $mentorshipEntry->save();
+             }
+         });
+ 
+         return response()->json([
+             'message' => 'Your mentorship session has been updated successfully!',
+            //  'data' => [
+            //      'id'                  => $mentorshipRequest->id,
+            //      'mentorship_entry_id' => $mentorshipRequest->mentorship_entry_id,
+            //      'status'              => $mentorshipRequest->status,
+            //      'mentee'              => [
+            //          'id'   => $mentorshipRequest->mentee->id,
+            //          'name' => $mentorshipRequest->mentee->name,
+            //      ],
+            //      'mentor' => [
+            //          'id'   => $mentorshipRequest->mentorship_entry->mentorship->mentor->id,
+            //          'name' => $mentorshipRequest->mentorship_entry->mentorship->mentor->name,
+            //      ],
+            //  ],
+         ], 200);
+ 
+     } catch (\Exception $e) {
+         return response()->json([
+             'error'   => 'Failed to process mentorship request.',
+             'message' => $e->getMessage(),
+         ], 500);
+     }
+ }
+ 
 
 
 
@@ -643,7 +798,7 @@ public function getOneMenteeEntry($id)
 
 
 
-public function getMentorMentorshipStatuses()
+public function getMeMentorshipStatuses()
 {
     $userId = auth()->id();
 
@@ -676,6 +831,100 @@ public function getMentorMentorshipStatuses()
         ], 500);
     }
 }
+
+
+
+
+public function  getUserStatus()
+{
+    
+    try {
+        $user = Auth()->user();
+        if(!$user)
+        {
+            return response()->json([
+                'error' => 'user is is missing'
+            ]);
+        }
+        
+        $entries = MentorshipEntry::with(['request', 'mentorship'])
+        ->whereHas('request', function ($q) use ($user) {
+            $q->where('mentee_id', $user->id);
+        })
+        ->get();
+
+    $data = $entries->map(function ($entry) {
+        return [
+            'entry_id' => $entry->id,
+            'start_date' => $entry->start_date,
+            'duration' => $entry->duration,
+            'status' => $entry->status,
+            'can_book' => true,
+            'mentorship' => [
+                'id' => $entry->mentorship->id ?? null,
+                'name' => $entry->mentorship->name ?? null,
+            ],
+            'request' => $entry->request ? [
+                'id' => $entry->request->id,
+                'message' => $entry->request->message,
+                'status' => $entry->request->status,
+            ] : null,
+        ];
+    });
+
+    return response()->json([
+        'message' => 'Mentee status retrieved successfully',
+        'data' => $data,
+    ]);
+
+    } catch (\Throwable $th) {
+        return response()->json([
+            'message'=> 'Mrror getting user status, please try again later'
+            ,'error'=> $th->getMessage()
+        ]);
+    }
+}
+
+
+public function getUserMentorshipStatus($mentorshipId)
+{
+    try {
+        $user = Auth::user();
+
+        $entries = MentorshipEntry::with(['mentorship'])
+            ->where('mentorship_id', $mentorshipId)
+            ->whereHas('request', function ($q) use ($user) {
+                $q->where('mentee_id', $user->id);
+            })
+            ->get();
+
+        $data = $entries->map(function ($entry) {
+            return [
+                'entry_id' => $entry->id,
+                'start_date' => $entry->start_date,
+                'duration' => $entry->duration,
+                'status' => $entry->status,
+                'request' => $entry->request ? [
+                    'id' => $entry->request->id,
+                    'message' => $entry->request->message,
+                    'status' => $entry->request->status,
+                ] : null,
+            ];
+        });
+
+        return response()->json([
+            'message' => 'Booked entries for this mentorship retrieved successfully',
+            'data' => $data,
+        ]);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'error' => 'Failed to retrieve mentee mentorship status',
+            'message' => $th->getMessage(),
+        ], 500);
+    }
+}
+
+
 
 public function getMenteeMentorshipStatuses()
 {

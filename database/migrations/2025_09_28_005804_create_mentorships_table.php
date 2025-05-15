@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             
-            $table->text('benefits')->nullable();
+            $table->json('benefits')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
         });

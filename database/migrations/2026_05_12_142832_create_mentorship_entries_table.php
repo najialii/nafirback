@@ -13,12 +13,12 @@ return new class extends Migration
     {
       Schema::create('mentorship_entries', function (Blueprint $table) {
     $table->id(); 
-    $table->dateTime('session_date');
+    $table->dateTime('start_date');
     $table->integer('duration');
     $table->unsignedBigInteger('mentorship_id')->nullable();
     $table->unsignedBigInteger('accepted_request_id')->nullable(); 
     $table->string('link')->nullable();
-    $table->enum('status', ['pending', 'completed', 'cancelled'])->default('pending');
+    $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
     $table->timestamps();
 });
 

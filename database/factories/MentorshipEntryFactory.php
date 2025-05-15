@@ -18,13 +18,13 @@ class MentorshipEntryFactory extends Factory
     public function definition(): array
     {
         return [
-            'session_date'        => $this->faker->dateTimeBetween('now', '+1 year'),                    
+            'start_date'        => $this->faker->dateTimeBetween('now', '+1 year'),                    
             'duration'            => $this->faker->numberBetween(30, 60),                               
             'mentorship_id'       => Mentorship::factory(),                                              
             // 'accepted_request_id' => MentorshipReq::factory(),
             // 'accepted_request_id' => null,                                           
             'link'                => $this->faker->url(),                                                
-            'status'              => $this->faker->randomElement(['pending', 'completed', 'cancelled']), 
+            'status'              => $this->faker->randomElement(['pending', 'rejected', 'accepted']), 
         ];
     }
 }

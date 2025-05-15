@@ -12,20 +12,39 @@ class MentorshipResource extends JsonResource
   * @param  \Illuminate\Http\Request  $request
   * @return array<string, mixed>
   */
- public function toArray(Request $request): array
- {
-  return [
-   'id'            => $this->id,
-   'name'          => $this->name,
-   'start_date'    => $this->start_date,
-   'end_date'      => $this->end_date,
+  public function toArray($request)
+  {
+      return [
+          'id' => $this->id,
+          'name' => $this->name,
+          'mentor' => [
+              'id' => $this->mentor->id,
+              'name' => $this->mentor->name,
+              'img' => $this->mentor->img,
+          ],
+          'entries' => $this->entries->map(function ($entry) {
+              return [
+                  'id' => $entry->id,
+                  'start_date' => $entry->start_date,
+                  'duration' => $entry->duration,
+                  'status' => $entry->status,
+                  'available' => $entry->status !== 'completed',
+                  'accepted_request' => $entry->acceptedRequest ? [
+                      'id' => $entry->acceptedRequest->id,
+                      'mentee_id' => $entry->acceptedRequest->mentee_id,
+                      'message' => $entry->acceptedRequest->message,
+                  ] : null,
+              ];
+          }),
+          'start_date' => $this->start_date,
+          'end_date' => $this->end_date,
+          'description' => $this->description,
+          'benefits' => $this->benefits,
 
-   'mentor'        => new BriefUserResource($this->whenLoaded('mentor')),
-   'department_id' => $this->department_id,
-   'benefits'          => $this->benefits,
-   'created_at'    => $this->created_at,
-   'updated_at'    => $this->updated_at,
-   'entries'       => MentorshipEntryResource::collection($this->whenLoaded('mentorship_entry')),
-  ];
- }
+          'department_id' => $this->department_id,
+          'created_at' => $this->created_at,
+          'updated_at' => $this->updated_at,
+      ];
+  }
+  
 }

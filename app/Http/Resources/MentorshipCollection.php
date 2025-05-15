@@ -23,6 +23,20 @@ class MentorshipCollection extends ResourceCollection
       'id'   => $mentorship->mentor->id,
       'name' => $mentorship->mentor->name,
      ],
+     'entries' => $mentorship->entries->map(function ($entry) {
+        return [
+            'id' => $entry->id,
+            'start_date' => $entry->start_date,
+            'duration' => $entry->duration,
+            'status' => $entry->status,
+            'available' => $entry->status !== 'completed',
+            'accepted_request' => $entry->acceptedRequest ? [
+                'id' => $entry->acceptedRequest->id,
+                'mentee_id' => $entry->acceptedRequest->mentee_id,
+                'message' => $entry->acceptedRequest->message,
+            ] : null,
+        ];
+    }),
      'department_id' => $mentorship->department_id,
      'benefits'          => $mentorship->benefits,
      'created_at'    => $mentorship->created_at,

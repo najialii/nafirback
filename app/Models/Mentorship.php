@@ -34,6 +34,10 @@ class Mentorship extends Model
     //     return $this-> belongsTo(Department::class);
     // }
 
+
+    protected $casts = [
+        'benefits' => 'array', 
+    ];
     public function mentor()
     {
         return $this->belongsTo(User::class, 'mentor_id');
