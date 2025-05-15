@@ -1,0 +1,711 @@
+{
+  "info": {
+    "name": "Nafir Backend - Auth & Mentorship API",
+    "_postman_id": "d8f5f181-8572-4a1f-8e7d-9f3a0b7c6d5e",
+    "description": "Postman collection for Authentication and Mentorship related tasks in the Nafir Backend API. \n\n**Variables:**\n* `{{baseUrl}}`: Base URL of the API (e.g., http://localhost:8000). The paths in this collection assume the API routes are prefixed with `/api` (e.g. `{{baseUrl}}/api/login`).\n* `{{authToken}}`: Authentication token obtained after login. Add this to the 'Authorization' header as 'Bearer {{authToken}}' for protected endpoints. The Login request includes a test script to attempt to automatically set this variable.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "description": "Requests related to user authentication and basic user info.",
+      "item": [
+        {
+          "name": "Register New User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\",\n  \"department_id\": 1,\n  \"user_type\": \"mentee\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "register"]
+            },
+            "description": "Registers a new user.\n\n**Body Parameters:**\n* `name` (string, required): User's full name.\n* `email` (string, email, required): User's email address.\n* `password` (string, min:8, required): User's password.\n* `password_confirmation` (string, required): Must match the password.\n* `department_id` (integer, optional): ID of the user's department.\n* `user_type` (string, optional, enum: 'mentor', 'mentee', 'admin', default: 'mentee'): Type of user."
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "try {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.token) {",
+                  "        pm.collectionVariables.set(\"authToken\", jsonData.token);",
+                  "        console.log('Auth token set from response token field.');",
+                  "    } else if (jsonData.data && jsonData.data.token) {",
+                  "        pm.collectionVariables.set(\"authToken\", jsonData.data.token);",
+                  "        console.log('Auth token set from response data.token field.');",
+                  "    }",
+                  "} catch (e) {",
+                  "    console.log('Error parsing login response or token not found:', e);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "login"]
+            },
+            "description": "Logs in an existing user and returns an authentication token.\n\n**Body Parameters:**\n* `email` (string, email, required): User's email address.\n* `password` (string, required): User's password.\n\n**Test Script:** Attempts to automatically save the `token` from the response to the `{{authToken}}` collection variable."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "logout"]
+            },
+            "description": "Logs out the currently authenticated user (invalidates token). Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Authenticated User Data (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "me"]
+            },
+            "description": "Retrieves the data for the currently authenticated user. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", ":id"],
+              "variable": [
+                { "key": "id", "value": "1", "description": "ID of the user to retrieve." }
+              ]
+            },
+            "description": "Retrieves a specific user by their ID. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "Send Email Verification Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/email/verification-notification",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "email", "verification-notification"]
+            },
+            "description": "Sends an email verification link to the authenticated user if their email is not yet verified. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Email Address",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/verify-email/:id/:hash?expires=YOUR_EXPIRATION_TIMESTAMP&signature=YOUR_SIGNATURE",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "verify-email", ":id", ":hash"],
+              "query": [
+                  {"key": "expires", "value": "YOUR_EXPIRATION_TIMESTAMP", "description": "Expiration timestamp from the verification link."},
+                  {"key": "signature", "value": "YOUR_SIGNATURE", "description": "Signature from the verification link."}
+              ],
+              "variable": [
+                { "key": "id", "value": "1", "description": "(Required) User ID from the verification link." },
+                { "key": "hash", "value": "your_verification_hash", "description": "(Required) Hash from the verification link." }
+              ]
+            },
+            "description": "Verifies the user's email address using the ID and hash from the verification link. This is typically accessed by clicking the link in the email. The `expires` and `signature` query parameters are part of Laravel's signed URL verification and should be included as they appear in the email link."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Mentorship Programs",
+      "description": "General operations for managing mentorship programs.",
+      "item": [
+        {
+          "name": "List All Mentorship Programs",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Accept", "value": "application/json" } ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentorships",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentorships"]
+            },
+            "description": "Retrieves a list of all available mentorship programs."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Mentorship Program by ID",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Accept", "value": "application/json" } ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentorship/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentorship", ":id"],
+              "variable": [
+                { "key": "id", "value": "1", "description": "ID of the mentorship program." }
+              ]
+            },
+            "description": "Retrieves details of a specific mentorship program."
+          },
+          "response": []
+        },
+        {
+          "name": "Search Mentorship Programs",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Accept", "value": "application/json" } ],
+            "url": {
+              "raw": "{{baseUrl}}/api/search/mentorship/:keyword",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "search", "mentorship", ":keyword"],
+              "variable": [
+                { "key": "keyword", "value": "tech", "description": "Keyword to search for in mentorship programs." }
+              ]
+            },
+            "description": "Searches for mentorship programs based on a keyword."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Mentorship Program",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"New Tech Mentorship\",\n  \"description\": \"A mentorship program for aspiring tech professionals.\",\n  \"department_id\": 1,\n  \"max_mentees\": 5,\n  \"start_date\": \"2024-09-01\",\n  \"end_date\": \"2025-03-01\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/mentorship",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentorship"]
+            },
+            "description": "Creates a new mentorship program. Requires `Authorization: Bearer {{authToken}}` header.\n\n**Body Parameters:**\n* `title` (string, required): Title of the mentorship program.\n* `description` (string, required): Detailed description.\n* `department_id` (integer, required): Associated department ID.\n* `max_mentees` (integer, optional): Maximum number of mentees.\n* `start_date` (date string, YYYY-MM-DD, optional): Start date.\n* `end_date` (date string, YYYY-MM-DD, optional): End date."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Mentorship Program",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Tech Mentorship Title\",\n  \"description\": \"Updated description.\",\n  \"max_mentees\": 10\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/mentorship/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentorship", ":id"],
+              "variable": [
+                { "key": "id", "value": "1", "description": "ID of the mentorship program to update." }
+              ]
+            },
+            "description": "Updates an existing mentorship program. Requires `Authorization: Bearer {{authToken}}` header. Include only the fields you want to update."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Mentorship Program",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentorship/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentorship", ":id"],
+              "variable": [
+                { "key": "id", "value": "1", "description": "ID of the mentorship program to delete." }
+              ]
+            },
+            "description": "Deletes a mentorship program. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Mentee - Mentorship Management",
+      "description": "Endpoints for mentees to manage their mentorships, requests, and sessions.",
+      "item": [
+        {
+          "name": "List Mentorships for Mentee",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentee/mentorship",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentee", "mentorship"]
+            },
+            "description": "Retrieves a list of mentorship programs relevant to the authenticated mentee (e.g., enrolled, eligible). Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "Get One Mentorship for Mentee",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentee/mentorship/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentee", "mentorship", ":id"],
+              "variable": [
+                { "key": "id", "value": "1", "description": "ID of the mentorship program." }
+              ]
+            },
+            "description": "Retrieves details of a specific mentorship program for the authenticated mentee. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Mentee's Overall Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentee/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentee", "status"]
+            },
+            "description": "Retrieves the overall status for the authenticated mentee (e.g., active mentorships, pending requests). Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Mentee's Status for a Specific Mentorship",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentee/mentorship/:id/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentee", "mentorship", ":id", "status"],
+              "variable": [
+                { "key": "id", "value": "1", "description": "ID of the mentorship program." }
+              ]
+            },
+            "description": "Retrieves the mentee's status for a specific mentorship program. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "List Mentee's Mentorship Requests",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentee/requests",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentee", "requests"]
+            },
+            "description": "Lists all mentorship requests made by the authenticated mentee. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "Get One Mentee Mentorship Request",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentee/requests/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentee", "requests", ":id"],
+              "variable": [
+                { "key": "id", "value": "1", "description": "ID of the mentorship request." }
+              ]
+            },
+            "description": "Retrieves details of a specific mentorship request made by the mentee. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "Request a Mentorship Session/Entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"I would like to request this session.\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/mentorship/entry/:id/request",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentorship", "entry", ":id", "request"],
+              "variable": [
+                { "key": "id", "value": "1", "description": "ID of the mentorship session entry (slot/program offering) to request." }
+              ]
+            },
+            "description": "Allows a mentee to request a specific mentorship session or entry. Requires `Authorization: Bearer {{authToken}}` header.\n\n**Body Parameters:**\n* `message` (string, optional): A message to the mentor along with the request."
+          },
+          "response": []
+        },
+        {
+          "name": "List Mentee's Session Entries",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentee/sessions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentee", "sessions"]
+            },
+            "description": "Lists all session entries (e.g., booked, available) for the authenticated mentee. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "Get One Mentee Session Entry",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentee/session/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentee", "session", ":id"],
+              "variable": [
+                { "key": "id", "value": "1", "description": "ID of the session entry." }
+              ]
+            },
+            "description": "Retrieves details of a specific session entry for the mentee. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Mentee's Mentorship Status Overview",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentee/mentorship/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentee", "mentorship", "status"]
+            },
+            "description": "Provides a status overview for the mentee regarding their mentorships (e.g., sessions booked, completed). Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Mentor - Mentorship Management",
+      "description": "Endpoints for mentors to manage their mentorship programs, requests, and sessions.",
+      "item": [
+        {
+          "name": "List Mentorships for Mentor",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentorships/mentor",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentorships", "mentor"]
+            },
+            "description": "Retrieves a list of mentorship programs managed by the authenticated mentor. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "Get One Mentorship for Mentor",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentorships/mentor/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentorships", "mentor", ":id"],
+              "variable": [
+                { "key": "id", "value": "1", "description": "ID of the mentorship program." }
+              ]
+            },
+            "description": "Retrieves details of a specific mentorship program managed by the authenticated mentor. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "List Mentorship Requests for Mentor",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentor/requests",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentor", "requests"]
+            },
+            "description": "Lists all mentorship requests received by the authenticated mentor. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "Get One Mentorship Request for Mentor",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentor/requests/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentor", "requests", ":id"],
+              "variable": [
+                { "key": "id", "value": "1", "description": "ID of the mentorship request." }
+              ]
+            },
+            "description": "Retrieves details of a specific mentorship request received by the mentor. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "Process Mentorship Request Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"approved\",\n  \"mentor_feedback\": \"Looking forward to mentoring you!\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/mentor/requests/:id/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentor", "requests", ":id", "status"],
+              "variable": [
+                { "key": "id", "value": "1", "description": "ID of the mentorship request to process." }
+              ]
+            },
+            "description": "Allows a mentor to process (approve/reject) a mentorship request. Requires `Authorization: Bearer {{authToken}}` header.\n\n**Body Parameters:**\n* `status` (string, required, enum: 'approved', 'rejected', 'pending'): The new status for the request.\n* `mentor_feedback` (string, optional): Feedback from the mentor regarding the decision."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete/Cancel Mentorship Request (by Mentor)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentor/requests/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentor", "requests", ":id"],
+              "variable": [
+                { "key": "id", "value": "1", "description": "ID of the mentorship request to delete/cancel." }
+              ]
+            },
+            "description": "Allows a mentor to delete or cancel a mentorship request. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "List Requests for a Specific Mentorship Program (Mentor)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentor/mentorships/:id/requests",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentor", "mentorships", ":id", "requests"],
+              "variable": [
+                { "key": "id", "value": "1", "description": "ID of the mentorship program." }
+              ]
+            },
+            "description": "Lists all mentorship requests for a specific program managed by the authenticated mentor. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "List Mentor's Session Entries",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentor/sessions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentor", "sessions"]
+            },
+            "description": "Lists all session entries related to the mentor's programs. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "Get One Mentor Session Entry",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentor/sessions/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentor", "sessions", ":id"],
+              "variable": [
+                { "key": "id", "value": "1", "description": "ID of the session entry." }
+              ]
+            },
+            "description": "Retrieves details of a specific session entry related to the mentor. Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Mentor's Mentorship Status Overview",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mentor/mentorship/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mentor", "mentorship", "status"]
+            },
+            "description": "Provides a status overview for the mentor regarding their mentorships. (Note: Route file points to `getMenteeMentorshipStatuses`, this might be an error in routes or a generic handler). Requires `Authorization: Bearer {{authToken}}` header."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000",
+      "type": "string",
+      "description": "Base URL of the API (e.g., http://localhost:8000 or your staging/production URL). Ensure this does not end with a slash."
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string",
+      "description": "Authentication token obtained after login. Automatically set by the 'Login User' request's test script if configured."
+    }
+  ]
+} 
