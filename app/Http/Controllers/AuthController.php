@@ -113,7 +113,7 @@ class AuthController extends Controller
                         $user = User::create([
                             'name' => $authUser->getName(),
                             'email' => $authUser->getEmail(),
-                            'password' => Hash::make('testtesttest'),
+                            'password' => Hash::make(\Illuminate\Support\Str::random(32)),
                             'is_active' => false,
                             'profile_pic' => $authUser->getAvatar() ?? null,
                         ]);
