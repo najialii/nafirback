@@ -4,55 +4,55 @@ namespace App\Filament\Resources;
 
 use App\Filament\Clusters\MentorshipCluster;
 use App\Filament\Resources\MentorshipResource\Pages;
-use App\Filament\Resources\MentorshipResource\RelationManagers;
 use App\Models\Mentorship;
-use Filament\Clusters\Cluster;
+use App\Models\Department;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use App\Models\Department;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-
 
 class MentorshipResource extends Resource
 {
     protected static ?int $navigationSort = 3;
     protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $cluster = MentorshipCluster::class;
+    protected static ?string $model = Mentorship::class;
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
 
-    protected static ?string $cluster = MentorshipCluster::class;
-
-    protected static ?string $model = Mentorship::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     public static function form(Form $form): Form
     {
         $user = auth()->user();
+
         return $form
             ->schema([
-
                 Forms\Components\TextInput::make('name')
-                    ->label('Activity Name')
+                    ->label('Title')
                     ->required()
                     ->maxLength(255),
 
-                Forms\Components\TextInput::make('description')
+                Forms\Components\Textarea::make('description')
                     ->label('Description')
-                    ->nullable()
-                    ->maxLength(500),
+                    ->rows(4)
+                    ->nullable(),
+
+                Forms\Components\Select::make('mentor_id')
+                    ->label('Mentor')
+                    ->relationship('mentor', 'name')
+                    ->required()
+                    ->searchable()
+                    ->options(User::role('mentor')->pluck('name', 'id')),
 
                 Forms\Components\Select::make('department_id')
                     ->label('Department')
                     ->relationship('department', 'name')
-                    // ->searchable()
                     ->required()
                     ->options(function () use ($user) {
                         if ($user && $user->hasRole('super_admin')) {
@@ -61,28 +61,38 @@ class MentorshipResource extends Resource
 
                         return Department::where('id', $user->department_id)->pluck('name', 'id');
                     })
-                    ->disabled(function () use ($user) {
-                        return !$user->hasRole('super_admin');
-                    })
-                    ->default(function () use ($user) {
-                        return $user->department_id;
-                    }),
+                    ->disabled(! $user->hasRole('super_admin'))
+                    ->default($user->department_id),
 
-                Forms\Components\TextInput::make('location')
-                    ->label('Location')
-                    ->nullable()
-                    ->maxLength(255),
+                // Forms\Components\TextInput::make('location')
+                //     ->label('Location')
+                //     ->nullable()
+                //     ->maxLength(255),
 
-                Forms\Components\DatePicker::make('date')
-                    ->label('Date')
+                Forms\Components\DatePicker::make('start_date')
+                    ->label('Start Date')
                     ->required(),
 
-                Forms\Components\TimePicker::make('time')
-                    ->label('Time')
+                Forms\Components\DatePicker::make('end_date')
+                    ->label('End Date')
                     ->required(),
 
+                Forms\Components\TimePicker::make('Duration')
+                    ->label('duration')
+                    ->required(),
 
+                Forms\Components\FileUpload::make('img')
+                    ->label('Mentorship Image')
+                    ->image()
+                    ->directory('mentorship-images')
+                    ->nullable(),
 
+                Forms\Components\KeyValue::make('benefits')
+                    ->label('Benefits')
+                    ->addButtonLabel('Add Benefit')
+                    ->keyLabel('Title')
+                    ->valueLabel('Description')
+                    ->nullable(),
             ]);
     }
 
@@ -90,30 +100,28 @@ class MentorshipResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('department.name'),
-                Tables\Columns\TextColumn::make('mentor.name')->label('Mentor'),
-            ])
-            ->filters([
-                //
+                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('department.name')->sortable(),
+                Tables\Columns\TextColumn::make('mentor.name')->label('Mentor')->sortable(),
+                Tables\Columns\TextColumn::make('start_date')->date(),
+                Tables\Columns\TextColumn::make('end_date')->date(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            \App\Filament\Clusters\MentorshipCluster\Resources\MentorshipResource\EntriesRelationManagerResource\RelationManagers\EntriesRelationManager::class,
         ];
     }
+    
 
     public static function getPages(): array
     {

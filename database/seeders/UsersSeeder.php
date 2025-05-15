@@ -1,33 +1,44 @@
 <?php
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use App\Models\User;
 use App\Models\Mentorship;
 use App\Models\MentorshipReq;
 use App\Models\MentorshipEntry;
-use Illuminate\Support\Str;
 
 class UsersSeeder extends Seeder
 {
     public function run(): void
     {
+        // Create roles
         $userRole = Role::firstOrCreate(['name' => 'user']);
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $mentorRole = Role::firstOrCreate(['name' => 'mentor']);
-        User::factory()
-            ->count(25)
-            ->hasDepartment(25)
-            ->create();
+        $superAdminRole = Role::firstOrCreate(['name' => 'super_admin']);
+
+        // Assign all permissions to super_admin
+        $allPermissions = Permission::all();
+        $superAdminRole->syncPermissions($allPermissions);
+
+        // Create dummy users
+        User::factory()->count(25)->hasDepartment(25)->create();
+
+        // Modify first user to be admin@nafir.net
         $firstUser = User::first();
         $firstUser->password = Hash::make('admin');
         $firstUser->email = 'admin@nafir.net';
         $firstUser->save();
+        $firstUser->assignRole($superAdminRole);
 
         $commonPassword = Hash::make('password');
 
+        // Mentor
         $mentor = User::firstOrCreate(
             ['email' => 'mentor2@nafir.sd'],
             [
@@ -35,11 +46,10 @@ class UsersSeeder extends Seeder
                 'password' => $commonPassword,
             ]
         );
-        $mentor->assignRole([$mentorRole]);
+        $mentor->assignRole($mentorRole);
 
-        $mentorships = Mentorship::factory(10)->create([
-            'mentor_id' => $mentor->id,
-        ]);
+        // Create mentorships with mentees and requests
+        $mentorships = Mentorship::factory(10)->create(['mentor_id' => $mentor->id]);
 
         foreach ($mentorships as $index => $mentorship) {
             $menteeNumber = $index + 1;
@@ -72,6 +82,7 @@ class UsersSeeder extends Seeder
             $request->update(['mentorship_entry_id' => $entry->id]);
         }
 
+        // Regular user
         $user = User::firstOrCreate(
             ['email' => 'user@nafir.net'],
             [
@@ -81,6 +92,7 @@ class UsersSeeder extends Seeder
         );
         $user->assignRole($userRole);
 
+        // Admin user (super admin)
         $admin = User::firstOrCreate(
             ['email' => 'admin@nafir.sd'],
             [
@@ -88,6 +100,6 @@ class UsersSeeder extends Seeder
                 'password' => Hash::make('admin'),
             ]
         );
-        $admin->assignRole($adminRole);
+        $admin->assignRole($superAdminRole);
     }
 }

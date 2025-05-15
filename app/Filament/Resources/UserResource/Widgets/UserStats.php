@@ -25,9 +25,9 @@ class UserStats extends BaseWidget
 
         $depAdminsCount = User::role('admin')->count();
         $mentorCount = User::role('mentor')->count();
-        $menteeCount = User::role('mentee')->count();
+        $userCount = User::role('user')->count();
 
-        $total = $depAdminsCount + $mentorCount + $menteeCount;
+        $total = $depAdminsCount + $mentorCount + $userCount;
 
 
         $UserPartActivities = Activity::where('user_id')->get()
@@ -42,7 +42,7 @@ class UserStats extends BaseWidget
                 ->description('New users in the last 30 days')->color('primary')->chart($newUsersChartData),
 
             Stat::make('Users by Role', "{$total}  Users/Role")
-                ->description("Admins: {$depAdminsCount} | Mentors: {$mentorCount} | Mentees: {$menteeCount}")
+                ->description("Admins: {$depAdminsCount} | Mentors: {$mentorCount} | Users: {$userCount}")
                 ->icon('heroicon-o-users')
                 ->color('primary'),
 

@@ -10,11 +10,14 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use Spatie\Permission\Models\Role;
 use Illuminate\Auth\Events\Registered;
+use Spatie\Permission\Traits\HasRoles;
+
 use Illuminate\Support\Str;
 
 
 class AuthController extends Controller
 {
+    use HasRoles;
     public function register(StoreUserRequest $request)
     {
         $isEmailExist = User::where('email', $request->email)->exists();
@@ -118,7 +121,9 @@ class AuthController extends Controller
                             'password' => Hash::make(\Illuminate\Support\Str::random(32)),
                             'is_active' => false,
                             'profile_pic' => $authUser->getAvatar() ?? null,
-                            'role' => $user->getRoleNames()->first() ?? 'user',
+                            // 'role' => $user->getRoleNames()->first() ?? 'user',
+                            'role' => in_array('mentor', $user->getRoleNames()->toArray()) ? 'mentor' : 'user',
+
                         ]);
                     } catch (\Exception $e) {
                         return response()->json([
@@ -131,12 +136,14 @@ class AuthController extends Controller
                 $token = $user->createToken('google-token')->plainTextToken;
 
                 return response()->json([
-                    'id' => $user->id,
+                    'id' => $user->id,  
                     'email' => $user->email,
                     'name' => $user->name,
                     'image' => $user->profile_pic ?? ImageHelper::generateImageUrl('person', ['name' => $user->name]),
                     'is_active' => $user->is_active,
-                    'role' => $user->getRoleNames()->first() ?? 'user',
+                    // 'role' => $user->getRoleNames()->first() ?? 'user',
+                    'role' => in_array('mentor', $user->getRoleNames()->toArray()) ? 'mentor' : 'user',
+
                     'completionPercentage' => $user->profileCompletionPercentage(),
                     'authToken' => $token,
                 ]);
