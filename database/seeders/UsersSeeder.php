@@ -35,7 +35,7 @@ class UsersSeeder extends Seeder
                 'password' => $commonPassword,
             ]
         );
-        $mentor->assignRole([$userRole, $mentorRole]);
+        $mentor->assignRole([$mentorRole]);
 
         $mentorships = Mentorship::factory(10)->create([
             'mentor_id' => $mentor->id,

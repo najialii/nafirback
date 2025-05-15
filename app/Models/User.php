@@ -14,10 +14,10 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable 
 {
     use HasFactory, Notifiable, HasApiTokens, HasRoles;
-    public const ROLE_MENTOR = 'mentor';
-    public const ROLE_MENTEE = 'mentee';
-    public const ROLE_ADMIN = 'admin';
-    public const ROLES = [self::ROLE_MENTOR, self::ROLE_MENTEE, self::ROLE_ADMIN];
+    // public const ROLE_MENTOR = 'mentor';
+    // public const ROLE_MENTEE = 'mentee';
+    // public const ROLE_ADMIN = 'admin';
+    // public const ROLES = [self::ROLE_MENTOR, self::ROLE_MENTEE, self::ROLE_ADMIN];
 
     protected $fillable = [
         'name',

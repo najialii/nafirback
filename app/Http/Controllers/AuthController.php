@@ -118,6 +118,7 @@ class AuthController extends Controller
                             'password' => Hash::make(\Illuminate\Support\Str::random(32)),
                             'is_active' => false,
                             'profile_pic' => $authUser->getAvatar() ?? null,
+                            'role' => $user->getRoleNames()->first() ?? 'user',
                         ]);
                     } catch (\Exception $e) {
                         return response()->json([

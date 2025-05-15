@@ -28,7 +28,7 @@ class UpdateUserRequest extends FormRequest
         'phone'                  => ['sometimes', 'string'],
         'title'                  => ['sometimes', 'string'],
         'skills'                 => ['sometimes', 'array'],
-        'skills.*'               => ['string'],
+        //'skills.*'               => ['string'],
         'education'              => ['sometimes', 'array'],
         'education.*.university' => ['sometimes', 'string'],
         'education.*.certificate'=> ['sometimes', 'string'],
