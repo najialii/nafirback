@@ -21,6 +21,8 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::middleware('auth:sanctum')->get('/user/me', [UserController::class, 'getMeData']);
+Route::middleware('auth:sanctum')->patch('/user/edit', [UserController::class, 'update']);
+
 Route::get('/user/{id}', [AuthController::class, 'show'])->middleware('auth:sanctum');
 // Department
 Route::get('/department/{id}', [DepartmentController::class, 'show']);
@@ -128,6 +130,9 @@ Route::get('/mentor/mentorship/status', [MentorshipReqController::class, 'getMen
 
 
 
+
+//post mentorship entries 
+Route::middleware('auth:sanctum')->post('/mentorship-entries', [MentorshipController::class, 'store']);
 
 
 

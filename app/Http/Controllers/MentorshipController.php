@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MentorshipUpdateRequest;
+use App\Http\Requests\StoreMentorshipEntryRequest;
 use App\Http\Requests\StoreMentorshipsRequest;
 use App\Http\Resources\MenteeMenttorshipResource;
 use App\Http\Resources\MentorshipCollection;
@@ -9,6 +10,8 @@ use App\Http\Resources\MentorshipResource;
 use App\Models\Mentorship;
 use App\Models\MentorshipEntry;
 use App\Models\MentorshipReq;
+use Carbon\Carbon;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -82,48 +85,56 @@ class MentorshipController extends Controller
   ], 200);
 
  }
- public function store(StoreMentorshipsRequest $request)
- {
-  $user = Auth()->user();
-  try {
 
-   $validatedData = $request->validated();
 
-   if (! $user) {
-    return response()->json([
-     'error' => 'Unauthenticated',
-    ], 401);
-   }
 
-   $validatedData['mentor_id'] = $user->id;
 
-   if ($request->hasFile('img')) {
-    $path                 = $request->file('img')->store('mentorships', 'public');
-    $validatedData['img'] = '/storage/' . $path;
-   }
 
-   $mentorship = Mentorship::create($validatedData);
+ public function store(StoreMentorshipEntryRequest $request)
+{
+    $user = auth()->user();
 
-   $mentorshipEntryData = [
-    'mentorship_id' => $mentorship->id,
-    'session_date'  => $validatedData['session_date'],
-    'duration'      => $validatedData['duration'],
-    'link'          => $validatedData['link'] ?? null,
-    'status'        => 'pending',
-   ];
+    try {
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], 401);
+        }
 
-   $mentorshipEntry = MentorshipEntry::create($mentorshipEntryData);
+        $validatedData = $request->validated();
 
-   return (new MentorshipResource($mentorship))->additional(['mentorship_entry' => $mentorshipEntry]);
+        $mentorship = Mentorship::find($validatedData['mentorship_id']);
+        if (!$mentorship) {
+            return response()->json(['error' => 'Mentorship not found'], 404);
+        }
 
-  } catch (\Throwable $th) {
-   return response()->json([
-    'error'   => 'Something went wrong!',
-    'message' => $th->getMessage(),
-   ], 500);
-  }
+        $mentorshipEntryData = [
+            'mentorship_id'       => $mentorship->id,
+            'mentee_id' => $mentorship->mentee->id,           
+            'start_date' => Carbon::parse($validatedData['start_date'])->format('Y-m-d H:i:s'),
+            'duration'            => $validatedData['duration'],
+            'link'                => $validatedData['link'] ?? null,
+            'status'              => $validatedData['status'] ?? 'pending',
+            // 'accepted_request_id' => $validatedData['accepted_request_id'] ?? null,
+        ];
 
- }
+        $mentorshipEntry = MentorshipEntry::create($mentorshipEntryData);
+
+        return response()->json([
+            'message' => 'Mentorship entry created successfully',
+            'mentorship_entry' => $mentorshipEntry,
+        ], 201);
+
+    } catch (\Throwable $th) {
+        return response()->json([
+            'error' => 'Something went wrong!',
+            'message' => $th->getMessage(),
+        ], 500);
+    }
+}
+
+
+
+
+
 
  public function update(MentorshipUpdateRequest $request, string $id)
  {

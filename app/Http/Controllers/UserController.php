@@ -11,6 +11,7 @@ use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+
 class UserController
 {
     public function index()
@@ -21,11 +22,7 @@ class UserController
 
     public function show($id)
     {
-        // $user = User::find($id);
-
-        // if (!$user) {
-        //     return response()->json(['message' => 'User not found'], 404);
-        // }
+    
 
         return new UserResource(User::findOrFail($id));
 
@@ -33,7 +30,6 @@ class UserController
 
     public function store(StoreUserRequest $request)
     {
-        // return new UserResource(User::Create($request->all()));
 
 
         $validatedData = $request->validated();
@@ -69,13 +65,14 @@ class UserController
     // }
 
 
-public function getMeData()
-{
-    $user = User::first();
-    return new UserResource($user);
-
-}
-
+    public function getMeData()
+    {
+        $user = auth()->user();
+    
+        return new UserResource($user);
+    }
+    
+    
 
     // public function update(UpdateUserRequest $request, User $user)
     // {
@@ -87,30 +84,27 @@ public function getMeData()
     //     return response()->json($user, 200);
 
     // }
-
-    public function update(UpdateUserRequest $request, User $user)
-{
-    $data = array_merge($user->toArray(), $request->validated());
-
-    if ($request->hasFile('profile_pic')) {
-        $img = $request->file('profile_pic');
-        $imgName = time() . '_' . $img->getClientOriginalName();
-        $data['profile_pic'] = $img->storeAs('users/profile_imgs', $imgName, 'public');
+    public function update(UpdateUserRequest $request)
+    {
+        $user = auth()->user();
+    
+        $data = $request->validated();
+    
+        if ($request->hasFile('profile_pic')) {
+            $img = $request->file('profile_pic');
+            $imgName = time() . '_' . $img->getClientOriginalName();
+            $data['profile_pic'] = $img->storeAs('users/profile_imgs', $imgName, 'public');
+        }
+    
+        $user->update($data);
+    
+        return response()->json([
+            'message' => 'User updated successfully.',
+            'user' => new UserResource($user),
+            'profile_complete' => $user->profileCompletionPercentage(),
+        ], 200);
     }
-
-    $user->update($data);
-
-    $role = $user->isProfileComplete() ? 'completed' : 'incompleted';
-    $user->syncRoles([$role]);
-
-    return response()->json([
-        'message' => 'User updated successfully.',
-        'user'    => new UserResource($user),
-        'profile_complete' => $user->isProfileComplete(),
-        'role'    => $user->getRoleNames(),
-    ], 200);
-}
-
+    
 
 }
 

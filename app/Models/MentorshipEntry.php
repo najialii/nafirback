@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class MentorshipEntry extends Model
 {
     use HasFactory;//, SoftDeletes;
-    use \Modules\Zoom\Traits\HasZoomMeeting;
+    // use \Modules\Zoom\Traits\HasZoomMeeting;
 
     public const STATUS_PENDING = 'pending';
     public const STATUS_PROCESSING = 'in_progress';

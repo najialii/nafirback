@@ -29,7 +29,7 @@ return new class extends Migration {
             $table->integer('completion_percentage')->default(0); 
             $table->unsignedBigInteger('department_id')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

@@ -26,7 +26,7 @@ endpoints:
         name: name
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -36,7 +36,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: carolyne.luettgen@example.org
+        example: zbailey@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -46,71 +46,16 @@ endpoints:
         name: password
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
-        custom: []
-      phone:
-        name: phone
-        description: ''
-        required: true
-        example: consequatur
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      skills:
-        name: skills
-        description: ''
-        required: true
-        example: consequatur
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      exp_years:
-        name: exp_years
-        description: ''
-        required: true
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      country:
-        name: country
-        description: ''
-        required: true
-        example: consequatur
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      isActive:
-        name: isActive
-        description: ''
-        required: false
-        example: true
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
         custom: []
     cleanBodyParameters:
-      name: consequatur
-      email: carolyne.luettgen@example.org
-      password: consequatur
-      phone: consequatur
-      skills: consequatur
-      exp_years: 17
-      country: consequatur
-      isActive: true
+      name: architecto
+      email: zbailey@example.net
+      password: architecto
     fileParameters: []
     responses: []
     responseFields: []
@@ -140,11 +85,21 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
+      access_token:
+        name: access_token
+        description: 'This field is required when <code>provider</code> is <code>google</code>.'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
       email:
         name: email
-        description: 'Must be a valid email address. The <code>email</code> of an existing record in the users table.'
-        required: true
-        example: qkunze@example.com
+        description: 'This field is required when <code>provider</code> is <code>credentials</code>. Must be a valid email address.'
+        required: false
+        example: zbailey@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -152,17 +107,31 @@ endpoints:
         custom: []
       password:
         name: password
-        description: ''
-        required: true
-        example: consequatur
+        description: 'This field is required when <code>provider</code> is <code>credentials</code>.'
+        required: false
+        example: '|]|{+-'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
+      provider:
+        name: provider
+        description: ''
+        required: true
+        example: credentials
+        type: string
+        enumValues:
+          - google
+          - credentials
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
     cleanBodyParameters:
-      email: qkunze@example.com
-      password: consequatur
+      access_token: architecto
+      email: zbailey@example.net
+      password: '|]|{+-'
+      provider: credentials
     fileParameters: []
     responses: []
     responseFields: []
@@ -242,8 +211,8 @@ endpoints:
     custom: []
   -
     httpMethods:
-      - POST
-    uri: api/sauth
+      - PATCH
+    uri: api/user/edit
     metadata:
       groupName: Endpoints
       groupDescription: ''
@@ -254,68 +223,355 @@ endpoints:
       authenticated: false
       custom: []
     headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - POST
-    uri: api/atauth
-    metadata:
-      groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
+      Content-Type: multipart/form-data
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      access_token:
-        name: access_token
+      name:
+        name: name
         description: ''
-        required: true
-        example: consequatur
+        required: false
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
-      provider:
-        name: provider
-        description: ''
-        required: true
-        example: google
+      email:
+        name: email
+        description: 'Must be a valid email address.'
+        required: false
+        example: zbailey@example.net
         type: string
-        enumValues:
-          - google
+        enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
+      profile_pic:
+        name: profile_pic
+        description: 'Must be an image. Must not be greater than 2048 kilobytes.'
+        required: false
+        example: null
+        type: file
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      phone:
+        name: phone
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      title:
+        name: title
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      skills:
+        name: skills
+        description: ''
+        required: false
+        example:
+          - architecto
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      education:
+        name: education
+        description: ''
+        required: false
+        example: null
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      experience:
+        name: experience
+        description: ''
+        required: false
+        example: null
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      location:
+        name: location
+        description: ''
+        required: false
+        example: null
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      location.country:
+        name: location.country
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      location.city:
+        name: location.city
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      cv_file:
+        name: cv_file
+        description: 'Must be a file. Must not be greater than 2048 kilobytes.'
+        required: false
+        example: null
+        type: file
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      targeted_locations:
+        name: targeted_locations
+        description: ''
+        required: false
+        example:
+          - architecto
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      targeted_industries:
+        name: targeted_industries
+        description: ''
+        required: false
+        example:
+          - architecto
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      targeted_titles:
+        name: targeted_titles
+        description: ''
+        required: false
+        example:
+          - architecto
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      career_tasks:
+        name: career_tasks
+        description: 'Must not be greater than 2000 characters.'
+        required: false
+        example: 'n'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      completion_percentage:
+        name: completion_percentage
+        description: 'Must be at least 0. Must not be greater than 100.'
+        required: false
+        example: 7
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'education[].university':
+        name: 'education[].university'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'education[].certificate':
+        name: 'education[].certificate'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'education[].degree':
+        name: 'education[].degree'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'education[].period':
+        name: 'education[].period'
+        description: ''
+        required: false
+        example: null
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'education[].period.start':
+        name: 'education[].period.start'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'education[].period.end':
+        name: 'education[].period.end'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'education[].description':
+        name: 'education[].description'
+        description: ''
+        required: false
+        example: 'Eius et animi quos velit et.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      'experience[].title':
+        name: 'experience[].title'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'experience[].company':
+        name: 'experience[].company'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'experience[].period':
+        name: 'experience[].period'
+        description: ''
+        required: false
+        example: null
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'experience[].period.start':
+        name: 'experience[].period.start'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'experience[].period.end':
+        name: 'experience[].period.end'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'experience[].description':
+        name: 'experience[].description'
+        description: ''
+        required: false
+        example: 'Eius et animi quos velit et.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
     cleanBodyParameters:
-      access_token: consequatur
-      provider: google
-    fileParameters: []
+      name: architecto
+      email: zbailey@example.net
+      phone: architecto
+      title: architecto
+      skills:
+        - architecto
+      location:
+        country: architecto
+        city: architecto
+      targeted_locations:
+        - architecto
+      targeted_industries:
+        - architecto
+      targeted_titles:
+        - architecto
+      career_tasks: 'n'
+      completion_percentage: 7
+      education:
+        -
+          university: architecto
+          certificate: architecto
+          degree: architecto
+          period:
+            start: architecto
+            end: architecto
+          description: 'Eius et animi quos velit et.'
+      experience:
+        -
+          title: architecto
+          company: architecto
+          period:
+            start: architecto
+            end: architecto
+          description: 'Eius et animi quos velit et.'
+    fileParameters:
+      profile_pic: null
+      cv_file: null
     responses: []
     responseFields: []
     auth: []
@@ -326,7 +582,7 @@ endpoints:
   -
     httpMethods:
       - GET
-    uri: api/department
+    uri: 'api/user/{id}'
     metadata:
       groupName: Endpoints
       groupDescription: ''
@@ -339,8 +595,19 @@ endpoints:
     headers:
       Content-Type: application/json
       Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the user.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -349,7 +616,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"data":[],"links":{"first":"http:\/\/localhost\/api\/department?page=1","last":"http:\/\/localhost\/api\/department?page=1","prev":null,"next":null},"meta":{"current_page":1,"from":null,"last_page":1,"links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost\/api\/department?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"path":"http:\/\/localhost\/api\/department","per_page":10,"to":null,"total":0}}'
+        content: '{"data":{"id":1,"profileImage":"https:\/\/picsum.photos\/seed\/ecf66636\/300\/300","basicInfo":{"name":"Christa Anderson","email":"admin@nafir.net"},"phoneNumber":"209-575-0992","departmentId":8,"role":[],"skills":["quia","ullam","ad","quidem","est"],"location":"{\"country\":\"Christmas Island\",\"city\":\"Kayaberg\"}","experiences":[{"title":"Forest Fire Fighting Supervisor","company":"O''Keefe-Kihn","startDate":"1980","endDate":null,"description":"Rerum dicta enim pariatur iusto vitae quia quia omnis."}],"educations":[{"university":"Schmidt Inc","certificate":"velit Degree","degree":"tenetur","startDate":"2016","endDate":"1983","description":"Quas repellendus iste voluptatem recusandae enim aperiam sint nam."}],"cvFile":"http:\/\/www.purdy.net\/","targetedLocations":["voluptates","molestiae","aspernatur"],"targetedIndustries":["et","ut","quod"],"targetedTitles":["consequatur","unde","soluta"],"careerTasks":"Enim est blanditiis ut corrupti aliquid alias. Alias quam eum qui sequi reiciendis velit. Ratione est aliquam itaque nam officia. Repudiandae molestiae omnis dolores omnis.","completionPercentage":100,"isActive":1}}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
@@ -383,14 +650,14 @@ endpoints:
         name: id
         description: 'The ID of the department.'
         required: true
-        example: 17
-        type: integer
+        example: architecto
+        type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: 17
+      id: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -401,8 +668,47 @@ endpoints:
         status: 404
         content: |-
           {
-              "message": "No query results for model [App\\Models\\User] 17"
+              "message": "No query results for model [App\\Models\\User] architecto"
           }
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/department
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":[{"id":1,"name":"Haag, Beer and Fay","description":"Voluptates sit provident asperiores voluptates consequuntur hic et deleniti.","created_at":"2025-05-15T05:54:27.000000Z","updated_at":"2025-05-15T05:54:27.000000Z"},{"id":2,"name":"Hagenes Inc","description":"Natus corrupti non odit est qui ex.","created_at":"2025-05-15T05:54:27.000000Z","updated_at":"2025-05-15T05:54:27.000000Z"},{"id":3,"name":"O''Conner, Fahey and Schultz","description":"Aut repudiandae suscipit a velit.","created_at":"2025-05-15T05:54:27.000000Z","updated_at":"2025-05-15T05:54:27.000000Z"},{"id":4,"name":"Rempel LLC","description":"Nihil quo necessitatibus iure doloribus suscipit expedita.","created_at":"2025-05-15T05:54:27.000000Z","updated_at":"2025-05-15T05:54:27.000000Z"},{"id":5,"name":"Dach Inc","description":"Eveniet rerum sit recusandae exercitationem hic rerum nemo asperiores.","created_at":"2025-05-15T05:54:27.000000Z","updated_at":"2025-05-15T05:54:27.000000Z"},{"id":6,"name":"McClure, Dare and Bartoletti","description":"Pariatur provident quisquam voluptatem natus non modi.","created_at":"2025-05-15T05:54:27.000000Z","updated_at":"2025-05-15T05:54:27.000000Z"},{"id":7,"name":"Gorczany, O''Hara and Schulist","description":"Qui dolorum et eos voluptas qui quasi neque.","created_at":"2025-05-15T05:54:27.000000Z","updated_at":"2025-05-15T05:54:27.000000Z"},{"id":8,"name":"Feest, Glover and Cruickshank","description":"Et beatae et rerum reprehenderit.","created_at":"2025-05-15T05:54:27.000000Z","updated_at":"2025-05-15T05:54:27.000000Z"},{"id":9,"name":"Schneider, Bechtelar and Haag","description":"Dolorum earum quod et voluptatem ab autem quaerat.","created_at":"2025-05-15T05:54:27.000000Z","updated_at":"2025-05-15T05:54:27.000000Z"},{"id":10,"name":"Kovacek Ltd","description":"Delectus possimus sed omnis.","created_at":"2025-05-15T05:54:27.000000Z","updated_at":"2025-05-15T05:54:27.000000Z"}],"links":{"first":"https:\/\/abcd1234.ngrok.io\/api\/department?page=1","last":"https:\/\/abcd1234.ngrok.io\/api\/department?page=13","prev":null,"next":"https:\/\/abcd1234.ngrok.io\/api\/department?page=2"},"meta":{"current_page":1,"from":1,"last_page":13,"links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/department?page=1","label":"1","active":true},{"url":"https:\/\/abcd1234.ngrok.io\/api\/department?page=2","label":"2","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/department?page=3","label":"3","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/department?page=4","label":"4","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/department?page=5","label":"5","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/department?page=6","label":"6","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/department?page=7","label":"7","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/department?page=8","label":"8","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/department?page=9","label":"9","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/department?page=10","label":"10","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/department?page=11","label":"11","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/department?page=12","label":"12","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/department?page=13","label":"13","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/department?page=2","label":"Next &raquo;","active":false}],"path":"https:\/\/abcd1234.ngrok.io\/api\/department","per_page":10,"to":10,"total":125}}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
@@ -440,7 +746,7 @@ endpoints:
         name: name
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -450,15 +756,15 @@ endpoints:
         name: description
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      name: consequatur
-      description: consequatur
+      name: architecto
+      description: architecto
     fileParameters: []
     responses: []
     responseFields: []
@@ -470,7 +776,7 @@ endpoints:
   -
     httpMethods:
       - GET
-    uri: api/activites
+    uri: api/activities
     metadata:
       groupName: Endpoints
       groupDescription: ''
@@ -493,110 +799,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"current_page":1,"data":[],"first_page_url":"http:\/\/localhost\/api\/activites?page=1","from":null,"last_page":1,"last_page_url":"http:\/\/localhost\/api\/activites?page=1","links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost\/api\/activites?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"next_page_url":null,"path":"http:\/\/localhost\/api\/activites","per_page":10,"prev_page_url":null,"to":null,"total":0}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-        custom: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - GET
-    uri: 'api/activities/search/{keyword}'
-    metadata:
-      groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      keyword:
-        name: keyword
-        description: ''
-        required: true
-        example: consequatur
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-    cleanUrlParameters:
-      keyword: consequatur
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        status: 200
-        content: '{"mentorships":[]}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-        custom: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - GET
-    uri: 'api/activities/{id}'
-    metadata:
-      groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Display the specified resource.'
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        name: id
-        description: 'The ID of the activity.'
-        required: true
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-    cleanUrlParameters:
-      id: 17
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        status: 404
-        content: |-
-          {
-              "message": "No query results for model [App\\Models\\Activity] 17"
-          }
+        content: '{"data":[{"id":1,"name":"Reprehenderit impedit.","department_id":21,"location":"Kristofferchester","img":null,"description":"Totam rem commodi aut quod. Aut eum nesciunt ea quas laborum voluptates quos. Illo minus pariatur quasi dolores.","presentors":[],"user":{"img":"https:\/\/picsum.photos\/seed\/0f7fb592\/300\/300","id":39,"name":"Prof. Eleanora Bednar"},"time":"20:10:13","type":"seminar","extra":{"liked_by_user":false}},{"id":2,"name":"Rerum velit et.","department_id":22,"location":"East Sabrynaview","img":null,"description":"Et ipsum et inventore numquam minima et velit quia. Enim vero voluptas consequatur debitis id. Est est nam nihil sed ipsam veniam nostrum.","presentors":[],"user":{"img":"https:\/\/picsum.photos\/seed\/4258877c\/300\/300","id":40,"name":"Mrs. Ila Hayes PhD"},"time":"09:05:51","type":"seminar","extra":{"liked_by_user":false}},{"id":3,"name":"Voluptas id debitis.","department_id":23,"location":"Lake Broderickburgh","img":null,"description":"Ea non consequatur unde hic sequi repudiandae illo. Fugiat accusamus soluta aut qui esse nihil debitis illum. Voluptates perferendis autem velit officia.","presentors":[],"user":{"img":"https:\/\/picsum.photos\/seed\/14f599be\/300\/300","id":41,"name":"Prof. Jedediah Prohaska"},"time":"13:47:14","type":"conference","extra":{"liked_by_user":false}},{"id":4,"name":"Et dolorum qui pariatur.","department_id":24,"location":"West Nova","img":null,"description":"Sunt porro fugiat totam tempore sit. Illum eveniet enim rerum dignissimos dicta est. Est voluptatum et eos error ut eos laboriosam. Odio velit illum ratione ut delectus. Qui porro nisi aperiam modi ipsa.","presentors":[],"user":{"img":"https:\/\/picsum.photos\/seed\/dff3b6b5\/300\/300","id":42,"name":"Prof. Tyson Kuhic II"},"time":"13:27:38","type":"workshop","extra":{"liked_by_user":false}},{"id":5,"name":"Repellendus quibusdam unde.","department_id":25,"location":"Rowanshire","img":null,"description":"Iure ad magni ea perferendis illum eos quo. Quo eum facilis possimus sunt quod deleniti sed. Provident qui ab incidunt rerum hic qui. Animi odio quia sed vero.","presentors":[],"user":{"img":"https:\/\/picsum.photos\/seed\/4f9e0ee6\/300\/300","id":43,"name":"Dr. Jules Hill"},"time":"22:43:09","type":"seminar","extra":{"liked_by_user":false}},{"id":6,"name":"Nulla dolorem ut.","department_id":26,"location":"Ullrichmouth","img":null,"description":"Culpa architecto voluptatem perferendis et. At est hic aut occaecati porro. Quis quae et sequi aliquid qui.","presentors":[],"user":{"img":"https:\/\/picsum.photos\/seed\/a446d76a\/300\/300","id":44,"name":"Leatha Tromp"},"time":"07:47:53","type":"workshop","extra":{"liked_by_user":false}},{"id":7,"name":"Aperiam aperiam.","department_id":27,"location":"East Dannieside","img":null,"description":"Deleniti nihil ut et voluptatem aliquam amet harum. Non dolorem facere eaque exercitationem dolores voluptatem praesentium. Labore in omnis est quo nemo. Voluptate mollitia perspiciatis odio ab et maiores omnis.","presentors":[],"user":{"img":"https:\/\/picsum.photos\/seed\/2b3de36f\/300\/300","id":45,"name":"Mckayla Conn"},"time":"07:17:38","type":"conference","extra":{"liked_by_user":false}},{"id":8,"name":"Quia minima assumenda.","department_id":28,"location":"North Sienna","img":null,"description":"Vel dolores est deserunt quas. Sit inventore eveniet qui. Aut ipsum dolorem consequatur atque est porro.","presentors":[],"user":{"img":"https:\/\/picsum.photos\/seed\/534f084f\/300\/300","id":46,"name":"Norwood Vandervort"},"time":"09:53:06","type":"workshop","extra":{"liked_by_user":false}},{"id":9,"name":"Nostrum doloremque est.","department_id":29,"location":"Zoetown","img":null,"description":"Enim in velit quis consequatur nulla et porro. Quo repellendus officiis fuga iure aut. Voluptatum delectus nesciunt sunt voluptatem ex enim. Maxime officiis ad sunt soluta. Autem voluptatem accusamus ex at consectetur in velit.","presentors":[],"user":{"img":"https:\/\/picsum.photos\/seed\/5397784e\/300\/300","id":47,"name":"Wilfredo Schinner"},"time":"23:40:05","type":"conference","extra":{"liked_by_user":false}},{"id":10,"name":"Neque vero accusantium.","department_id":30,"location":"New Tiaraburgh","img":null,"description":"Voluptatem praesentium aliquid rem eligendi est quia. Mollitia quo modi aut nulla. Aperiam ipsa sunt necessitatibus quasi odit.","presentors":[],"user":{"img":"https:\/\/picsum.photos\/seed\/5a876e38\/300\/300","id":48,"name":"Hipolito Olson"},"time":"12:32:22","type":"workshop","extra":{"liked_by_user":false}}],"links":{"first":"https:\/\/abcd1234.ngrok.io\/api\/activities?page=1","last":"https:\/\/abcd1234.ngrok.io\/api\/activities?page=4","prev":null,"next":"https:\/\/abcd1234.ngrok.io\/api\/activities?page=2"},"meta":{"current_page":1,"from":1,"last_page":4,"links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/activities?page=1","label":"1","active":true},{"url":"https:\/\/abcd1234.ngrok.io\/api\/activities?page=2","label":"2","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/activities?page=3","label":"3","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/activities?page=4","label":"4","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/activities?page=2","label":"Next &raquo;","active":false}],"path":"https:\/\/abcd1234.ngrok.io\/api\/activities","per_page":10,"to":10,"total":40},"message":"Activities retrieved successfully"}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
@@ -634,7 +837,7 @@ endpoints:
         name: name
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: vmqeopfuudtdsufvyvddq
+        example: b
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -644,7 +847,7 @@ endpoints:
         name: description
         description: ''
         required: false
-        example: 'Dolores dolorum amet iste laborum eius est dolor.'
+        example: 'Eius et animi quos velit et.'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -654,7 +857,7 @@ endpoints:
         name: department_id
         description: 'The <code>id</code> of an existing record in the departments table.'
         required: true
-        example: 17
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -664,7 +867,7 @@ endpoints:
         name: location
         description: 'Must not be greater than 255 characters.'
         required: false
-        example: mqeopfuudtdsufvyvddqa
+        example: 'n'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -694,7 +897,7 @@ endpoints:
         name: date
         description: 'Must be a valid date.'
         required: true
-        example: '2025-04-30T04:38:45'
+        example: '2025-05-15T10:10:13'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -704,7 +907,7 @@ endpoints:
         name: time
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -714,7 +917,7 @@ endpoints:
         name: type
         description: 'Must not be greater than 100 characters.'
         required: true
-        example: mqeopfuudtdsufvyvddqa
+        example: 'n'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -724,7 +927,7 @@ endpoints:
         name: user_id
         description: 'The <code>id</code> of an existing record in the users table.'
         required: true
-        example: 17
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -734,25 +937,108 @@ endpoints:
         name: benifites
         description: ''
         required: false
-        example: consequatur
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      link:
+        name: link
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      passcode:
+        name: passcode
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      instructions:
+        name: instructions
+        description: ''
+        required: false
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         custom: []
     cleanBodyParameters:
-      name: vmqeopfuudtdsufvyvddq
-      description: 'Dolores dolorum amet iste laborum eius est dolor.'
-      department_id: 17
-      location: mqeopfuudtdsufvyvddqa
-      date: '2025-04-30T04:38:45'
-      time: consequatur
-      type: mqeopfuudtdsufvyvddqa
-      user_id: 17
-      benifites: consequatur
+      name: b
+      description: 'Eius et animi quos velit et.'
+      department_id: 16
+      location: 'n'
+      date: '2025-05-15T10:10:13'
+      time: architecto
+      type: 'n'
+      user_id: 16
+      benifites: architecto
+      link: architecto
+      passcode: architecto
+      instructions: architecto
     fileParameters:
       img: null
     responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/activities/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display the specified resource.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the activity.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
     responseFields: []
     auth: []
     controller: null
@@ -780,14 +1066,14 @@ endpoints:
         name: id
         description: 'The ID of the activity.'
         required: true
-        example: 17
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: 17
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -795,7 +1081,7 @@ endpoints:
         name: name
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: vmqeopfuudtdsufvyvddq
+        example: b
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -805,7 +1091,7 @@ endpoints:
         name: description
         description: ''
         required: false
-        example: 'Dolores dolorum amet iste laborum eius est dolor.'
+        example: 'Eius et animi quos velit et.'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -815,7 +1101,7 @@ endpoints:
         name: department_id
         description: 'The <code>id</code> of an existing record in the departments table.'
         required: true
-        example: 17
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -825,7 +1111,7 @@ endpoints:
         name: location
         description: 'Must not be greater than 255 characters.'
         required: false
-        example: mqeopfuudtdsufvyvddqa
+        example: 'n'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -845,7 +1131,7 @@ endpoints:
         name: date
         description: 'Must be a valid date.'
         required: true
-        example: '2025-04-30T04:38:45'
+        example: '2025-05-15T10:10:13'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -855,7 +1141,7 @@ endpoints:
         name: time
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -865,7 +1151,7 @@ endpoints:
         name: type
         description: 'Must not be greater than 100 characters.'
         required: true
-        example: mqeopfuudtdsufvyvddqa
+        example: 'n'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -875,7 +1161,7 @@ endpoints:
         name: user_id
         description: 'The <code>id</code> of an existing record in the users table.'
         required: true
-        example: 17
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -885,22 +1171,22 @@ endpoints:
         name: benifites
         description: ''
         required: false
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         custom: []
     cleanBodyParameters:
-      name: vmqeopfuudtdsufvyvddq
-      description: 'Dolores dolorum amet iste laborum eius est dolor.'
-      department_id: 17
-      location: mqeopfuudtdsufvyvddqa
-      date: '2025-04-30T04:38:45'
-      time: consequatur
-      type: mqeopfuudtdsufvyvddqa
-      user_id: 17
-      benifites: consequatur
+      name: b
+      description: 'Eius et animi quos velit et.'
+      department_id: 16
+      location: 'n'
+      date: '2025-05-15T10:10:13'
+      time: architecto
+      type: 'n'
+      user_id: 16
+      benifites: architecto
     fileParameters: []
     responses: []
     responseFields: []
@@ -930,14 +1216,14 @@ endpoints:
         name: id
         description: 'The ID of the activity.'
         required: true
-        example: 17
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: 17
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -953,7 +1239,7 @@ endpoints:
   -
     httpMethods:
       - POST
-    uri: api/activity-requests
+    uri: 'api/activity/{id}/request'
     metadata:
       groupName: Endpoints
       groupDescription: ''
@@ -966,8 +1252,19 @@ endpoints:
     headers:
       Content-Type: application/json
       Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the activity.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1006,7 +1303,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"data":[],"links":{"first":"http:\/\/localhost\/api\/mentorships?page=1","last":"http:\/\/localhost\/api\/mentorships?page=1","prev":null,"next":null},"meta":{"current_page":1,"from":null,"last_page":1,"links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost\/api\/mentorships?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"path":"http:\/\/localhost\/api\/mentorships","per_page":10,"to":null,"total":0}}'
+        content: '{"data":[{"id":1,"name":"Eius sed magni.","mentor":{"img":null,"id":26,"name":"Mentor 2"},"entries":[{"id":1,"start_date":"2025-05-20 05:54:28","duration":60,"status":"pending","available":true,"accepted_request":null},{"id":21,"start_date":"2025-05-20 15:00:00","duration":60,"status":"pending","available":true,"accepted_request":null},{"id":22,"start_date":"2025-05-20 15:00:00","duration":60,"status":"pending","available":true,"accepted_request":null}],"department_id":11,"benefits":["Qui rerum sed aut accusantium accusamus explicabo.","Cupiditate reiciendis iure dolorem.","Officia nihil consectetur tempore tenetur saepe ab."],"created_at":"2025-05-15T05:54:28.000000Z","updated_at":"2025-05-15T05:54:28.000000Z"},{"id":2,"name":"Delectus ipsum sapiente.","mentor":{"img":null,"id":26,"name":"Mentor 2"},"entries":[{"id":2,"start_date":"2025-05-17 05:54:28","duration":60,"status":"pending","available":true,"accepted_request":null}],"department_id":12,"benefits":["Aut unde quibusdam repellat in.","Molestiae unde quia quibusdam ea rerum ut recusandae.","Dolor facere porro magni sunt nulla quasi."],"created_at":"2025-05-15T05:54:28.000000Z","updated_at":"2025-05-15T05:54:28.000000Z"},{"id":3,"name":"Molestiae doloribus aspernatur explicabo et.","mentor":{"img":null,"id":26,"name":"Mentor 2"},"entries":[{"id":3,"start_date":"2025-05-18 05:54:28","duration":60,"status":"pending","available":true,"accepted_request":null}],"department_id":13,"benefits":["Omnis quo occaecati culpa saepe.","Sit modi et perferendis perspiciatis.","Accusamus facilis laborum aut aliquam quo similique."],"created_at":"2025-05-15T05:54:28.000000Z","updated_at":"2025-05-15T05:54:28.000000Z"},{"id":4,"name":"Delectus nihil.","mentor":{"img":null,"id":26,"name":"Mentor 2"},"entries":[{"id":4,"start_date":"2025-05-18 05:54:28","duration":60,"status":"pending","available":true,"accepted_request":null}],"department_id":14,"benefits":["Quo itaque aliquid nesciunt nesciunt ex.","Voluptate non et quis dolorem sed doloribus.","Veniam voluptates incidunt unde sed ipsa est dolor harum."],"created_at":"2025-05-15T05:54:28.000000Z","updated_at":"2025-05-15T05:54:28.000000Z"},{"id":5,"name":"Corporis perspiciatis culpa laboriosam.","mentor":{"img":null,"id":26,"name":"Mentor 2"},"entries":[{"id":5,"start_date":"2025-05-20 05:54:28","duration":60,"status":"pending","available":true,"accepted_request":null}],"department_id":15,"benefits":["Nesciunt voluptatum eveniet praesentium eos et voluptates.","Voluptas qui voluptatibus quaerat est sint asperiores veritatis.","Ut dolor assumenda debitis et id."],"created_at":"2025-05-15T05:54:28.000000Z","updated_at":"2025-05-15T05:54:28.000000Z"},{"id":6,"name":"Iure earum occaecati.","mentor":{"img":null,"id":26,"name":"Mentor 2"},"entries":[{"id":6,"start_date":"2025-05-17 05:54:28","duration":60,"status":"pending","available":true,"accepted_request":null}],"department_id":16,"benefits":["Quis libero ut commodi aspernatur officiis.","Amet autem modi et consequatur neque.","Veniam exercitationem est laborum odio."],"created_at":"2025-05-15T05:54:28.000000Z","updated_at":"2025-05-15T05:54:28.000000Z"},{"id":7,"name":"Excepturi non rem.","mentor":{"img":null,"id":26,"name":"Mentor 2"},"entries":[{"id":7,"start_date":"2025-05-18 05:54:28","duration":60,"status":"pending","available":true,"accepted_request":null}],"department_id":17,"benefits":["Inventore vel reprehenderit nihil et adipisci ut.","Fuga facilis dolorem explicabo culpa debitis ratione.","Voluptatem sapiente quo ut et dolorem nihil."],"created_at":"2025-05-15T05:54:28.000000Z","updated_at":"2025-05-15T05:54:28.000000Z"},{"id":8,"name":"Non ipsam qui amet.","mentor":{"img":null,"id":26,"name":"Mentor 2"},"entries":[{"id":8,"start_date":"2025-05-20 05:54:28","duration":60,"status":"pending","available":true,"accepted_request":null}],"department_id":18,"benefits":["Porro ut similique ex aut.","Exercitationem et soluta aut nisi dolorum.","Sed sit sapiente molestiae omnis culpa aut libero."],"created_at":"2025-05-15T05:54:28.000000Z","updated_at":"2025-05-15T05:54:28.000000Z"},{"id":9,"name":"Et voluptate est.","mentor":{"img":null,"id":26,"name":"Mentor 2"},"entries":[{"id":9,"start_date":"2025-05-18 05:54:28","duration":60,"status":"pending","available":true,"accepted_request":null}],"department_id":19,"benefits":["Laborum minus mollitia adipisci unde ducimus optio.","Neque provident tenetur perferendis rerum totam quo non.","Quia deserunt sit sunt sequi et est."],"created_at":"2025-05-15T05:54:28.000000Z","updated_at":"2025-05-15T05:54:28.000000Z"},{"id":10,"name":"Tempore aliquid ut.","mentor":{"img":null,"id":26,"name":"Mentor 2"},"entries":[{"id":10,"start_date":"2025-05-17 05:54:28","duration":60,"status":"pending","available":true,"accepted_request":null}],"department_id":20,"benefits":["Ducimus harum blanditiis repellendus provident ea at voluptate.","Minima deleniti autem et minima quae et.","Omnis sed dolores minus sint quasi impedit harum similique."],"created_at":"2025-05-15T05:54:28.000000Z","updated_at":"2025-05-15T05:54:28.000000Z"}],"links":{"first":"https:\/\/abcd1234.ngrok.io\/api\/mentorships?page=1","last":"https:\/\/abcd1234.ngrok.io\/api\/mentorships?page=3","prev":null,"next":"https:\/\/abcd1234.ngrok.io\/api\/mentorships?page=2"},"meta":{"current_page":1,"from":1,"last_page":3,"links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/mentorships?page=1","label":"1","active":true},{"url":"https:\/\/abcd1234.ngrok.io\/api\/mentorships?page=2","label":"2","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/mentorships?page=3","label":"3","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/mentorships?page=2","label":"Next &raquo;","active":false}],"path":"https:\/\/abcd1234.ngrok.io\/api\/mentorships","per_page":10,"to":10,"total":25}}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
@@ -1040,14 +1337,14 @@ endpoints:
         name: id
         description: 'The ID of the mentorship.'
         required: true
-        example: 17
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: 17
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1055,8 +1352,8 @@ endpoints:
     fileParameters: []
     responses:
       -
-        status: 500
-        content: '{"error":"Something went wrong!","message":"No query results for model [App\\Models\\Mentorship] 17"}'
+        status: 200
+        content: '{"data":{"id":1,"name":"Eius sed magni.","mentor":{"id":26,"name":"Mentor 2","img":null},"entries":[{"id":1,"start_date":"2025-05-20 05:54:28","duration":60,"status":"pending","available":true,"accepted_request":null},{"id":21,"start_date":"2025-05-20 15:00:00","duration":60,"status":"pending","available":true,"accepted_request":null},{"id":22,"start_date":"2025-05-20 15:00:00","duration":60,"status":"pending","available":true,"accepted_request":null}],"start_date":"2026-01-17","end_date":"2027-03-10","description":"Aut reprehenderit et quasi id asperiores placeat.","benefits":["Qui rerum sed aut accusantium accusamus explicabo.","Cupiditate reiciendis iure dolorem.","Officia nihil consectetur tempore tenetur saepe ab."],"department_id":11,"created_at":"2025-05-15T05:54:28.000000Z","updated_at":"2025-05-15T05:54:28.000000Z"}}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
@@ -1090,14 +1387,14 @@ endpoints:
         name: keyword
         description: ''
         required: true
-        example: 17
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      keyword: 17
+      keyword: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1140,62 +1437,67 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      name:
-        name: name
-        description: 'Must not be greater than 255 characters.'
+      mentorship_id:
+        name: mentorship_id
+        description: 'The <code>id</code> of an existing record in the mentorships table.'
         required: true
-        example: vmqeopfuudtdsufvyvddq
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
-      mentor_id:
-        name: mentor_id
-        description: ''
+      start_date:
+        name: start_date
+        description: 'Must be a valid date. Must be a date after or equal to <code>now</code>.'
         required: true
-        example: consequatur
+        example: '2051-06-08'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
-      department_id:
-        name: department_id
-        description: 'The <code>id</code> of an existing record in the departments table.'
+      duration:
+        name: duration
+        description: 'Must be at least 1.'
         required: true
-        example: 17
+        example: 22
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
-      date:
-        name: date
-        description: ''
-        required: true
-        example: []
-        type: object
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      availability:
-        name: availability
-        description: ''
-        required: true
-        example: consequatur
+      link:
+        name: link
+        description: 'Must be a valid URL.'
+        required: false
+        example: 'http://crooks.biz/et-fugiat-sunt-nihil-accusantium'
         type: string
         enumValues: []
         exampleWasSpecified: false
-        nullable: false
+        nullable: true
+        custom: []
+      status:
+        name: status
+        description: ''
+        required: false
+        example: completed
+        type: string
+        enumValues:
+          - pending
+          - in_progress
+          - completed
+          - cancelled
+          - scheduled
+        exampleWasSpecified: false
+        nullable: true
         custom: []
     cleanBodyParameters:
-      name: vmqeopfuudtdsufvyvddq
-      mentor_id: consequatur
-      department_id: 17
-      date: []
-      availability: consequatur
+      mentorship_id: architecto
+      start_date: '2051-06-08'
+      duration: 22
+      link: 'http://crooks.biz/et-fugiat-sunt-nihil-accusantium'
+      status: completed
     fileParameters: []
     responses: []
     responseFields: []
@@ -1225,14 +1527,14 @@ endpoints:
         name: id
         description: 'The ID of the mentorship.'
         required: true
-        example: 17
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: 17
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -1240,7 +1542,27 @@ endpoints:
         name: name
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: vmqeopfuudtdsufvyvddq
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      img:
+        name: img
+        description: 'Must be a valid URL.'
+        required: false
+        example: 'http://bailey.com/'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      description:
+        name: description
+        description: ''
+        required: true
+        example: 'Eius et animi quos velit et.'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1250,7 +1572,7 @@ endpoints:
         name: mentor_id
         description: 'The <code>id</code> of an existing record in the users table.'
         required: true
-        example: 17
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -1260,48 +1582,29 @@ endpoints:
         name: department_id
         description: 'The <code>id</code> of an existing record in the departments table.'
         required: true
-        example: 17
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
-      date:
-        name: date
-        description: 'Must be a valid date.'
+      benefits:
+        name: benefits
+        description: ''
         required: false
-        example: '2025-04-30T04:38:45'
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         custom: []
-      days:
-        name: days
-        description: ''
-        required: true
-        example: []
-        type: object
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      available_times:
-        name: available_times
-        description: ''
-        required: false
-        example: null
-        type: object
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        custom: []
     cleanBodyParameters:
-      name: vmqeopfuudtdsufvyvddq
-      mentor_id: 17
-      department_id: 17
-      date: '2025-04-30T04:38:45'
-      days: []
+      name: b
+      img: 'http://bailey.com/'
+      description: 'Eius et animi quos velit et.'
+      mentor_id: 16
+      department_id: 16
+      benefits: architecto
     fileParameters: []
     responses: []
     responseFields: []
@@ -1331,14 +1634,14 @@ endpoints:
         name: id
         description: 'The ID of the mentorship.'
         required: true
-        example: 17
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: 17
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1354,7 +1657,7 @@ endpoints:
   -
     httpMethods:
       - GET
-    uri: api/mentorshiprequest
+    uri: api/mentee/status
     metadata:
       groupName: Endpoints
       groupDescription: ''
@@ -1377,7 +1680,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"data":[],"links":{"first":"http:\/\/localhost\/api\/mentorshiprequest?page=1","last":"http:\/\/localhost\/api\/mentorshiprequest?page=1","prev":null,"next":null},"meta":{"current_page":1,"from":null,"last_page":1,"links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost\/api\/mentorshiprequest?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"path":"http:\/\/localhost\/api\/mentorshiprequest","per_page":10,"to":null,"total":0}}'
+        content: '{"error":"user is is missing"}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
@@ -1393,7 +1696,7 @@ endpoints:
   -
     httpMethods:
       - GET
-    uri: 'api/mentorshiprequest/{id}'
+    uri: 'api/mentee/mentorship/{id}/status'
     metadata:
       groupName: Endpoints
       groupDescription: ''
@@ -1409,16 +1712,16 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the mentorshiprequest.'
+        description: 'The ID of the mentorship.'
         required: true
-        example: consequatur
-        type: string
+        example: 1
+        type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: consequatur
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1426,11 +1729,483 @@ endpoints:
     fileParameters: []
     responses:
       -
-        status: 404
-        content: |-
-          {
-              "message": "No query results for model [App\\Models\\MentorshipReq] consequatur"
-          }
+        status: 500
+        content: '{"error":"Failed to retrieve mentee mentorship status","message":"Attempt to read property \"id\" on null"}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/mentee/mentorship
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 500
+        content: '{"error":"Failed to retrieve mentorship sessions","message":"Attempt to read property \"id\" on null"}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/mentee/mentorship/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the mentorship.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/mentee/requests
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/mentorship/entry/{id}/request'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the entry.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/mentee/sessions
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/mentee/session/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the session.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/mentee/mentorship/status
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/mentorships/mentor
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/mentorships/mentor/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the mentor.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/mentor/requests
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/mentor/requests/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the request.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
@@ -1446,7 +2221,7 @@ endpoints:
   -
     httpMethods:
       - PUT
-    uri: 'api/mentorshiprequest/{id}/status'
+    uri: 'api/mentor/requests/{id}/status'
     metadata:
       groupName: Endpoints
       groupDescription: ''
@@ -1462,16 +2237,71 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the mentorshiprequest.'
+        description: 'The ID of the request.'
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: consequatur
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      status:
+        name: status
+        description: ''
+        required: true
+        example: rejected
+        type: string
+        enumValues:
+          - pending
+          - accepted
+          - rejected
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      status: rejected
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/mentor/requests/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the request.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1486,8 +2316,186 @@ endpoints:
     custom: []
   -
     httpMethods:
+      - GET
+    uri: 'api/mentor/mentorships/{id}/requests'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the mentorship.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/mentor/sessions
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/mentor/sessions/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the session.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/mentor/mentorship/status
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
       - POST
-    uri: api/request_session
+    uri: api/mentorship-entries
     metadata:
       groupName: Endpoints
       groupDescription: ''
@@ -1507,82 +2515,65 @@ endpoints:
     bodyParameters:
       mentorship_id:
         name: mentorship_id
-        description: ''
+        description: 'The <code>id</code> of an existing record in the mentorships table.'
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
-      mentor_id:
-        name: mentor_id
-        description: ''
+      start_date:
+        name: start_date
+        description: 'Must be a valid date. Must be a date after or equal to <code>now</code>.'
         required: true
-        example: consequatur
+        example: '2051-06-08'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
-      mentee_id:
-        name: mentee_id
-        description: ''
+      duration:
+        name: duration
+        description: 'Must be at least 1.'
         required: true
-        example: consequatur
-        type: string
+        example: 22
+        type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
-      selecteday:
-        name: selecteday
-        description: ''
-        required: true
-        example: consequatur
+      link:
+        name: link
+        description: 'Must be a valid URL.'
+        required: false
+        example: 'http://crooks.biz/et-fugiat-sunt-nihil-accusantium'
         type: string
         enumValues: []
         exampleWasSpecified: false
-        nullable: false
-        custom: []
-      selectedtime:
-        name: selectedtime
-        description: ''
-        required: true
-        example: consequatur
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      message:
-        name: message
-        description: ''
-        required: true
-        example: consequatur
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
+        nullable: true
         custom: []
       status:
         name: status
         description: ''
-        required: true
-        example: consequatur
+        required: false
+        example: in_progress
         type: string
-        enumValues: []
+        enumValues:
+          - pending
+          - in_progress
+          - completed
+          - cancelled
+          - scheduled
         exampleWasSpecified: false
-        nullable: false
+        nullable: true
         custom: []
     cleanBodyParameters:
-      mentorship_id: consequatur
-      mentor_id: consequatur
-      mentee_id: consequatur
-      selecteday: consequatur
-      selectedtime: consequatur
-      message: consequatur
-      status: consequatur
+      mentorship_id: architecto
+      start_date: '2051-06-08'
+      duration: 22
+      link: 'http://crooks.biz/et-fugiat-sunt-nihil-accusantium'
+      status: in_progress
     fileParameters: []
     responses: []
     responseFields: []
@@ -1617,60 +2608,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"data":[],"links":{"first":"http:\/\/localhost\/api\/user?page=1","last":"http:\/\/localhost\/api\/user?page=1","prev":null,"next":null},"meta":{"current_page":1,"from":null,"last_page":1,"links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost\/api\/user?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"path":"http:\/\/localhost\/api\/user","per_page":10,"to":null,"total":0}}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-        custom: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - GET
-    uri: 'api/user/{id}'
-    metadata:
-      groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        name: id
-        description: 'The ID of the user.'
-        required: true
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-    cleanUrlParameters:
-      id: 17
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        status: 404
-        content: |-
-          {
-              "message": "No query results for model [App\\Models\\User] 17"
-          }
+        content: '{"data":[{"id":1,"name":"Christa Anderson","email":"admin@nafir.net","profile_pic":"https:\/\/picsum.photos\/seed\/ecf66636\/300\/300","role":[]},{"id":2,"name":"Charles Wolff II","email":"dulce13@example.org","profile_pic":"https:\/\/picsum.photos\/seed\/220348d9\/300\/300","role":[]},{"id":3,"name":"Alvina Schulist IV","email":"mosciski.hobart@example.net","profile_pic":"https:\/\/picsum.photos\/seed\/9bcea62f\/300\/300","role":[]},{"id":4,"name":"Julio Grant","email":"monroe44@example.com","profile_pic":"https:\/\/picsum.photos\/seed\/c17398a1\/300\/300","role":[]},{"id":5,"name":"Mr. Jessy Casper","email":"giles17@example.net","profile_pic":"https:\/\/picsum.photos\/seed\/3b02925b\/300\/300","role":[]},{"id":6,"name":"Raleigh Heaney","email":"ubernier@example.org","profile_pic":"https:\/\/picsum.photos\/seed\/1f48f363\/300\/300","role":[]},{"id":7,"name":"Cortez Johns","email":"ptremblay@example.org","profile_pic":"https:\/\/picsum.photos\/seed\/cabba6fe\/300\/300","role":[]},{"id":8,"name":"Kathlyn Strosin","email":"carter.sonya@example.net","profile_pic":"https:\/\/picsum.photos\/seed\/a0dd1cdd\/300\/300","role":[]},{"id":9,"name":"Susanna Collins","email":"crobel@example.org","profile_pic":"https:\/\/picsum.photos\/seed\/df3e4705\/300\/300","role":[]},{"id":10,"name":"Prof. Collin Kihn DVM","email":"felton28@example.com","profile_pic":"https:\/\/picsum.photos\/seed\/fb06f129\/300\/300","role":[]}],"links":{"first":"https:\/\/abcd1234.ngrok.io\/api\/user?page=1","last":"https:\/\/abcd1234.ngrok.io\/api\/user?page=20","prev":null,"next":"https:\/\/abcd1234.ngrok.io\/api\/user?page=2"},"meta":{"current_page":1,"from":1,"last_page":20,"links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/user?page=1","label":"1","active":true},{"url":"https:\/\/abcd1234.ngrok.io\/api\/user?page=2","label":"2","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/user?page=3","label":"3","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/user?page=4","label":"4","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/user?page=5","label":"5","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/user?page=6","label":"6","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/user?page=7","label":"7","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/user?page=8","label":"8","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/user?page=9","label":"9","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/user?page=10","label":"10","active":false},{"url":null,"label":"...","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/user?page=19","label":"19","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/user?page=20","label":"20","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/user?page=2","label":"Next &raquo;","active":false}],"path":"https:\/\/abcd1234.ngrok.io\/api\/user","per_page":10,"to":10,"total":194}}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
@@ -1708,7 +2646,7 @@ endpoints:
         name: name
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1718,7 +2656,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: carolyne.luettgen@example.org
+        example: zbailey@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1728,71 +2666,16 @@ endpoints:
         name: password
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
-        custom: []
-      phone:
-        name: phone
-        description: ''
-        required: true
-        example: consequatur
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      skills:
-        name: skills
-        description: ''
-        required: true
-        example: consequatur
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      exp_years:
-        name: exp_years
-        description: ''
-        required: true
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      country:
-        name: country
-        description: ''
-        required: true
-        example: consequatur
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      isActive:
-        name: isActive
-        description: ''
-        required: false
-        example: false
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
         custom: []
     cleanBodyParameters:
-      name: consequatur
-      email: carolyne.luettgen@example.org
-      password: consequatur
-      phone: consequatur
-      skills: consequatur
-      exp_years: 17
-      country: consequatur
-      isActive: false
+      name: architecto
+      email: zbailey@example.net
+      password: architecto
     fileParameters: []
     responses: []
     responseFields: []
@@ -1815,29 +2698,29 @@ endpoints:
       authenticated: false
       custom: []
     headers:
-      Content-Type: application/json
+      Content-Type: multipart/form-data
       Accept: application/json
     urlParameters:
       id:
         name: id
         description: 'The ID of the user.'
         required: true
-        example: 17
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: 17
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
       name:
         name: name
         description: ''
-        required: true
-        example: consequatur
+        required: false
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1846,19 +2729,19 @@ endpoints:
       email:
         name: email
         description: 'Must be a valid email address.'
-        required: true
-        example: carolyne.luettgen@example.org
+        required: false
+        example: zbailey@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
-      password:
-        name: password
-        description: ''
-        required: true
-        example: consequatur
-        type: string
+      profile_pic:
+        name: profile_pic
+        description: 'Must be an image. Must not be greater than 2048 kilobytes.'
+        required: false
+        example: null
+        type: file
         enumValues: []
         exampleWasSpecified: false
         nullable: false
@@ -1866,8 +2749,18 @@ endpoints:
       phone:
         name: phone
         description: ''
-        required: true
-        example: consequatur
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      title:
+        name: title
+        description: ''
+        required: false
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1876,160 +2769,295 @@ endpoints:
       skills:
         name: skills
         description: ''
-        required: true
-        example: consequatur
+        required: false
+        example:
+          - architecto
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      education:
+        name: education
+        description: ''
+        required: false
+        example: null
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      experience:
+        name: experience
+        description: ''
+        required: false
+        example: null
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      location:
+        name: location
+        description: ''
+        required: false
+        example: null
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      location.country:
+        name: location.country
+        description: ''
+        required: false
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
-      exp_years:
-        name: exp_years
+      location.city:
+        name: location.city
         description: ''
-        required: true
-        example: 17
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      cv_file:
+        name: cv_file
+        description: 'Must be a file. Must not be greater than 2048 kilobytes.'
+        required: false
+        example: null
+        type: file
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      targeted_locations:
+        name: targeted_locations
+        description: ''
+        required: false
+        example:
+          - architecto
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      targeted_industries:
+        name: targeted_industries
+        description: ''
+        required: false
+        example:
+          - architecto
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      targeted_titles:
+        name: targeted_titles
+        description: ''
+        required: false
+        example:
+          - architecto
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      career_tasks:
+        name: career_tasks
+        description: 'Must not be greater than 2000 characters.'
+        required: false
+        example: 'n'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      completion_percentage:
+        name: completion_percentage
+        description: 'Must be at least 0. Must not be greater than 100.'
+        required: false
+        example: 7
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
-      country:
-        name: country
+      'education[].university':
+        name: 'education[].university'
         description: ''
-        required: true
-        example: consequatur
+        required: false
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
+        custom: []
+      'education[].certificate':
+        name: 'education[].certificate'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'education[].degree':
+        name: 'education[].degree'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'education[].period':
+        name: 'education[].period'
+        description: ''
+        required: false
+        example: null
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'education[].period.start':
+        name: 'education[].period.start'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'education[].period.end':
+        name: 'education[].period.end'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'education[].description':
+        name: 'education[].description'
+        description: ''
+        required: false
+        example: 'Eius et animi quos velit et.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      'experience[].title':
+        name: 'experience[].title'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'experience[].company':
+        name: 'experience[].company'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'experience[].period':
+        name: 'experience[].period'
+        description: ''
+        required: false
+        example: null
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'experience[].period.start':
+        name: 'experience[].period.start'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'experience[].period.end':
+        name: 'experience[].period.end'
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'experience[].description':
+        name: 'experience[].description'
+        description: ''
+        required: false
+        example: 'Eius et animi quos velit et.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
         custom: []
     cleanBodyParameters:
-      name: consequatur
-      email: carolyne.luettgen@example.org
-      password: consequatur
-      phone: consequatur
-      skills: consequatur
-      exp_years: 17
-      country: consequatur
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - PATCH
-    uri: 'api/user/{id}'
-    metadata:
-      groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        name: id
-        description: 'The ID of the user.'
-        required: true
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-    cleanUrlParameters:
-      id: 17
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      name:
-        name: name
-        description: ''
-        required: true
-        example: consequatur
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      email:
-        name: email
-        description: 'Must be a valid email address.'
-        required: true
-        example: carolyne.luettgen@example.org
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      password:
-        name: password
-        description: ''
-        required: true
-        example: consequatur
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      phone:
-        name: phone
-        description: ''
-        required: true
-        example: consequatur
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
+      name: architecto
+      email: zbailey@example.net
+      phone: architecto
+      title: architecto
       skills:
-        name: skills
-        description: ''
-        required: true
-        example: consequatur
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      exp_years:
-        name: exp_years
-        description: ''
-        required: true
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      country:
-        name: country
-        description: ''
-        required: true
-        example: consequatur
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-    cleanBodyParameters:
-      name: consequatur
-      email: carolyne.luettgen@example.org
-      password: consequatur
-      phone: consequatur
-      skills: consequatur
-      exp_years: 17
-      country: consequatur
-    fileParameters: []
+        - architecto
+      location:
+        country: architecto
+        city: architecto
+      targeted_locations:
+        - architecto
+      targeted_industries:
+        - architecto
+      targeted_titles:
+        - architecto
+      career_tasks: 'n'
+      completion_percentage: 7
+      education:
+        -
+          university: architecto
+          certificate: architecto
+          degree: architecto
+          period:
+            start: architecto
+            end: architecto
+          description: 'Eius et animi quos velit et.'
+      experience:
+        -
+          title: architecto
+          company: architecto
+          period:
+            start: architecto
+            end: architecto
+          description: 'Eius et animi quos velit et.'
+    fileParameters:
+      profile_pic: null
+      cv_file: null
     responses: []
     responseFields: []
     auth: []
@@ -2063,7 +3091,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"data":[],"links":{"first":"http:\/\/localhost\/api\/posts?page=1","last":"http:\/\/localhost\/api\/posts?page=1","prev":null,"next":null},"meta":{"current_page":1,"from":null,"last_page":1,"links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost\/api\/posts?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"path":"http:\/\/localhost\/api\/posts","per_page":10,"to":null,"total":0}}'
+        content: '{"current_page":1,"data":[{"id":1,"img":"\/tmp\/php0f8v0iko7tab864Q1qt","author_id":104,"title":"Quia tempora molestiae magni qui.","department_id":56,"content":"Architecto iste officiis facere quidem natus porro. Tempore quasi reprehenderit et. Commodi magnam asperiores officia numquam. Vel nihil delectus qui dolores eveniet.\n\nCorrupti et et itaque ipsum quaerat. Eveniet quam aperiam harum qui iste qui alias.\n\nVoluptatem nesciunt ipsa dolores omnis sunt id cupiditate. Officiis tenetur error rerum voluptatem rerum non amet. Aliquam deserunt rerum et nisi ex.","featured":0,"slug":"totam","created_at":"2025-05-15T05:54:30.000000Z","updated_at":"2025-05-15T05:54:30.000000Z","likes":[]},{"id":2,"img":"\/tmp\/phplvidrsmqp2pqdlz52RJ","author_id":105,"title":"Perspiciatis occaecati rem ipsum sed voluptas omnis illum.","department_id":57,"content":"Quia impedit rerum necessitatibus fugiat. Saepe ipsam asperiores minus dolores. Est non quisquam in et eveniet qui. Culpa quia ut eius est labore.\n\nReiciendis quisquam blanditiis sequi odio expedita rerum. Architecto nesciunt ut quis aut. Tempora vitae dolorum aut sit rem consequuntur.\n\nAut saepe atque quis debitis deleniti. Ullam in fugit animi minima et. Numquam possimus dolores ea et voluptatem magnam. Et tenetur nobis est vel corporis quia cum. In cumque reprehenderit est sit.","featured":1,"slug":"et","created_at":"2025-05-15T05:54:30.000000Z","updated_at":"2025-05-15T05:54:30.000000Z","likes":[]},{"id":3,"img":"\/tmp\/php13g81p896f6t0fbe5B8","author_id":106,"title":"Consequatur quaerat quidem rem.","department_id":58,"content":"Laudantium veritatis fuga iure temporibus. Non enim ipsam et culpa illum officia. Aut nam modi nulla consectetur in ducimus officiis. Illo et distinctio aut recusandae rerum rerum.\n\nEt labore molestiae provident tempore. Iure sit enim impedit aut cumque et officiis.\n\nCulpa aut ab nam dignissimos impedit dolorem. Consectetur sunt ut qui molestias et perferendis quibusdam. Sed ut nobis aut qui ea beatae.","featured":1,"slug":"qui","created_at":"2025-05-15T05:54:30.000000Z","updated_at":"2025-05-15T05:54:30.000000Z","likes":[]},{"id":4,"img":"\/tmp\/php8d9g961bd3tvdIB2x93","author_id":107,"title":"Alias vero fugiat minima sunt.","department_id":59,"content":"Quia aperiam dolores similique. Consequatur sapiente atque eius. Qui doloremque tempora ratione et dignissimos autem. Officiis fugiat quam ut repellat deserunt ad.\n\nOfficiis id delectus reiciendis. Explicabo placeat deserunt reiciendis corporis sed cum amet. Magni voluptatem ea ut voluptas eveniet.\n\nEt amet quidem nihil aut ut sint quam sed. Est numquam porro cumque nobis ipsam. Unde dolore eius dolor fugiat.","featured":1,"slug":"rerum","created_at":"2025-05-15T05:54:30.000000Z","updated_at":"2025-05-15T05:54:30.000000Z","likes":[]},{"id":5,"img":"\/tmp\/php1n8n43e98fp92IFrCkW","author_id":108,"title":"Laborum ut sint sed est distinctio omnis ipsa.","department_id":60,"content":"Enim deserunt enim magni voluptate nihil nesciunt vitae. Minus et voluptatem dolorem occaecati perferendis laudantium id. Facilis voluptas asperiores libero veritatis rerum ea. A aut velit quod rerum minima architecto.\n\nQuia assumenda perspiciatis sit molestiae nulla et. Exercitationem quia perspiciatis dolorem. Et qui id qui.\n\nVoluptates quasi excepturi ea ut rerum. Qui veniam qui autem dolorem nam. Tenetur amet illum temporibus illo eveniet quaerat deserunt.","featured":0,"slug":"itaque","created_at":"2025-05-15T05:54:30.000000Z","updated_at":"2025-05-15T05:54:30.000000Z","likes":[]},{"id":6,"img":"\/tmp\/phpoar47u0f9es9bOM8xjl","author_id":109,"title":"Maiores nam non molestias ut impedit omnis quod.","department_id":61,"content":"Maxime voluptatem assumenda iusto et eaque facilis autem. Molestiae et nesciunt voluptatem repellendus. Nisi vel corrupti distinctio ipsam qui dignissimos.\n\nIste vel soluta suscipit perferendis minus aut. Eveniet alias odit reprehenderit fuga minus non distinctio. Repellat magni praesentium voluptatem totam deleniti fugit. A consequuntur fugit doloremque.\n\nOfficiis incidunt ex et harum ut. Quas sed quis rerum voluptate. Molestiae reprehenderit debitis dignissimos aut consectetur alias id reiciendis.","featured":1,"slug":"modi","created_at":"2025-05-15T05:54:30.000000Z","updated_at":"2025-05-15T05:54:30.000000Z","likes":[]},{"id":7,"img":"\/tmp\/phpv6vdrm5paf18ekqEmFQ","author_id":110,"title":"Exercitationem velit maiores nostrum et.","department_id":62,"content":"Debitis voluptas quia voluptas. Voluptas est perferendis quia veritatis quos dignissimos. Et id aliquam officiis quis nisi dolorum. Vel odit facilis dolorum aperiam blanditiis.\n\nEt consequuntur fugiat rerum voluptas repellendus. Placeat laudantium saepe eveniet dolor repellendus dolorem. Omnis nihil ut accusantium doloremque voluptas ducimus et. Eos animi id voluptatem nulla et ut.\n\nEt suscipit voluptas ut adipisci. At similique nihil quod aut expedita ab et. Iure facilis nulla est.","featured":0,"slug":"vitae","created_at":"2025-05-15T05:54:30.000000Z","updated_at":"2025-05-15T05:54:30.000000Z","likes":[]},{"id":8,"img":"\/tmp\/phpttfgbdn6d18o26MHsLu","author_id":111,"title":"Ut eos incidunt fugiat.","department_id":63,"content":"Et numquam quis possimus et mollitia doloremque vel. Ratione magnam officia quaerat et est. Explicabo voluptatem ea labore dolor et voluptas iure. Dolore ut asperiores commodi qui aut eveniet ut et.\n\nEt aspernatur dolore reprehenderit voluptatem earum dolorem. Illo quia laudantium et dolores ad aut a. Voluptas autem aut dolor consequatur esse itaque. Deleniti dicta quisquam nemo sed.\n\nQuia eius ipsum voluptates laborum debitis debitis vel. Quisquam nemo unde ratione ea sunt consequuntur et esse. Sit commodi omnis vel eos.","featured":0,"slug":"vero","created_at":"2025-05-15T05:54:30.000000Z","updated_at":"2025-05-15T05:54:30.000000Z","likes":[]},{"id":9,"img":"\/tmp\/phprv6dr9nle9h2aH4nxRH","author_id":112,"title":"Dolor sit non consequuntur at in.","department_id":64,"content":"Aut dolores molestiae saepe autem et architecto. Repellat omnis aut eum optio autem amet magni. Aperiam aliquam soluta sunt quis.\n\nPerferendis delectus ab quidem voluptatem nobis autem neque. Provident omnis aut incidunt architecto amet illum fugiat. Qui nulla quasi natus facilis.\n\nUllam temporibus quo omnis rerum. Sit hic iusto dolores omnis eaque. Ipsa eligendi expedita consectetur repellat saepe nulla ex. Tenetur deleniti aut animi neque nobis quam sed.","featured":1,"slug":"beatae","created_at":"2025-05-15T05:54:30.000000Z","updated_at":"2025-05-15T05:54:30.000000Z","likes":[{"id":4,"liked":0,"user_id":39,"blog_id":9,"created_at":"2025-05-15T05:54:30.000000Z","updated_at":"2025-05-15T05:54:30.000000Z"}]},{"id":10,"img":"\/tmp\/phpcr9o4tjq928m4Xev7qt","author_id":113,"title":"Sit et et corrupti neque quam.","department_id":65,"content":"Et quam ut odio placeat ut. Omnis ea autem temporibus dolores minus voluptates sint.\n\nEum commodi error ipsum vero et. Omnis culpa debitis rerum aut non. Voluptatem vitae itaque voluptas. Temporibus ea totam perferendis laboriosam ut. Sed repudiandae rerum asperiores dolore molestiae autem non.\n\nOdio eius laborum eaque laboriosam dolorem enim. Voluptas et fuga autem tempore. Et eum eligendi consequuntur maiores totam.","featured":1,"slug":"delectus","created_at":"2025-05-15T05:54:30.000000Z","updated_at":"2025-05-15T05:54:30.000000Z","likes":[]}],"first_page_url":"https:\/\/abcd1234.ngrok.io\/api\/posts?page=1","from":1,"last_page":5,"last_page_url":"https:\/\/abcd1234.ngrok.io\/api\/posts?page=5","links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/posts?page=1","label":"1","active":true},{"url":"https:\/\/abcd1234.ngrok.io\/api\/posts?page=2","label":"2","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/posts?page=3","label":"3","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/posts?page=4","label":"4","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/posts?page=5","label":"5","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/posts?page=2","label":"Next &raquo;","active":false}],"next_page_url":"https:\/\/abcd1234.ngrok.io\/api\/posts?page=2","path":"https:\/\/abcd1234.ngrok.io\/api\/posts","per_page":10,"prev_page_url":null,"to":10,"total":50}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
@@ -2097,14 +3125,14 @@ endpoints:
         name: id
         description: 'The ID of the post.'
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: consequatur
+      id: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -2112,8 +3140,8 @@ endpoints:
     fileParameters: []
     responses:
       -
-        status: 500
-        content: '{"error":"Something went wrong!","message":"No query results for model [App\\Models\\Blog] consequatur"}'
+        status: 401
+        content: '{"message":"Unauthenticated."}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
@@ -2147,14 +3175,14 @@ endpoints:
         name: keyword
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      keyword: consequatur
+      keyword: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -2197,14 +3225,14 @@ endpoints:
         name: id
         description: 'The ID of the department.'
         required: true
-        example: 17
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: 17
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -2213,7 +3241,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"data":[],"links":{"first":"http:\/\/localhost\/api\/posts\/department\/17?page=1","last":"http:\/\/localhost\/api\/posts\/department\/17?page=1","prev":null,"next":null},"meta":{"current_page":1,"from":null,"last_page":1,"links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost\/api\/posts\/department\/17?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"path":"http:\/\/localhost\/api\/posts\/department\/17","per_page":10,"to":null,"total":0}}'
+        content: '{"data":[],"links":{"first":"https:\/\/abcd1234.ngrok.io\/api\/posts\/department\/1?page=1","last":"https:\/\/abcd1234.ngrok.io\/api\/posts\/department\/1?page=1","prev":null,"next":null},"meta":{"current_page":1,"from":null,"last_page":1,"links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"https:\/\/abcd1234.ngrok.io\/api\/posts\/department\/1?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"path":"https:\/\/abcd1234.ngrok.io\/api\/posts\/department\/1","per_page":10,"to":null,"total":0}}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
@@ -2261,7 +3289,7 @@ endpoints:
         name: author_id
         description: 'The <code>id</code> of an existing record in the users table.'
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2271,7 +3299,7 @@ endpoints:
         name: title
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: mqeopfuudtdsufvyvddqa
+        example: 'n'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2291,7 +3319,7 @@ endpoints:
         name: content
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2301,7 +3329,7 @@ endpoints:
         name: slug
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2318,10 +3346,10 @@ endpoints:
         nullable: true
         custom: []
     cleanBodyParameters:
-      author_id: consequatur
-      title: mqeopfuudtdsufvyvddqa
-      content: consequatur
-      slug: consequatur
+      author_id: architecto
+      title: 'n'
+      content: architecto
+      slug: architecto
       featured: true
     fileParameters:
       img: null
@@ -2353,14 +3381,14 @@ endpoints:
         name: id
         description: 'The ID of the post.'
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: consequatur
+      id: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -2368,7 +3396,7 @@ endpoints:
         name: author_id
         description: 'The <code>id</code> of an existing record in the users table.'
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2378,7 +3406,7 @@ endpoints:
         name: title
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: mqeopfuudtdsufvyvddqa
+        example: 'n'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2398,7 +3426,7 @@ endpoints:
         name: content
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2408,7 +3436,7 @@ endpoints:
         name: slug
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -2418,18 +3446,18 @@ endpoints:
         name: featured
         description: ''
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         custom: []
     cleanBodyParameters:
-      author_id: consequatur
-      title: mqeopfuudtdsufvyvddqa
-      content: consequatur
-      slug: consequatur
-      featured: true
+      author_id: architecto
+      title: 'n'
+      content: architecto
+      slug: architecto
+      featured: false
     fileParameters: []
     responses: []
     responseFields: []
@@ -2459,14 +3487,14 @@ endpoints:
         name: id
         description: 'The ID of the post.'
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: consequatur
+      id: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -2501,6 +3529,1274 @@ endpoints:
     cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/cv
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      fname:
+        name: fname
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      lname:
+        name: lname
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      email:
+        name: email
+        description: 'Must be a valid email address.'
+        required: true
+        example: zbailey@example.net
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      img:
+        name: img
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      phone:
+        name: phone
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      skills:
+        name: skills
+        description: ''
+        required: true
+        example: []
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      exp_years:
+        name: exp_years
+        description: ''
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      country:
+        name: country
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      expertise:
+        name: expertise
+        description: ''
+        required: true
+        example:
+          - []
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      education:
+        name: education
+        description: ''
+        required: true
+        example:
+          - []
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      certificates:
+        name: certificates
+        description: ''
+        required: true
+        example:
+          - []
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      linkden_profile:
+        name: linkden_profile
+        description: 'Must be a valid URL.'
+        required: true
+        example: 'http://www.bailey.biz/quos-velit-et-fugiat-sunt-nihil-accusantium-harum.html'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'expertise[].name':
+        name: 'expertise[].name'
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'expertise[].description':
+        name: 'expertise[].description'
+        description: ''
+        required: false
+        example: 'Eius et animi quos velit et.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      'expertise[].start_date':
+        name: 'expertise[].start_date'
+        description: 'Must be a valid date.'
+        required: true
+        example: '2025-05-15T10:10:14'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'expertise[].end_date':
+        name: 'expertise[].end_date'
+        description: 'Must be a valid date.'
+        required: false
+        example: '2025-05-15T10:10:14'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      'education[].name':
+        name: 'education[].name'
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'education[].institution':
+        name: 'education[].institution'
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'education[].start_date':
+        name: 'education[].start_date'
+        description: 'Must be a valid date.'
+        required: true
+        example: '2025-05-15T10:10:14'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'education[].end_date':
+        name: 'education[].end_date'
+        description: 'Must be a valid date.'
+        required: true
+        example: '2025-05-15T10:10:14'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'certificates[].name':
+        name: 'certificates[].name'
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'certificates[].issued_by':
+        name: 'certificates[].issued_by'
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'certificates[].issue_date':
+        name: 'certificates[].issue_date'
+        description: 'Must be a valid date.'
+        required: true
+        example: '2025-05-15T10:10:14'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      fname: architecto
+      lname: architecto
+      email: zbailey@example.net
+      img: architecto
+      phone: architecto
+      skills: []
+      exp_years: 16
+      country: architecto
+      expertise:
+        -
+          name: architecto
+          description: 'Eius et animi quos velit et.'
+          start_date: '2025-05-15T10:10:14'
+          end_date: '2025-05-15T10:10:14'
+      education:
+        -
+          name: architecto
+          institution: architecto
+          start_date: '2025-05-15T10:10:14'
+          end_date: '2025-05-15T10:10:14'
+      certificates:
+        -
+          name: architecto
+          issued_by: architecto
+          issue_date: '2025-05-15T10:10:14'
+      linkden_profile: 'http://www.bailey.biz/quos-velit-et-fugiat-sunt-nihil-accusantium-harum.html'
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/activities/{id}/like'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the activity.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      newStatus:
+        name: newStatus
+        description: ''
+        required: true
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      newStatus: false
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/favorite/activities
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/post/{blogId}/like'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      blogId:
+        name: blogId
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      blogId: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/favorite/blogs
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/email/verification-notification
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/verify-email/{id}/{hash}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the verify email.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      hash:
+        name: hash
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: architecto
+      hash: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/api/zoom/meetings
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display a listing of zoom meetings.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 500
+        content: |-
+          {
+              "message": "Server Error"
+          }
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/api/zoom/meetings
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Store a newly created zoom meeting.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      model_type:
+        name: model_type
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      model_id:
+        name: model_id
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      topic:
+        name: topic
+        description: 'Must not be greater than 200 characters.'
+        required: true
+        example: 'n'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      agenda:
+        name: agenda
+        description: 'Must not be greater than 2000 characters.'
+        required: false
+        example: g
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      preferred_start_time:
+        name: preferred_start_time
+        description: 'Must be a valid date. Must be a date after <code>now</code>.'
+        required: true
+        example: '2051-06-08'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      duration:
+        name: duration
+        description: 'Must be at least 15. Must not be greater than 1440.'
+        required: true
+        example: 22
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      supervisor_id:
+        name: supervisor_id
+        description: 'The <code>id</code> of an existing record in the users table.'
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      auto_approve:
+        name: auto_approve
+        description: ''
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      settings:
+        name: settings
+        description: ''
+        required: false
+        example: null
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      settings.host_video:
+        name: settings.host_video
+        description: ''
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      settings.participant_video:
+        name: settings.participant_video
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      settings.join_before_host:
+        name: settings.join_before_host
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      settings.mute_upon_entry:
+        name: settings.mute_upon_entry
+        description: ''
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      settings.waiting_room:
+        name: settings.waiting_room
+        description: ''
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      settings.meeting_authentication:
+        name: settings.meeting_authentication
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      settings.auto_recording:
+        name: settings.auto_recording
+        description: ''
+        required: false
+        example: cloud
+        type: string
+        enumValues:
+          - none
+          - local
+          - cloud
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      model_type: architecto
+      model_id: architecto
+      topic: 'n'
+      agenda: g
+      preferred_start_time: '2051-06-08'
+      duration: 22
+      auto_approve: false
+      settings:
+        host_video: false
+        participant_video: true
+        join_before_host: true
+        mute_upon_entry: false
+        waiting_room: false
+        meeting_authentication: true
+        auto_recording: cloud
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/api/zoom/meetings/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display the specified zoom meeting.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the meeting.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 16
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 500
+        content: |-
+          {
+              "message": "Server Error"
+          }
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+      - PATCH
+    uri: 'api/api/zoom/meetings/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update the specified zoom meeting.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the meeting.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 16
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      topic:
+        name: topic
+        description: 'Must not be greater than 200 characters.'
+        required: false
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      agenda:
+        name: agenda
+        description: 'Must not be greater than 2000 characters.'
+        required: false
+        example: 'n'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      preferred_start_time:
+        name: preferred_start_time
+        description: 'Must be a valid date. Must be a date after <code>now</code>.'
+        required: false
+        example: '2051-06-08'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      duration:
+        name: duration
+        description: 'Must be at least 15. Must not be greater than 1440.'
+        required: false
+        example: 22
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      settings:
+        name: settings
+        description: ''
+        required: false
+        example: null
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      settings.host_video:
+        name: settings.host_video
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      settings.participant_video:
+        name: settings.participant_video
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      settings.join_before_host:
+        name: settings.join_before_host
+        description: ''
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      settings.mute_upon_entry:
+        name: settings.mute_upon_entry
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      settings.waiting_room:
+        name: settings.waiting_room
+        description: ''
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      settings.meeting_authentication:
+        name: settings.meeting_authentication
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      settings.auto_recording:
+        name: settings.auto_recording
+        description: ''
+        required: false
+        example: local
+        type: string
+        enumValues:
+          - none
+          - local
+          - cloud
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      topic: b
+      agenda: 'n'
+      preferred_start_time: '2051-06-08'
+      duration: 22
+      settings:
+        host_video: true
+        participant_video: true
+        join_before_host: false
+        mute_upon_entry: true
+        waiting_room: false
+        meeting_authentication: true
+        auto_recording: local
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/api/zoom/meetings/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Remove the specified zoom meeting.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the meeting.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 16
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/api/zoom/meetings/{zoomMeeting_id}/start'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Start a zoom meeting.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      zoomMeeting_id:
+        name: zoomMeeting_id
+        description: 'The ID of the zoomMeeting.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      zoomMeeting_id: 16
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/api/zoom/meetings/{zoomMeeting_id}/complete'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Complete a zoom meeting.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      zoomMeeting_id:
+        name: zoomMeeting_id
+        description: 'The ID of the zoomMeeting.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      zoomMeeting_id: 16
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/api/zoom/meetings/{zoomMeeting_id}/approve'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Approve a zoom meeting.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      zoomMeeting_id:
+        name: zoomMeeting_id
+        description: 'The ID of the zoomMeeting.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      zoomMeeting_id: 16
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      supervisor_id:
+        name: supervisor_id
+        description: 'The <code>id</code> of an existing record in the users table.'
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/api/zoom/meetings/{zoomMeeting_id}/reschedule'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Reschedule a zoom meeting.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      zoomMeeting_id:
+        name: zoomMeeting_id
+        description: 'The ID of the zoomMeeting.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      zoomMeeting_id: 16
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      start_time:
+        name: start_time
+        description: 'Must be a valid date.'
+        required: true
+        example: '2025-05-15T10:10:14'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      duration:
+        name: duration
+        description: 'Must be at least 15. Must not be greater than 1440.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      start_time: '2025-05-15T10:10:14'
+      duration: 1
     fileParameters: []
     responses: []
     responseFields: []

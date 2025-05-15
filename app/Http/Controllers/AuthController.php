@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use Spatie\Permission\Models\Role;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Str;
+
 
 class AuthController extends Controller
 {
@@ -53,7 +55,7 @@ class AuthController extends Controller
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password), // Ensure password is hashed
+                'password' => Hash::make($request->password), 
             ]);
 
             $token = $user->createToken($request->name);
@@ -89,7 +91,7 @@ class AuthController extends Controller
         $request->validate([
             'access_token' => 'required_if:provider,google|string',
             'email' => 'required_if:provider,credentials|email',
-            'password' => 'required_if:provider,credentials|string',
+            'password'     => 'sometimes|required_if:provider,credentials|string',
             'provider' => 'required|string|in:google,credentials',
         ]);
 
